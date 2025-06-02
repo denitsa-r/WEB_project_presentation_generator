@@ -1,0 +1,56 @@
+CREATE TABLE `workspaces` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(255) NOT NULL,
+  `description` TEXT,
+  `language` VARCHAR(10) NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `presentations` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `workspace_id` INT NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `language` VARCHAR(10) NOT NULL,
+  `theme` VARCHAR(50) DEFAULT 'light',
+  `version` VARCHAR(20) DEFAULT '1.0',
+  `navigation` TEXT,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (`workspace_id`) REFERENCES `workspaces`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `slides` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `presentation_id` INT NOT NULL,
+  `slide_order` INT NOT NULL DEFAULT 1,
+  `type` VARCHAR(50) NOT NULL,
+  `layout` VARCHAR(100) DEFAULT NULL,
+  `style` VARCHAR(50) DEFAULT 'light',
+  `content` TEXT,
+  `navigation` TEXT,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (`presentation_id`) REFERENCES `presentations`(`id`) ON DELETE CASCADE,
+  UNIQUE KEY `unique_order_per_presentation` (`presentation_id`, `slide_order`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `themes` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(50) NOT NULL UNIQUE,
+  `css` TEXT,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `translations` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `entity` VARCHAR(50) NOT NULL, 
+  `entity_id` INT NOT NULL,
+  `language` VARCHAR(10) NOT NULL,
+  `field` VARCHAR(50) NOT NULL,
+  `text` TEXT NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX `idx_entity_lang` (`entity`, `entity_id`, `language`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

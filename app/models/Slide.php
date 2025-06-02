@@ -20,4 +20,35 @@ class Slide {
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function create($data) {
+        $stmt = $this->pdo->prepare("INSERT INTO slides (presentation_id, slide_order, type, layout, style, content, navigation, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
+        return $stmt->execute([
+            $data['presentation_id'],
+            $data['slide_order'],
+            $data['type'],
+            $data['layout'] ?? null,
+            $data['style'] ?? 'light',
+            $data['content'] ?? '',
+            $data['navigation'] ?? null
+        ]);
+    }
+
+    public function update($id, $data) {
+        $stmt = $this->pdo->prepare("UPDATE slides SET slide_order = ?, type = ?, layout = ?, style = ?, content = ?, navigation = ?, updated_at = NOW() WHERE id = ?");
+        return $stmt->execute([
+            $data['slide_order'],
+            $data['type'],
+            $data['layout'] ?? null,
+            $data['style'] ?? 'light',
+            $data['content'] ?? '',
+            $data['navigation'] ?? null,
+            $id
+        ]);
+    }
+
+    public function delete($id) {
+        $stmt = $this->pdo->prepare("DELETE FROM slides WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
 }
