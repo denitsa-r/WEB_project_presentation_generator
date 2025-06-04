@@ -1,46 +1,61 @@
 <?php
-class Workspace {
-    private $pdo;
 
-    public function __construct($config) {
-        $dsn = "mysql:host={$config['db_host']};dbname={$config['db_name']};charset=utf8";
-        $this->pdo = new PDO($dsn, $config['db_user'], $config['db_pass'], [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-        ]);
+class Workspace extends Model
+{
+    public function __construct()
+    {
+        parent::__construct();
     }
 
-    public function getAll() {
-        $stmt = $this->pdo->query("SELECT * FROM workspaces ORDER BY id DESC");
+    public function create($name, $userId)
+    {
+        try {
+            $this->db->query(
+                "INSERT INTO workspaces (name) VALUES (?)",
+                [$name]
+            );
+
+            $workspaceId = $this->db->lastInsertId();
+
+            $this->db->query(
+                "INSERT INTO user_workspaces (workspace_id, user_id, role) VALUES (?, ?, 'owner')",
+                [$workspaceId, $userId]
+            );
+
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function getUserWorkspaces($userId)
+    {
+        $stmt = $this->db->query(
+            "SELECT w.*, uw.role 
+            FROM workspaces w 
+            JOIN user_workspaces uw ON w.id = uw.workspace_id 
+            WHERE uw.user_id = ? 
+            ORDER BY w.created_at DESC",
+            [$userId]
+        );
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getById($id) {
-        $stmt = $this->pdo->prepare("SELECT * FROM workspaces WHERE id = ?");
-        $stmt->execute([$id]);
+    public function getById($id)
+    {
+        $stmt = $this->db->query(
+            "SELECT * FROM workspaces WHERE id = ?",
+            [$id]
+        );
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function create($data) {
-        $stmt = $this->pdo->prepare("INSERT INTO workspaces (name, description, language, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())");
-        return $stmt->execute([
-            $data['name'],
-            $data['description'],
-            $data['language']
-        ]);
-    }
-
-    public function update($id, $data) {
-        $stmt = $this->pdo->prepare("UPDATE workspaces SET name = ?, description = ?, language = ?, updated_at = NOW() WHERE id = ?");
-        return $stmt->execute([
-            $data['name'],
-            $data['description'],
-            $data['language'],
-            $id
-        ]);
-    }
-
-    public function delete($id) {
-        $stmt = $this->pdo->prepare("DELETE FROM workspaces WHERE id = ?");
-        return $stmt->execute([$id]);
+    public function hasAccess($userId, $workspaceId)
+    {
+        $stmt = $this->db->query(
+            "SELECT 1 FROM user_workspaces WHERE user_id = ? AND workspace_id = ?",
+            [$userId, $workspaceId]
+        );
+        return $stmt->fetch() !== false;
     }
 }
