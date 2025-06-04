@@ -2,10 +2,14 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Презентации в workspace</title>
+    <title>Презентации</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <h1>Презентации в workspace</h1>
+
+    <a href="/presentation/create/<?php echo $workspaceId; ?>">Създай нова презентация</a>
+
     <ul>
         <?php foreach ($presentations as $presentation): ?>
             <li>
@@ -15,6 +19,5 @@
             </li>
         <?php endforeach; ?>
     </ul>
-    <a href="/workspace/index">Обратно към workspaces</a>
 </body>
 </html>

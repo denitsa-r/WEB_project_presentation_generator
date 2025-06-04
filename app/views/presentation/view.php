@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title><?php echo htmlspecialchars($presentation['title']); ?></title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <h1><?php echo htmlspecialchars($presentation['title']); ?></h1>

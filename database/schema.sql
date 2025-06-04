@@ -1,56 +1,50 @@
-CREATE TABLE `workspaces` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `name` VARCHAR(255) NOT NULL,
-  `description` TEXT,
-  `language` VARCHAR(10) NOT NULL,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE DATABASE IF NOT EXISTS presentation_generator;
+USE presentation_generator;
 
-CREATE TABLE `presentations` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `workspace_id` INT NOT NULL,
-  `title` VARCHAR(255) NOT NULL,
-  `language` VARCHAR(10) NOT NULL,
-  `theme` VARCHAR(50) DEFAULT 'light',
-  `version` VARCHAR(20) DEFAULT '1.0',
-  `navigation` TEXT,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`workspace_id`) REFERENCES `workspaces`(`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE IF NOT EXISTS users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
-CREATE TABLE `slides` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `presentation_id` INT NOT NULL,
-  `slide_order` INT NOT NULL DEFAULT 1,
-  `type` VARCHAR(50) NOT NULL,
-  `layout` VARCHAR(100) DEFAULT NULL,
-  `style` VARCHAR(50) DEFAULT 'light',
-  `content` TEXT,
-  `navigation` TEXT,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`presentation_id`) REFERENCES `presentations`(`id`) ON DELETE CASCADE,
-  UNIQUE KEY `unique_order_per_presentation` (`presentation_id`, `slide_order`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE IF NOT EXISTS workspaces (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
-CREATE TABLE `themes` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `name` VARCHAR(50) NOT NULL UNIQUE,
-  `css` TEXT,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE IF NOT EXISTS user_workspaces (
+    workspace_id INT,
+    user_id INT,
+    role ENUM('owner', 'editor', 'viewer') DEFAULT 'viewer',
+    FOREIGN KEY (workspace_id) REFERENCES workspaces(id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    PRIMARY KEY (workspace_id, user_id)
+);
 
-CREATE TABLE `translations` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `entity` VARCHAR(50) NOT NULL, 
-  `entity_id` INT NOT NULL,
-  `language` VARCHAR(10) NOT NULL,
-  `field` VARCHAR(50) NOT NULL,
-  `text` TEXT NOT NULL,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  INDEX `idx_entity_lang` (`entity`, `entity_id`, `language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE IF NOT EXISTS presentations (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    workspace_id INT,
+    title VARCHAR(100) NOT NULL,
+    language VARCHAR(10) DEFAULT 'en',
+    theme VARCHAR(20) DEFAULT 'light',
+    version VARCHAR(20),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (workspace_id) REFERENCES workspaces(id)
+);
+
+CREATE TABLE IF NOT EXISTS slides (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    presentation_id INT,
+    type VARCHAR(50) NOT NULL,
+    order_number INT NOT NULL,
+    style VARCHAR(50),
+    content TEXT,
+    navigation_next INT,
+    navigation_prev INT,
+    FOREIGN KEY (presentation_id) REFERENCES presentations(id),
+    FOREIGN KEY (navigation_next) REFERENCES slides(id),
+    FOREIGN KEY (navigation_prev) REFERENCES slides(id)
+); 

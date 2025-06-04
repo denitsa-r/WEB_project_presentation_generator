@@ -2,11 +2,13 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Редактирай презентация</title>
+    <title>Редактиране на презентация</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <h1>Редактирай презентация</h1>
-    <form method="post" action="">
+    <h1>Редактиране на презентация</h1>
+
+    <form method="POST" action="/presentation/edit/<?php echo $presentation['id']; ?>">
         <label>Заглавие:<br>
             <input type="text" name="title" value="<?php echo htmlspecialchars($presentation['title']); ?>" required>
         </label><br><br>
@@ -24,6 +26,7 @@
         </label><br><br>
         <button type="submit">Запази</button>
     </form>
-    <a href="/presentation/view/<?php echo htmlspecialchars($presentation['id']); ?>">Откажи</a>
+
+    <a href="/presentation/view/<?php echo $presentation['id']; ?>">Откажи</a>
 </body>
 </html>
