@@ -1,56 +1,81 @@
--- Create the database
-CREATE DATABASE IF NOT EXISTS presentation_generator;
-USE presentation_generator;
+-- -----------------------------------------------------
+-- База данни: presentation_builder
+-- -----------------------------------------------------
 
--- Create users table
+CREATE DATABASE IF NOT EXISTS presentation_builder CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE presentation_builder;
+
+-- -----------------------------------------------------
+-- Таблица: users
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS users (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create workspaces table
+-- -----------------------------------------------------
+-- Таблица: workspaces
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS workspaces (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create user_workspaces table
+-- -----------------------------------------------------
+-- Таблица: user_workspaces (много-към-много с роли)
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS user_workspaces (
-    workspace_id INT,
-    user_id INT,
-    role ENUM('owner', 'editor', 'viewer') DEFAULT 'viewer',
-    FOREIGN KEY (workspace_id) REFERENCES workspaces(id),
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    PRIMARY KEY (workspace_id, user_id)
+    user_id INT NOT NULL,
+    workspace_id INT NOT NULL,
+    role ENUM('owner', 'editor', 'viewer') DEFAULT 'editor',
+    PRIMARY KEY (user_id, workspace_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (workspace_id) REFERENCES workspaces(id) ON DELETE CASCADE
 );
 
--- Create presentations table
+-- -----------------------------------------------------
+-- Таблица: presentations
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS presentations (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    workspace_id INT,
-    title VARCHAR(100) NOT NULL,
-    language VARCHAR(10) DEFAULT 'en',
-    theme VARCHAR(20) DEFAULT 'light',
-    version VARCHAR(20),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (workspace_id) REFERENCES workspaces(id)
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    workspace_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    language VARCHAR(10) DEFAULT 'bg',
+    theme VARCHAR(50) DEFAULT 'light',
+    version VARCHAR(50),
+    navigation_rules TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (workspace_id) REFERENCES workspaces(id) ON DELETE CASCADE
 );
 
--- Create slides table
+-- -----------------------------------------------------
+-- Таблица: slides
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS slides (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    presentation_id INT,
-    type VARCHAR(50) NOT NULL,
-    order_number INT NOT NULL,
-    style VARCHAR(50),
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    presentation_id INT NOT NULL,
+    slide_order INT NOT NULL,
+    type VARCHAR(50),
+    layout VARCHAR(50),
+    style VARCHAR(100),
     content TEXT,
-    navigation_next INT,
-    navigation_prev INT,
-    FOREIGN KEY (presentation_id) REFERENCES presentations(id),
-    FOREIGN KEY (navigation_next) REFERENCES slides(id),
-    FOREIGN KEY (navigation_prev) REFERENCES slides(id)
-); 
+    next_slide_id INT DEFAULT NULL,
+    prev_slide_id INT DEFAULT NULL,
+    FOREIGN KEY (presentation_id) REFERENCES presentations(id) ON DELETE CASCADE
+);
+
+-- -----------------------------------------------------
+-- Таблица: themes (по избор)
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS themes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    css TEXT NOT NULL,
+    user_id INT DEFAULT NULL,
+    is_global BOOLEAN DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);
