@@ -3,70 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title><?= $data['title'] ?></title>
-    <style>
-        body {
-            font-family: sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-        .workspaces {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .workspace-card {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .workspace-card h3 {
-            margin-top: 0;
-            color: #333;
-        }
-        .workspace-card .meta {
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 15px;
-        }
-        .btn {
-            display: inline-block;
-            padding: 8px 16px;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-        .btn-secondary {
-            background-color: #6c757d;
-        }
-        .btn-secondary:hover {
-            background-color: #545b62;
-        }
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-    </style>
+    <link rel="stylesheet" href="/web-project/WEB_project_presentation_generator/public/assets/css/main.css">
+    <link rel="stylesheet" href="/web-project/WEB_project_presentation_generator/public/assets/css/dashboard.css">
 </head>
 <body>
     <div class="container">

@@ -59,7 +59,76 @@ class DashboardController extends Controller
         $this->view('dashboard/workspace', [
             'title' => $workspace['name'],
             'workspace' => $workspace,
-            'presentations' => $presentations
+            'presentations' => $presentations,
+            'isOwner' => $workspaceModel->isOwner($userId, $id)
+        ]);
+    }
+
+    public function editWorkspace($id)
+    {
+        $workspaceModel = $this->model('Workspace');
+        $userId = AuthMiddleware::currentUserId();
+        
+        if (!$workspaceModel->isOwner($userId, $id)) {
+            header('Location: ' . BASE_URL . '/dashboard');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $name = trim($_POST['name']);
+            
+            if ($workspaceModel->update($id, $name)) {
+                header('Location: ' . BASE_URL . '/dashboard/viewWorkspace/' . $id);
+                exit;
+            } else {
+                $error = 'Възникна грешка при редактирането на работното пространство.';
+                $workspace = $workspaceModel->getById($id);
+                $this->view('dashboard/edit_workspace', [
+                    'title' => 'Редактиране на работно пространство',
+                    'workspace' => $workspace,
+                    'error' => $error
+                ]);
+                return;
+            }
+        }
+
+        $workspace = $workspaceModel->getById($id);
+        $this->view('dashboard/edit_workspace', [
+            'title' => 'Редактиране на работно пространство',
+            'workspace' => $workspace
+        ]);
+    }
+
+    public function deleteWorkspace($id)
+    {
+        $workspaceModel = $this->model('Workspace');
+        $userId = AuthMiddleware::currentUserId();
+        
+        if (!$workspaceModel->isOwner($userId, $id)) {
+            header('Location: ' . BASE_URL . '/dashboard');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if ($workspaceModel->delete($id)) {
+                header('Location: ' . BASE_URL . '/dashboard');
+                exit;
+            } else {
+                $error = 'Възникна грешка при изтриването на работното пространство.';
+                $workspace = $workspaceModel->getById($id);
+                $this->view('dashboard/delete_workspace', [
+                    'title' => 'Изтриване на работно пространство',
+                    'workspace' => $workspace,
+                    'error' => $error
+                ]);
+                return;
+            }
+        }
+
+        $workspace = $workspaceModel->getById($id);
+        $this->view('dashboard/delete_workspace', [
+            'title' => 'Изтриване на работно пространство',
+            'workspace' => $workspace
         ]);
     }
 } 

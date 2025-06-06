@@ -1,0 +1,225 @@
+/* Presentation specific styles */
+.presentation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.presentation-title {
+    margin: 0;
+    color: #333;
+}
+
+.presentation-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Form container */
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-container h1 {
+    margin-top: 0;
+    color: #333;
+}
+
+/* Form elements */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* Delete container */
+.delete-container {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.warning {
+    color: #dc3545;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+}
+
+/* Error messages */
+.error {
+    color: #dc3545;
+    margin-bottom: 15px;
+}
+
+/* Slide editor */
+.slide-editor {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.slide-preview {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    min-height: 300px;
+}
+
+.slide-preview h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+/* Layout options */
+.layout-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.layout-option {
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.layout-option:hover {
+    border-color: #007bff;
+}
+
+.layout-option.active {
+    border-color: #007bff;
+    background-color: #f8f9fa;
+}
+
+/* Content elements */
+.content-element {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.element-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.element-title {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.element-actions {
+    display: flex;
+    gap: 5px;
+}
+
+/* Image and text fields */
+.image-text-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.image-field, .text-field {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Presentation view */
+.presentation-view {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.presentation-meta {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+}
+
+.slides-container {
+    margin-top: 30px;
+}
+
+.slide {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.slide-title {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.2em;
+}
+
+.slide-content {
+    margin-top: 15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .presentation-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .presentation-actions {
+        flex-direction: column;
+    }
+    
+    .presentation-actions .btn {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .image-text-fields {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-container {
+        padding: 20px;
+    }
+} 

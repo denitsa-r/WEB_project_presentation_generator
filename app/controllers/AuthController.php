@@ -41,7 +41,7 @@ class AuthController extends Controller
 
             if ($userModel->create($username, $email, $password_hash)) {
                 header('Location: ' . BASE_URL . '/auth/login');
-                exit;
+            exit;
             } else {
                 $error = 'Възникна грешка при регистрацията.';
                 $this->view('auth/register', ['error' => $error]);

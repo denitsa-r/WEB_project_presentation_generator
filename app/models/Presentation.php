@@ -37,4 +37,38 @@ class Presentation extends Model
         );
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function update($id, $title, $language, $theme)
+    {
+        try {
+            $this->db->query(
+                "UPDATE presentations SET title = ?, language = ?, theme = ? WHERE id = ?",
+                [$title, $language, $theme, $id]
+            );
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            // Първо изтриваме всички слайдове, свързани с презентацията
+            $this->db->query(
+                "DELETE FROM slides WHERE presentation_id = ?",
+                [$id]
+            );
+            
+            // След това изтриваме самата презентация
+            $this->db->query(
+                "DELETE FROM presentations WHERE id = ?",
+                [$id]
+            );
+            
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 } 

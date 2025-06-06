@@ -59,4 +59,39 @@ class Workspace extends Model
         );
         return $stmt->fetch() !== false;
     }
+
+    public function update($id, $name)
+    {
+        try {
+            $this->db->query(
+                "UPDATE workspaces SET name = ? WHERE id = ?",
+                [$name, $id]
+            );
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            $this->db->query(
+                "DELETE FROM workspaces WHERE id = ?",
+                [$id]
+            );
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function isOwner($userId, $workspaceId)
+    {
+        $stmt = $this->db->query(
+            "SELECT 1 FROM user_workspaces WHERE user_id = ? AND workspace_id = ? AND role = 'owner'",
+            [$userId, $workspaceId]
+        );
+        return $stmt->fetch() !== false;
+    }
 } 

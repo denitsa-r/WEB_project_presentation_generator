@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Изтриване на презентация</title>
+    <link rel="stylesheet" href="/web-project/WEB_project_presentation_generator/public/assets/css/main.css">
+    <link rel="stylesheet" href="/web-project/WEB_project_presentation_generator/public/assets/css/presentation.css">
+</head>
+<body>
+    <div class="container">
+        <div class="delete-container">
+            <h1>Изтриване на презентация</h1>
+            
+            <?php if (isset($data['error'])): ?>
+                <div class="error"><?= htmlspecialchars($data['error']) ?></div>
+            <?php endif; ?>
+
+            <div class="warning">
+                <strong>Внимание!</strong> Сигурни ли сте, че искате да изтриете презентацията "<?= htmlspecialchars($data['presentation']['title']) ?>"?
+                Това действие е необратимо и ще изтрие всички слайдове в тази презентация.
+            </div>
+
+            <form action="<?= BASE_URL ?>/presentation/delete/<?= $data['presentation']['id'] ?>" method="POST">
+                <button type="submit" class="btn btn-danger">Да, изтрий презентацията</button>
+                <a href="<?= BASE_URL ?>/presentation/view/<?= $data['presentation']['id'] ?>" class="btn btn-secondary">Отказ</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html> 

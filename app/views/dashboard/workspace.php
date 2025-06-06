@@ -3,83 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title><?= $data['title'] ?></title>
-    <style>
-        body {
-            font-family: sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-        .presentations {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .presentation-card {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .presentation-card h3 {
-            margin-top: 0;
-            color: #333;
-        }
-        .presentation-card .meta {
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 15px;
-        }
-        .btn {
-            display: inline-block;
-            padding: 8px 16px;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-        .btn-secondary {
-            background-color: #6c757d;
-        }
-        .btn-secondary:hover {
-            background-color: #545b62;
-        }
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .workspace-info {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-    </style>
+    <link rel="stylesheet" href="/web-project/WEB_project_presentation_generator/public/assets/css/main.css">
+    <link rel="stylesheet" href="/web-project/WEB_project_presentation_generator/public/assets/css/workspace.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1><?= htmlspecialchars($data['workspace']['name']) ?></h1>
-            <a href="<?= BASE_URL ?>/dashboard" class="btn btn-secondary">Назад към таблото</a>
+            <div class="actions">
+                <?php if ($data['isOwner']): ?>
+                    <a href="<?= BASE_URL ?>/dashboard/editWorkspace/<?= $data['workspace']['id'] ?>" class="btn btn-secondary">Редактирай</a>
+                    <a href="<?= BASE_URL ?>/dashboard/deleteWorkspace/<?= $data['workspace']['id'] ?>" class="btn btn-danger">Изтрий</a>
+                <?php endif; ?>
+                <a href="<?= BASE_URL ?>/dashboard" class="btn btn-secondary">Назад към таблото</a>
+            </div>
         </div>
 
         <div class="workspace-info">
@@ -108,7 +45,7 @@
                             <p>Тема: <?= ucfirst($presentation['theme']) ?></p>
                             <p>Създадено: <?= date('d.m.Y H:i', strtotime($presentation['created_at'])) ?></p>
                         </div>
-                        <a href="<?= BASE_URL ?>/presentation/view/<?= $presentation['id'] ?>" class="btn">Отвори</a>
+                        <a href="<?= BASE_URL ?>/presentation/viewPresentation/<?= $presentation['id'] ?>" class="btn">Отвори</a>
                     </div>
                 <?php endforeach; ?>
             </div>

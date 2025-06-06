@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS presentations (
 CREATE TABLE IF NOT EXISTS slides (
     id INT AUTO_INCREMENT PRIMARY KEY,
     presentation_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
     slide_order INT NOT NULL,
     type VARCHAR(50),
     layout VARCHAR(50),
@@ -79,3 +80,7 @@ CREATE TABLE IF NOT EXISTS themes (
     is_global BOOLEAN DEFAULT 0,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
+
+-- Добавяне на колона title към таблицата slides, ако не съществува
+ALTER TABLE slides ADD COLUMN IF NOT EXISTS title VARCHAR(255) NOT NULL AFTER presentation_id;
+ 
