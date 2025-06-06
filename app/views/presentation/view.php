@@ -5,9 +5,10 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title><?= htmlspecialchars($data['presentation']['title']) ?></title>
-    <link rel="stylesheet" href="/web-project/WEB_project_presentation_generator/public/assets/css/main.css">
-    <link rel="stylesheet" href="/web-project/WEB_project_presentation_generator/public/assets/css/presentation.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/main.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/presentation.css">
+    <title>Преглед на презентация</title>
 </head>
 <body>
     <div class="container">

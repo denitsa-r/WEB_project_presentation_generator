@@ -2,9 +2,10 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title><?= $data['title'] ?></title>
-    <link rel="stylesheet" href="/web-project/WEB_project_presentation_generator/public/assets/css/main.css">
-    <link rel="stylesheet" href="/web-project/WEB_project_presentation_generator/public/assets/css/dashboard.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/main.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/dashboard.css">
+    <title>Табло</title>
 </head>
 <body>
     <div class="container">

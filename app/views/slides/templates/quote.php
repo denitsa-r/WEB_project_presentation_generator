@@ -2,8 +2,10 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/web-project/WEB_project_presentation_generator/public/assets/css/main.css">
-    <link rel="stylesheet" href="/web-project/WEB_project_presentation_generator/public/assets/css/slide-templates.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/main.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/slide-templates.css">
+    <title>Цитат слайд</title>
 </head>
 <body>
     <div class="slide">

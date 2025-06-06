@@ -1,8 +1,8 @@
 -- -----------------------------------------------------
--- База данни: presentation_builder
+-- База данни: presentation_generator
 -- -----------------------------------------------------
 
-CREATE DATABASE IF NOT EXISTS presentation_builder CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE DATABASE IF NOT EXISTS presentation_generator CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE presentation_builder;
 
 -- -----------------------------------------------------

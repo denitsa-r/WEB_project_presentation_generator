@@ -2,9 +2,10 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/main.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/workspace.css">
     <title>Изтриване на работно пространство</title>
-    <link rel="stylesheet" href="/web-project/WEB_project_presentation_generator/public/assets/css/main.css">
-    <link rel="stylesheet" href="/web-project/WEB_project_presentation_generator/public/assets/css/workspace.css">
 </head>
 <body>
     <div class="container">
