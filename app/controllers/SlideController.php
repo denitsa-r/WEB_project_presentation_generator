@@ -19,6 +19,9 @@ class SlideController extends Controller
     public function create($presentationId = null)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            error_log("Received POST request for slide creation");
+            error_log("POST data: " . print_r($_POST, true));
+            
             // Check if this is a cancel action
             if (isset($_POST['cancel'])) {
                 $presentation_id = $_POST['presentation_id'] ?? null;
@@ -31,50 +34,52 @@ class SlideController extends Controller
                 }
             }
 
-            $presentation_id = $_POST['presentation_id'] ?? null;
+            $presentationId = $_POST['presentation_id'] ?? null;
             $title = $_POST['title'] ?? '';
             $layout = $_POST['layout'] ?? 'full';
             
-            // Collect content from all elements
-            $content = [];
-            $index = 0;
-            while (isset($_POST["content_type_$index"])) {
-                $type = $_POST["content_type_$index"];
-                $elementTitle = $_POST["content_title_$index"] ?? '';
-                $elementContent = $_POST["content_content_$index"] ?? '';
-                $elementText = $_POST["content_text_$index"] ?? '';
-                
-                $content[] = [
-                    'type' => $type,
-                    'title' => $elementTitle,
-                    'content' => $elementContent,
-                    'text' => $elementText
-                ];
-                
-                $index++;
-            }
-            
             if (empty($title)) {
+                error_log("Error: Title is required");
                 $_SESSION['error'] = 'Заглавието е задължително';
-                header("Location: " . BASE_URL . "/slides/create?presentation_id=" . $presentation_id);
+                header('Location: ' . BASE_URL . '/slides/create?presentation_id=' . $presentationId);
                 exit;
             }
             
             try {
-                $slide = new Slide();
-                $slide->create([
-                    'presentation_id' => $presentation_id,
+                $elements = [];
+                foreach ($_POST['elements'] as $index => $element) {
+                    $elements[] = [
+                        'type' => $element['type'],
+                        'title' => $element['title'] ?? null,
+                        'content' => $element['content'] ?? null,
+                        'text' => $element['text'] ?? null,
+                        'style' => json_decode($element['style'] ?? '{}', true)
+                    ];
+                }
+                
+                error_log("Prepared elements data: " . print_r($elements, true));
+                
+                $slideData = [
+                    'presentation_id' => $presentationId,
                     'title' => $title,
                     'layout' => $layout,
-                    'content' => json_encode($content)
-                ]);
+                    'elements' => $elements
+                ];
+                
+                error_log("Final slide data: " . print_r($slideData, true));
+                
+                $slideId = $this->slideModel->create($slideData);
+                error_log("Successfully created slide with ID: " . $slideId);
                 
                 $_SESSION['success'] = 'Слайдът е създаден успешно';
-                header("Location: " . BASE_URL . "/presentation/viewPresentation/" . $presentation_id);
+                header('Location: ' . BASE_URL . '/presentations/view/' . $presentationId);
                 exit;
+                
             } catch (Exception $e) {
-                $_SESSION['error'] = 'Грешка при създаване на слайда: ' . $e->getMessage();
-                header("Location: " . BASE_URL . "/slides/create?presentation_id=" . $presentation_id);
+                error_log("Error in SlideController::create: " . $e->getMessage());
+                error_log("Stack trace: " . $e->getTraceAsString());
+                $_SESSION['error'] = 'Възникна грешка при създаването на слайда';
+                header('Location: ' . BASE_URL . '/slides/create?presentation_id=' . $presentationId);
                 exit;
             }
         } else {
@@ -130,20 +135,22 @@ class SlideController extends Controller
             $title = $_POST['title'] ?? '';
             $layout = $_POST['layout'] ?? 'full';
             
-            // Collect content from all elements
-            $content = [];
+            // Collect elements from form
+            $elements = [];
             $index = 0;
             while (isset($_POST["content_type_$index"])) {
                 $type = $_POST["content_type_$index"];
                 $elementTitle = $_POST["content_title_$index"] ?? '';
                 $elementContent = $_POST["content_content_$index"] ?? '';
                 $elementText = $_POST["content_text_$index"] ?? '';
+                $elementStyle = $_POST["content_style_$index"] ?? null;
                 
-                $content[] = [
+                $elements[] = [
                     'type' => $type,
                     'title' => $elementTitle,
                     'content' => $elementContent,
-                    'text' => $elementText
+                    'text' => $elementText,
+                    'style' => $elementStyle ? json_decode($elementStyle, true) : null
                 ];
                 
                 $index++;
@@ -151,7 +158,7 @@ class SlideController extends Controller
             
             if (empty($title)) {
                 $_SESSION['error'] = 'Заглавието е задължително';
-                header("Location: /slides/edit?id=" . $id);
+                header("Location: " . BASE_URL . "/slides/edit/" . $id);
                 exit;
             }
             
@@ -160,15 +167,17 @@ class SlideController extends Controller
                 $slide->update($id, [
                     'title' => $title,
                     'layout' => $layout,
-                    'content' => json_encode($content)
+                    'elements' => $elements
                 ]);
                 
                 $_SESSION['success'] = 'Слайдът е редактиран успешно';
-                header("Location: /presentations/view?id=" . $presentation_id);
+                header("Location: " . BASE_URL . "/presentation/viewPresentation/" . $presentation_id);
                 exit;
             } catch (Exception $e) {
+                error_log("Грешка при редактиране на слайд: " . $e->getMessage());
+                error_log("Данни: " . print_r($_POST, true));
                 $_SESSION['error'] = 'Грешка при редактиране на слайда: ' . $e->getMessage();
-                header("Location: /slides/edit?id=" . $id);
+                header("Location: " . BASE_URL . "/slides/edit/" . $id);
                 exit;
             }
         } else {

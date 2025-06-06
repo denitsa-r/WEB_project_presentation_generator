@@ -21,7 +21,8 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
 
             <div class="editor-preview-container">
                 <div class="editor-section">
-                    <form action="<?= BASE_URL ?>/slide/edit/<?= $data['slide']['id'] ?>" method="POST">
+                    <form action="<?= BASE_URL ?>/slides/edit/<?= $data['slide']['id'] ?>" method="POST">
+                        <input type="hidden" name="id" value="<?= $data['slide']['id'] ?>">
                         <input type="hidden" name="presentation_id" value="<?= $data['slide']['presentation_id'] ?>">
                         
                         <div class="form-group">
@@ -32,11 +33,17 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                         <div class="form-group">
                             <label for="layout">Изберете оформление:</label>
                             <select id="layout" name="layout" onchange="updateLayout()">
-                                <option value="full" <?= $data['slide']['layout'] === 'full' ? 'selected' : '' ?>>Пълен екран</option>
-                                <option value="two-columns" <?= $data['slide']['layout'] === 'two-columns' ? 'selected' : '' ?>>Две колони</option>
-                                <option value="three-columns" <?= $data['slide']['layout'] === 'three-columns' ? 'selected' : '' ?>>Три колони</option>
-                                <option value="grid-2x2" <?= $data['slide']['layout'] === 'grid-2x2' ? 'selected' : '' ?>>Мрежа 2x2</option>
-                                <option value="grid-3x3" <?= $data['slide']['layout'] === 'grid-3x3' ? 'selected' : '' ?>>Мрежа 3x3</option>
+                                    <option value="full" <?= $data['slide']['layout'] === 'full' ? 'selected' : '' ?>>Пълен екран</option>
+                                    <option value="two-columns" <?= $data['slide']['layout'] === 'two-columns' ? 'selected' : '' ?>>Две колони</option>
+                                    <option value="three-columns" <?= $data['slide']['layout'] === 'three-columns' ? 'selected' : '' ?>>Три колони</option>
+                                    <option value="two-rows" <?= $data['slide']['layout'] === 'two-rows' ? 'selected' : '' ?>>Две реда</option>
+                                    <option value="three-rows" <?= $data['slide']['layout'] === 'three-rows' ? 'selected' : '' ?>>Три реда</option>
+                                    <option value="grid-2x2" <?= $data['slide']['layout'] === 'grid-2x2' ? 'selected' : '' ?>>Мрежа 2x2</option>
+                                    <option value="grid-2x3" <?= $data['slide']['layout'] === 'grid-2x3' ? 'selected' : '' ?>>Мрежа 2x3</option>
+                                    <option value="grid-2x4" <?= $data['slide']['layout'] === 'grid-2x4' ? 'selected' : '' ?>>Мрежа 2x4</option>
+                                    <option value="grid-3x2" <?= $data['slide']['layout'] === 'grid-3x2' ? 'selected' : '' ?>>Мрежа 3x2</option>
+                                    <option value="grid-3x3" <?= $data['slide']['layout'] === 'grid-3x3' ? 'selected' : '' ?>>Мрежа 3x3</option>
+                                    <option value="grid-4x2" <?= $data['slide']['layout'] === 'grid-4x2' ? 'selected' : '' ?>>Мрежа 4x2</option>
                             </select>
                         </div>
 
@@ -44,14 +51,13 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                             <!-- Content elements will be added here -->
                         </div>
 
-                        <button type="button" onclick="addContentElement()" class="btn">Добави елемент</button>
                         <button type="submit" class="btn">Запази промените</button>
-                        <a href="<?= BASE_URL ?>/presentation/view/<?= $data['slide']['presentation_id'] ?>" class="btn btn-secondary">Отказ</a>
+                        <a href="<?= BASE_URL ?>/presentation/viewPresentation/<?= $data['slide']['presentation_id'] ?>" class="btn btn-secondary">Отказ</a>
                     </form>
                 </div>
 
                 <div class="preview-section">
-                    <h3>Визуализация</h3>
+                    <h3>Предварителен преглед</h3>
                     <div class="slide-preview" id="slidePreview">
                         <!-- Тук ще се рендерира прегледа на слайда -->
                     </div>
@@ -66,25 +72,25 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
         const slidePreview = document.getElementById('slidePreview');
         const titleInput = document.getElementById('title');
 
-        // Parse the content from PHP
-        const slideContent = <?= json_encode($data['slide']['content']) ?>;
-        const contentArray = Array.isArray(slideContent) ? slideContent : [slideContent];
-
-        function createContentElement(index, type, title = '', content = '', text = '') {
+        // Initialize with existing elements
+        const existingElements = <?= json_encode($data['slide']['elements'] ?? []) ?>;
+        
+        function createContentElement(index, type = 'text', title = '', content = '', text = '', style = null) {
             const element = document.createElement('div');
             element.className = 'content-element';
             element.innerHTML = `
                 <h4>Елемент ${index + 1}</h4>
                 <select class="content-type" name="content_type_${index}" onchange="updateContentFields(this.parentElement, this.value)">
-                    <option value="text">Текст</option>
-                    <option value="image">Изображение</option>
-                    <option value="image_text">Изображение и текст</option>
-                    <option value="image_list">Изображение и списък</option>
-                    <option value="list">Списък</option>
-                    <option value="quote">Цитат</option>
+                    <option value="text" ${type === 'text' ? 'selected' : ''}>Текст</option>
+                    <option value="image" ${type === 'image' ? 'selected' : ''}>Изображение</option>
+                    <option value="image_text" ${type === 'image_text' ? 'selected' : ''}>Изображение и текст</option>
+                    <option value="image_list" ${type === 'image_list' ? 'selected' : ''}>Изображение и списък</option>
+                    <option value="list" ${type === 'list' ? 'selected' : ''}>Списък</option>
+                    <option value="quote" ${type === 'quote' ? 'selected' : ''}>Цитат</option>
                 </select>
                 <div class="content-fields">
                     <input type="text" class="content-title" name="content_title_${index}" placeholder="Заглавие (по желание)" value="${escapeHtml(title)}">
+                    <input type="hidden" name="content_style_${index}" value='${JSON.stringify(style || {})}'>
                     ${type === 'image_text' ? `
                         <div class="image-text-fields">
                             <div class="image-field">
@@ -101,6 +107,27 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                     ` : `
                         <textarea class="content-content" name="content_content_${index}" placeholder="Съдържание">${escapeHtml(content)}</textarea>
                     `}
+                </div>
+                <div class="style-editor">
+                    <h5>Стилове</h5>
+                    <div class="style-fields">
+                        <div class="form-group">
+                            <label>Цвят на текста:</label>
+                            <input type="color" class="style-color" onchange="updateStyle(${index}, 'color', this.value)" value="${style?.color || '#000000'}">
+                        </div>
+                        <div class="form-group">
+                            <label>Размер на текста:</label>
+                            <input type="number" class="style-font-size" onchange="updateStyle(${index}, 'fontSize', this.value + 'px')" value="${parseInt(style?.fontSize) || 16}">
+                        </div>
+                        <div class="form-group">
+                            <label>Подравняване:</label>
+                            <select class="style-text-align" onchange="updateStyle(${index}, 'textAlign', this.value)">
+                                <option value="left" ${style?.textAlign === 'left' ? 'selected' : ''}>Ляво</option>
+                                <option value="center" ${style?.textAlign === 'center' ? 'selected' : ''}>Център</option>
+                                <option value="right" ${style?.textAlign === 'right' ? 'selected' : ''}>Дясно</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             `;
 
@@ -119,19 +146,29 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
             return element;
         }
 
+        function updateStyle(index, property, value) {
+            const styleInput = document.querySelector(`input[name="content_style_${index}"]`);
+            const currentStyle = JSON.parse(styleInput.value || '{}');
+            currentStyle[property] = value;
+            styleInput.value = JSON.stringify(currentStyle);
+            updatePreview();
+        }
+
         function updateContentFields(element, type) {
             const contentFields = element.querySelector('.content-fields');
             const titleInput = element.querySelector('.content-title');
             const contentInput = element.querySelector('.content-content');
             const textTextarea = element.querySelector('.content-text');
+            const styleInput = element.querySelector('input[name^="content_style_"]');
 
             // Store current values
             const currentTitle = titleInput.value;
             const currentContent = contentInput ? contentInput.value : '';
             const currentText = textTextarea ? textTextarea.value : '';
+            const currentStyle = JSON.parse(styleInput.value || '{}');
 
-            // Clear existing fields except title
-            while (contentFields.children.length > 1) {
+            // Clear existing fields except title and style
+            while (contentFields.children.length > 2) {
                 contentFields.removeChild(contentFields.lastChild);
             }
 
@@ -203,192 +240,127 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
             const layout = layoutSelect.value;
             contentElements.innerHTML = '';
 
-            let numElements = 0;
-            switch (layout) {
-                case 'full':
-                    numElements = 1;
-                    break;
-                case 'two-columns':
-                case 'two-rows':
-                    numElements = 2;
-                    break;
-                case 'three-columns':
-                case 'three-rows':
-                    numElements = 3;
-                    break;
-                case 'grid-2x2':
-                    numElements = 4;
-                    break;
-                case 'grid-3x3':
-                    numElements = 9;
-                    break;
-            }
-
-            for (let i = 0; i < numElements; i++) {
-                const content = contentArray[i] || {};
-                const element = createContentElement(
-                    i,
-                    content.type || 'text',
-                    content.title || '',
-                    content.content || '',
-                    content.text || ''
+            // Add existing elements
+            existingElements.forEach((element, index) => {
+                const elementDiv = createContentElement(
+                    index,
+                    element.type,
+                    element.title,
+                    element.content,
+                    element.text,
+                    element.style
                 );
-                contentElements.appendChild(element);
-            }
+                contentElements.appendChild(elementDiv);
+            });
 
             updatePreview();
         }
 
         function updatePreview() {
-            const layout = layoutSelect.value;
             const title = titleInput.value;
-            const elements = Array.from(contentElements.children).map(element => ({
-                type: element.querySelector('.content-type').value,
-                title: element.querySelector('.content-title').value,
-                content: element.querySelector('.content-content').value,
-                text: element.querySelector('.content-text')?.value || ''
-            }));
+            const layout = layoutSelect.value;
+            const elements = [];
 
-            let previewHTML = `
-                <div class="preview-slide">
+            contentElements.querySelectorAll('.content-element').forEach((element, index) => {
+                const type = element.querySelector('.content-type').value;
+                const title = element.querySelector('.content-title').value;
+                const content = element.querySelector('.content-content').value;
+                const text = element.querySelector('.content-text')?.value || '';
+                const style = JSON.parse(element.querySelector('input[name^="content_style_"]').value || '{}');
+
+                elements.push({
+                    type,
+                    title,
+                    content,
+                    text,
+                    style
+                });
+            });
+
+            // Create preview HTML
+            let previewHtml = `
+                <div class="slide ${layout}">
                     <h2>${escapeHtml(title)}</h2>
-                    <div class="layout-${layout}">
-                        ${getLayoutHTML(layout, elements)}
+                    <div class="slide-content">
+            `;
+
+            elements.forEach(element => {
+                const styleString = Object.entries(element.style)
+                    .map(([key, value]) => `${key}: ${value}`)
+                    .join('; ');
+
+                switch (element.type) {
+                    case 'text':
+                        previewHtml += `
+                            <div class="element text" style="${styleString}">
+                                ${element.title ? `<h3>${escapeHtml(element.title)}</h3>` : ''}
+                                <div>${escapeHtml(element.content).replace(/\n/g, '<br>')}</div>
+                            </div>
+                        `;
+                        break;
+                    case 'image':
+                        previewHtml += `
+                            <div class="element image" style="${styleString}">
+                                ${element.title ? `<h3>${escapeHtml(element.title)}</h3>` : ''}
+                                <img src="${escapeHtml(element.content)}" alt="${escapeHtml(element.title)}">
+                            </div>
+                        `;
+                        break;
+                    case 'image_text':
+                        previewHtml += `
+                            <div class="element image-text" style="${styleString}">
+                                ${element.title ? `<h3>${escapeHtml(element.title)}</h3>` : ''}
+                                <div class="image-text-container">
+                                    <img src="${escapeHtml(element.content)}" alt="${escapeHtml(element.title)}">
+                                    <div class="text">${escapeHtml(element.text).replace(/\n/g, '<br>')}</div>
+                                </div>
+                            </div>
+                        `;
+                        break;
+                    case 'image_list':
+                        previewHtml += `
+                            <div class="element image-list" style="${styleString}">
+                                ${element.title ? `<h3>${escapeHtml(element.title)}</h3>` : ''}
+                                <div class="image-list-container">
+                                    <img src="${escapeHtml(element.content)}" alt="${escapeHtml(element.title)}">
+                                    <ul>
+                                        ${element.text.split('\n').map(item => `<li>${escapeHtml(item)}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            </div>
+                        `;
+                        break;
+                    case 'list':
+                        previewHtml += `
+                            <div class="element list" style="${styleString}">
+                                ${element.title ? `<h3>${escapeHtml(element.title)}</h3>` : ''}
+                                <ul>
+                                    ${element.content.split('\n').map(item => `<li>${escapeHtml(item)}</li>`).join('')}
+                                </ul>
+                            </div>
+                        `;
+                        break;
+                    case 'quote':
+                        previewHtml += `
+                            <div class="element quote" style="${styleString}">
+                                <blockquote>${escapeHtml(element.content)}</blockquote>
+                                ${element.title ? `<cite>${escapeHtml(element.title)}</cite>` : ''}
+                            </div>
+                        `;
+                        break;
+                }
+            });
+
+            previewHtml += `
                     </div>
                 </div>
             `;
 
-            slidePreview.innerHTML = previewHTML;
+            slidePreview.innerHTML = previewHtml;
         }
 
-        function getLayoutHTML(layout, elements) {
-            switch (layout) {
-                case 'full':
-                    return getContentHTML(elements[0]);
-                
-                case 'two-columns':
-                    return `
-                        <div class="two-columns">
-                            <div class="column">${getContentHTML(elements[0])}</div>
-                            <div class="column">${getContentHTML(elements[1])}</div>
-                        </div>
-                    `;
-                
-                case 'two-rows':
-                    return `
-                        <div class="two-rows">
-                            <div class="row">${getContentHTML(elements[0])}</div>
-                            <div class="row">${getContentHTML(elements[1])}</div>
-                        </div>
-                    `;
-                
-                case 'three-columns':
-                    return `
-                        <div class="three-columns">
-                            <div class="column">${getContentHTML(elements[0])}</div>
-                            <div class="column">${getContentHTML(elements[1])}</div>
-                            <div class="column">${getContentHTML(elements[2])}</div>
-                        </div>
-                    `;
-                
-                case 'three-rows':
-                    return `
-                        <div class="three-rows">
-                            <div class="row">${getContentHTML(elements[0])}</div>
-                            <div class="row">${getContentHTML(elements[1])}</div>
-                            <div class="row">${getContentHTML(elements[2])}</div>
-                        </div>
-                    `;
-                
-                case 'grid-2x2':
-                    return `
-                        <div class="grid-2x2">
-                            ${elements.map((element, i) => `
-                                <div class="cell">${getContentHTML(element)}</div>
-                            `).join('')}
-                        </div>
-                    `;
-                
-                case 'grid-3x3':
-                    return `
-                        <div class="grid-3x3">
-                            ${elements.map((element, i) => `
-                                <div class="cell">${getContentHTML(element)}</div>
-                            `).join('')}
-                        </div>
-                    `;
-            }
-        }
-
-        function getContentHTML(element) {
-            if (!element) return '';
-
-            switch (element.type) {
-                case 'text':
-                    return `
-                        <div class="content-text">
-                            ${element.title ? `<h3>${escapeHtml(element.title)}</h3>` : ''}
-                            <div class="text-content">${formatContent(element.content)}</div>
-                        </div>
-                    `;
-                
-                case 'image':
-                    return `
-                        <div class="content-image">
-                            ${element.title ? `<h3>${escapeHtml(element.title)}</h3>` : ''}
-                            <img src="${escapeHtml(element.content)}" alt="${escapeHtml(element.title)}" onerror="this.style.display='none'">
-                        </div>
-                    `;
-                
-                case 'image_text':
-                    return `
-                        <div class="content-image-text">
-                            ${element.title ? `<h3>${escapeHtml(element.title)}</h3>` : ''}
-                            <div class="image-text-container">
-                                <img src="${escapeHtml(element.content)}" alt="${escapeHtml(element.title)}" onerror="this.style.display='none'">
-                                ${element.text ? `<div class="image-text">${formatContent(element.text)}</div>` : ''}
-                            </div>
-                        </div>
-                    `;
-
-                case 'image_list':
-                    const listItems = element.text ? element.text.split('\n').filter(item => item.trim() !== '') : [];
-                    return `
-                        <div class="content-image-list">
-                            ${element.title ? `<h3>${escapeHtml(element.title)}</h3>` : ''}
-                            <div class="image-list-container">
-                                <img src="${escapeHtml(element.content)}" alt="${escapeHtml(element.title)}" onerror="this.style.display='none'">
-                                ${listItems.length > 0 ? `
-                                    <div class="image-list">
-                                        <ul>
-                                            ${listItems.map(item => `<li>${escapeHtml(item.trim())}</li>`).join('')}
-                                        </ul>
-                                    </div>
-                                ` : ''}
-                            </div>
-                        </div>
-                    `;
-                
-                case 'list':
-                    const items = element.content.split('\n').filter(item => item.trim() !== '');
-                    return `
-                        <div class="content-list">
-                            ${element.title ? `<h3>${escapeHtml(element.title)}</h3>` : ''}
-                            <ul>
-                                ${items.map(item => `<li>${escapeHtml(item.trim())}</li>`).join('')}
-                            </ul>
-                        </div>
-                    `;
-                
-                case 'quote':
-                    return `
-                        <div class="content-quote">
-                            <blockquote>${formatContent(element.content)}</blockquote>
-                            ${element.title ? `<cite>— ${escapeHtml(element.title)}</cite>` : ''}
-                        </div>
-                    `;
-            }
-        }
+        // Initialize the form
+        updateLayout();
     </script>
 </body>
 </html>

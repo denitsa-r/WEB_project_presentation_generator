@@ -60,17 +60,29 @@ CREATE TABLE IF NOT EXISTS slides (
     presentation_id INT NOT NULL,
     title VARCHAR(255) NOT NULL,
     slide_order INT NOT NULL,
-    type VARCHAR(50),
-    layout VARCHAR(50),
-    style VARCHAR(100),
-    content TEXT,
-    next_slide_id INT DEFAULT NULL,
-    prev_slide_id INT DEFAULT NULL,
+    layout VARCHAR(50) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (presentation_id) REFERENCES presentations(id) ON DELETE CASCADE
 );
 
 -- -----------------------------------------------------
--- Таблица: themes (по избор)
+-- Таблица: slide_elements
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS slide_elements (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    slide_id INT NOT NULL,
+    element_order INT NOT NULL,
+    type ENUM('text', 'image', 'image_text', 'image_list', 'list', 'quote') NOT NULL,
+    title VARCHAR(255),
+    content TEXT,
+    text TEXT,
+    style JSON,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (slide_id) REFERENCES slides(id) ON DELETE CASCADE
+);
+
+-- -----------------------------------------------------
+-- Таблица: themes
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS themes (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -80,7 +92,4 @@ CREATE TABLE IF NOT EXISTS themes (
     is_global BOOLEAN DEFAULT 0,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
-
--- Добавяне на колона title към таблицата slides, ако не съществува
-ALTER TABLE slides ADD COLUMN IF NOT EXISTS title VARCHAR(255) NOT NULL AFTER presentation_id;
  
