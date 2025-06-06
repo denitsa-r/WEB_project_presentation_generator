@@ -1,5 +1,8 @@
 RewriteEngine On
 
+# Redirect root to login page
+RewriteRule ^$ auth/login [L]
+
 # Allow direct access to assets directory
 RewriteRule ^assets/ - [L]
 
