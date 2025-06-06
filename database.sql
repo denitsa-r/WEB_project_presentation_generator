@@ -3,7 +3,7 @@
 -- -----------------------------------------------------
 
 CREATE DATABASE IF NOT EXISTS presentation_generator CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE presentation_builder;
+USE presentation_generator;
 
 -- -----------------------------------------------------
 -- Таблица: users
