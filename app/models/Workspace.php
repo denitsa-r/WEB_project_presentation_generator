@@ -94,4 +94,126 @@ class Workspace extends Model
         );
         return $stmt->fetch() !== false;
     }
+
+    public function shareWorkspace($workspaceId, $email, $role = 'member')
+    {
+        try {
+            // Проверяваме дали потребителят съществува
+            $userModel = new User();
+            $user = $userModel->getByEmail($email);
+            
+            if (!$user) {
+                return ['success' => false, 'message' => 'Потребителят не съществува'];
+            }
+
+            // Проверяваме дали потребителят вече има достъп
+            if ($this->hasAccess($user['id'], $workspaceId)) {
+                return ['success' => false, 'message' => 'Потребителят вече има достъп до това работно пространство'];
+            }
+
+            // Добавяме потребителя към работното пространство
+            $this->db->query(
+                "INSERT INTO user_workspaces (workspace_id, user_id, role) VALUES (?, ?, ?)",
+                [$workspaceId, $user['id'], $role]
+            );
+
+            return ['success' => true, 'message' => 'Работното пространство е споделено успешно'];
+        } catch (PDOException $e) {
+            return ['success' => false, 'message' => 'Възникна грешка при споделянето'];
+        }
+    }
+
+    public function removeAccess($workspaceId, $userId)
+    {
+        try {
+            // Проверяваме дали потребителят е собственик
+            if ($this->isOwner($userId, $workspaceId)) {
+                return ['success' => false, 'message' => 'Не можете да премахнете собственика на работното пространство'];
+            }
+
+            $this->db->query(
+                "DELETE FROM user_workspaces WHERE workspace_id = ? AND user_id = ?",
+                [$workspaceId, $userId]
+            );
+
+            return ['success' => true, 'message' => 'Достъпът е премахнат успешно'];
+        } catch (PDOException $e) {
+            return ['success' => false, 'message' => 'Възникна грешка при премахването на достъпа'];
+        }
+    }
+
+    public function getWorkspaceMembers($workspaceId)
+    {
+        $stmt = $this->db->query(
+            "SELECT u.id as user_id, u.email, uw.role 
+            FROM users u 
+            JOIN user_workspaces uw ON u.id = uw.user_id 
+            WHERE uw.workspace_id = ?",
+            [$workspaceId]
+        );
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function updateMemberRole($workspaceId, $userId, $role)
+    {
+        try {
+            $stmt = $this->db->prepare("UPDATE user_workspaces SET role = ? WHERE workspace_id = ? AND user_id = ?");
+            $stmt->execute([$role, $workspaceId, $userId]);
+
+            if ($stmt->rowCount() > 0) {
+                return [
+                    'success' => true,
+                    'message' => 'Ролята е променена успешно'
+                ];
+            }
+
+            return [
+                'success' => false,
+                'message' => 'Грешка при промяна на ролята'
+            ];
+        } catch (PDOException $e) {
+            return [
+                'success' => false,
+                'message' => 'Грешка при промяна на ролята: ' . $e->getMessage()
+            ];
+        }
+    }
+
+    public function removeMember($workspaceId, $userId)
+    {
+        try {
+            $stmt = $this->db->prepare("DELETE FROM user_workspaces WHERE workspace_id = ? AND user_id = ?");
+            $stmt->execute([$workspaceId, $userId]);
+
+            if ($stmt->rowCount() > 0) {
+                return [
+                    'success' => true,
+                    'message' => 'Членът е премахнат успешно'
+                ];
+            }
+
+            return [
+                'success' => false,
+                'message' => 'Грешка при премахване на члена'
+            ];
+        } catch (PDOException $e) {
+            return [
+                'success' => false,
+                'message' => 'Грешка при премахване на члена: ' . $e->getMessage()
+            ];
+        }
+    }
+
+    public function getWorkspacePresentations($workspaceId)
+    {
+        $stmt = $this->db->query(
+            "SELECT p.*, u.first_name, u.last_name 
+            FROM presentations p 
+            JOIN users u ON p.user_id = u.id 
+            WHERE p.workspace_id = ? 
+            ORDER BY p.created_at DESC",
+            [$workspaceId]
+        );
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 } 

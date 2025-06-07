@@ -23,7 +23,7 @@ class App
             $controllerName = rtrim($url[0], 's');
             if (file_exists("../app/controllers/" . ucfirst($controllerName) . "Controller.php")) {
                 $this->controller = ucfirst($controllerName) . 'Controller';
-                unset($url[0]);
+            unset($url[0]);
                 Logger::log("App::__construct - Selected controller: " . $this->controller);
             }
         }
@@ -34,8 +34,8 @@ class App
         // Метод
         if (isset($url[1])) {
             if (method_exists($this->controller, $url[1])) {
-                $this->method = $url[1];
-                unset($url[1]);
+            $this->method = $url[1];
+            unset($url[1]);
                 Logger::log("App::__construct - Selected method: " . $this->method);
             } else {
                 // Ако методът не съществува, пренасочваме към dashboard
@@ -75,7 +75,7 @@ class App
         
         // Ако няма URL сегменти, връщаме ['home']
         if (empty($url[0])) {
-            return ['home'];
+        return ['home'];
         }
         
         // Проверяваме дали първият сегмент е 'public'

@@ -8,6 +8,7 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/main.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/presentation.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/slides.css">
     <title>Преглед на презентация</title>
 </head>
 <body>
@@ -55,77 +56,74 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                                 </div>
                             </div>
                         </div>
-                        <div class="slide-content">
+                        <div class="slide-content <?= htmlspecialchars($slide['layout']) ?>">
                             <?php if (!empty($slide['elements'])): ?>
-                                <?php foreach ($slide['elements'] as $element): ?>
-                                    <div class="content-element">
-                                        <?php if ($element['type'] === 'text'): ?>
-                                            <div class="element-header">
-                                                <h3><?= htmlspecialchars($element['title'] ?? '') ?></h3>
-                                            </div>
-                                            <div class="element-content">
-                                                <p><?= nl2br(htmlspecialchars($element['text'] ?? $element['content'] ?? '')) ?></p>
-                                            </div>
-                                        <?php elseif ($element['type'] === 'image'): ?>
-                                            <div class="element-header">
-                                                <h3><?= htmlspecialchars($element['title'] ?? '') ?></h3>
-                                            </div>
-                                            <div class="element-content">
-                                                <img src="<?= htmlspecialchars($element['content'] ?? '') ?>" alt="<?= htmlspecialchars($element['title'] ?? '') ?>">
-                                            </div>
-                                        <?php elseif ($element['type'] === 'image_text'): ?>
-                                            <div class="element-header">
-                                                <h3><?= htmlspecialchars($element['title'] ?? '') ?></h3>
-                                            </div>
-                                            <div class="element-content">
-                                                <div class="image-text-container">
-                                                    <img src="<?= htmlspecialchars($element['content'] ?? '') ?>" alt="<?= htmlspecialchars($element['title'] ?? '') ?>">
-                                                    <p><?= nl2br(htmlspecialchars($element['text'] ?? '')) ?></p>
-                                                </div>
-                                            </div>
-                                        <?php elseif ($element['type'] === 'image_list'): ?>
-                                            <div class="element-header">
-                                                <h3><?= htmlspecialchars($element['title'] ?? '') ?></h3>
-                                            </div>
-                                            <div class="element-content">
-                                                <div class="image-list-container">
-                                                    <img src="<?= htmlspecialchars($element['content'] ?? '') ?>" alt="<?= htmlspecialchars($element['title'] ?? '') ?>">
-                                                    <ul>
-                                                        <?php 
-                                                        $items = !empty($element['text']) ? explode("\n", $element['text']) : [];
-                                                        foreach ($items as $item): 
-                                                        ?>
-                                                            <li><?= htmlspecialchars(trim($item)) ?></li>
-                                                        <?php endforeach; ?>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        <?php elseif ($element['type'] === 'list'): ?>
-                                            <div class="element-header">
-                                                <h3><?= htmlspecialchars($element['title'] ?? '') ?></h3>
-                                            </div>
-                                            <div class="element-content">
-                                                <ul>
-                                                    <?php 
-                                                    $items = !empty($element['text']) ? explode("\n", $element['text']) : [];
-                                                    foreach ($items as $item): 
-                                                    ?>
-                                                        <li><?= htmlspecialchars(trim($item)) ?></li>
-                                                    <?php endforeach; ?>
-                                                </ul>
-                                            </div>
-                                        <?php elseif ($element['type'] === 'quote'): ?>
-                                            <div class="element-header">
-                                                <h3><?= htmlspecialchars($element['title'] ?? '') ?></h3>
-                                            </div>
-                                            <div class="element-content">
-                                                <blockquote>
-                                                    <?= nl2br(htmlspecialchars($element['text'] ?? $element['content'] ?? '')) ?>
-                                                </blockquote>
-                                            </div>
+                            <?php foreach ($slide['elements'] as $element): ?>
+                                <div class="content-element type-<?= htmlspecialchars($element['type']) ?>" <?php 
+                                    if (!empty($element['style'])) {
+                                        $style = json_decode($element['style'], true);
+                                        $styleString = '';
+                                        if (!empty($style['color'])) $styleString .= 'color: ' . htmlspecialchars($style['color']) . ';';
+                                        if (!empty($style['fontSize'])) $styleString .= 'font-size: ' . htmlspecialchars($style['fontSize']) . ';';
+                                        if (!empty($style['textAlign'])) $styleString .= 'text-align: ' . htmlspecialchars($style['textAlign']) . ';';
+                                        if ($styleString) echo 'style="' . $styleString . '"';
+                                    }
+                                ?>>
+                                    <?php if ($element['type'] === 'text'): ?>
+                                        <?php if (!empty($element['title'])): ?>
+                                            <h3><?= htmlspecialchars($element['title']) ?></h3>
                                         <?php endif; ?>
-                                    </div>
-                                <?php endforeach; ?>
+                                        <p><?= nl2br(htmlspecialchars($element['content'] ?? '')) ?></p>
+                                    <?php elseif ($element['type'] === 'image'): ?>
+                                        <?php if (!empty($element['title'])): ?>
+                                            <h3><?= htmlspecialchars($element['title']) ?></h3>
+                                        <?php endif; ?>
+                                        <img src="<?= htmlspecialchars($element['content'] ?? '') ?>" alt="<?= htmlspecialchars($element['title'] ?? '') ?>">
+                                    <?php elseif ($element['type'] === 'image_text'): ?>
+                                        <?php if (!empty($element['title'])): ?>
+                                            <h3><?= htmlspecialchars($element['title']) ?></h3>
+                                        <?php endif; ?>
+                                        <div class="image-text-container">
+                                            <img src="<?= htmlspecialchars($element['content'] ?? '') ?>" alt="<?= htmlspecialchars($element['title'] ?? '') ?>">
+                                            <p><?= nl2br(htmlspecialchars($element['text'] ?? '')) ?></p>
+                                        </div>
+                                    <?php elseif ($element['type'] === 'image_list'): ?>
+                                        <?php if (!empty($element['title'])): ?>
+                                            <h3><?= htmlspecialchars($element['title']) ?></h3>
+                                        <?php endif; ?>
+                                        <div class="image-list-container">
+                                            <img src="<?= htmlspecialchars($element['content'] ?? '') ?>" alt="<?= htmlspecialchars($element['title'] ?? '') ?>">
+                                            <ul>
+                                                <?php 
+                                                $items = !empty($element['text']) ? explode("\n", $element['text']) : [];
+                                                foreach ($items as $item): 
+                                                ?>
+                                                    <li><?= htmlspecialchars(trim($item)) ?></li>
+                                                <?php endforeach; ?>
+                                            </ul>
+                                        </div>
+                                    <?php elseif ($element['type'] === 'list'): ?>
+                                        <?php if (!empty($element['title'])): ?>
+                                            <h3><?= htmlspecialchars($element['title']) ?></h3>
+                                        <?php endif; ?>
+                                        <ul>
+                                            <?php 
+                                            $items = !empty($element['text']) ? explode("\n", $element['text']) : [];
+                                            foreach ($items as $item): 
+                                            ?>
+                                                <li><?= htmlspecialchars(trim($item)) ?></li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    <?php elseif ($element['type'] === 'quote'): ?>
+                                        <blockquote>
+                                            <?= nl2br(htmlspecialchars($element['content'] ?? '')) ?>
+                                            <?php if (!empty($element['title'])): ?>
+                                                <cite>— <?= htmlspecialchars($element['title']) ?></cite>
+                                            <?php endif; ?>
+                                        </blockquote>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
                             <?php else: ?>
                                 <div class="empty-content">Няма добавено съдържание</div>
                             <?php endif; ?>

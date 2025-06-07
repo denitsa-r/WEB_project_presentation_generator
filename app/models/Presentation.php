@@ -83,4 +83,26 @@ class Presentation extends Model
             return false;
         }
     }
+
+    public function hasAccess($userId, $presentationId)
+    {
+        // Проверяваме дали потребителят е собственик на презентацията
+        $stmt = $this->db->query(
+            "SELECT 1 FROM presentations WHERE id = ? AND user_id = ?",
+            [$presentationId, $userId]
+        );
+        if ($stmt->fetch()) {
+            return true;
+        }
+
+        // Проверяваме дали потребителят има достъп чрез работното пространство
+        $stmt = $this->db->query(
+            "SELECT 1 FROM presentations p
+            JOIN workspaces w ON p.workspace_id = w.id
+            JOIN user_workspaces uw ON w.id = uw.workspace_id
+            WHERE p.id = ? AND uw.user_id = ?",
+            [$presentationId, $userId]
+        );
+        return $stmt->fetch() !== false;
+    }
 } 

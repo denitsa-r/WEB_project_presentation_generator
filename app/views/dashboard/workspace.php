@@ -14,6 +14,7 @@
             <div class="actions">
                 <?php if ($data['isOwner']): ?>
                     <a href="<?= BASE_URL ?>/dashboard/editWorkspace/<?= $data['workspace']['id'] ?>" class="btn btn-secondary">Редактирай</a>
+                    <a href="<?= BASE_URL ?>/dashboard/shareWorkspace/<?= $data['workspace']['id'] ?>" class="btn btn-success">Сподели</a>
                     <a href="<?= BASE_URL ?>/dashboard/deleteWorkspace/<?= $data['workspace']['id'] ?>" class="btn btn-danger">Изтрий</a>
                 <?php endif; ?>
                 <a href="<?= BASE_URL ?>/dashboard" class="btn btn-secondary">Назад към таблото</a>

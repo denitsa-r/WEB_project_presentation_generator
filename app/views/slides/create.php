@@ -384,9 +384,9 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
 
             // Create preview HTML
             let previewHtml = `
-                <div class="slide ${layout}">
+                <div class="slide">
                     <h2>${escapeHtml(title)}</h2>
-                    <div class="slide-content">
+                    <div class="slide-content ${layout}">
             `;
 
             elements.forEach(element => {

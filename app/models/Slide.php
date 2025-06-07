@@ -15,8 +15,8 @@ class Slide extends Model
                 se.title as element_title, se.content as element_content, 
                 se.text as element_text, se.style as element_style, 
                 se.element_order
-                FROM slides s 
-                LEFT JOIN slide_elements se ON s.id = se.slide_id 
+             FROM slides s
+             LEFT JOIN slide_elements se ON s.id = se.slide_id
                 WHERE s.presentation_id = :presentation_id 
                 ORDER BY s.slide_order, se.element_order";
                 
@@ -156,14 +156,14 @@ class Slide extends Model
     public function getById($id)
     {
         $sql = "SELECT s.*, 
-                GROUP_CONCAT(se.id ORDER BY se.element_order) as element_ids,
-                GROUP_CONCAT(se.type ORDER BY se.element_order) as element_types,
-                GROUP_CONCAT(se.title ORDER BY se.element_order) as element_titles,
-                GROUP_CONCAT(se.content ORDER BY se.element_order) as element_contents,
-                GROUP_CONCAT(se.text ORDER BY se.element_order) as element_texts,
-                GROUP_CONCAT(se.style ORDER BY se.element_order) as element_styles
-         FROM slides s
-         LEFT JOIN slide_elements se ON s.id = se.slide_id
+                    GROUP_CONCAT(se.id ORDER BY se.element_order) as element_ids,
+                    GROUP_CONCAT(se.type ORDER BY se.element_order) as element_types,
+                    GROUP_CONCAT(se.title ORDER BY se.element_order) as element_titles,
+                    GROUP_CONCAT(se.content ORDER BY se.element_order) as element_contents,
+                    GROUP_CONCAT(se.text ORDER BY se.element_order) as element_texts,
+                    GROUP_CONCAT(se.style ORDER BY se.element_order) as element_styles
+             FROM slides s
+             LEFT JOIN slide_elements se ON s.id = se.slide_id
          WHERE s.id = :id
          GROUP BY s.id";
         

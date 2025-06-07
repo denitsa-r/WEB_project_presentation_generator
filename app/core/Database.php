@@ -9,7 +9,7 @@ class Database {
             error_log("Database user: " . DB_USER);
             error_log("Database password length: " . strlen(DB_PASS));
             
-            $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4';
+        $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4';
             error_log("DSN: " . $dsn);
             
             $options = [
@@ -40,7 +40,7 @@ class Database {
             error_log("Executing SQL query: " . $sql);
             error_log("With parameters: " . print_r($params, true));
             
-            $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
             error_log("Statement prepared");
             
             if (!empty($params)) {
@@ -60,7 +60,7 @@ class Database {
             }
             
             error_log("Query executed successfully");
-            return $stmt;
+        return $stmt;
         } catch (PDOException $e) {
             error_log("Query Error: " . $e->getMessage());
             error_log("Error code: " . $e->getCode());

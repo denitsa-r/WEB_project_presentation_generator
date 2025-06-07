@@ -5,7 +5,7 @@ class Controller {
         $modelFile = __DIR__ . '/../models/' . $model . '.php';
         if (file_exists($modelFile)) {
             require_once $modelFile;
-            return new $model();
+        return new $model();
         }
         throw new Exception("Model file not found: $modelFile");
     }
@@ -26,7 +26,14 @@ class Controller {
         
         if (file_exists($viewFile)) {
             extract($data);
+            
+            // Захващаме изхода от изгледа
+            ob_start();
             require_once $viewFile;
+            $content = ob_get_clean();
+            
+            // Зареждаме layout
+            require_once __DIR__ . '/../views/layouts/main.php';
         } else {
             error_log("View file not found: " . $viewFile);
             throw new Exception("View file not found: $viewFile");

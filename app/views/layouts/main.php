@@ -19,16 +19,23 @@
     <?php endif; ?>
 </head>
 <body>
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <nav class="main-nav">
+            <div class="nav-content">
+                <a href="<?php echo BASE_URL; ?>" class="logo">Презентационен генератор</a>
+                <ul class="nav-links">
+                    <li><a href="<?php echo BASE_URL; ?>/dashboard">Табло</a></li>
+                    <li><a href="<?php echo BASE_URL; ?>/presentations">Презентации</a></li>
+                    <li><a href="<?php echo BASE_URL; ?>/auth/logout" class="btn btn-danger">Изход</a></li>
+                </ul>
+            </div>
+        </nav>
+    <?php endif; ?>
+
     <div class="container">
-        <?php if (isset($_SESSION['user_id'])): ?>
-            <nav class="main-nav">
-                <div class="nav-content">
-                    <a href="<?php echo BASE_URL; ?>" class="logo">Презентационен генератор</a>
-                    <ul class="nav-links">
-                        <li><a href="<?php echo BASE_URL; ?>/dashboard">Табло</a></li>
-                        <li><a href="<?php echo BASE_URL; ?>/presentations">Презентации</a></li>
-                        <li><a href="<?php echo BASE_URL; ?>/auth/logout" class="btn btn-danger">Изход</a></li>
-                    </ul>
-                </div>
-            </nav>
-        <?php endif; ?> 
+        <?php echo $content; ?>
+    </div>
+
+    <script src="<?php echo BASE_URL; ?>/assets/js/main.js"></script>
+</body>
+</html> 

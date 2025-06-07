@@ -76,15 +76,15 @@ class SlideController extends Controller
             try {
                 $elements = [];
                 if (isset($_POST['elements']) && is_array($_POST['elements'])) {
-                    foreach ($_POST['elements'] as $index => $element) {
+                foreach ($_POST['elements'] as $index => $element) {
                         Logger::log("Processing element $index: " . print_r($element, true));
-                        $elements[] = [
-                            'type' => $element['type'],
-                            'title' => $element['title'] ?? null,
-                            'content' => $element['content'] ?? null,
-                            'text' => $element['text'] ?? null,
-                            'style' => json_decode($element['style'] ?? '{}', true)
-                        ];
+                    $elements[] = [
+                        'type' => $element['type'],
+                        'title' => $element['title'] ?? null,
+                        'content' => $element['content'] ?? null,
+                        'text' => $element['text'] ?? null,
+                        'style' => json_decode($element['style'] ?? '{}', true)
+                    ];
                     }
                 }
                 
@@ -106,10 +106,10 @@ class SlideController extends Controller
                 Logger::log("Is AJAX request: " . ($isAjax ? 'true' : 'false'));
                 
                 try {
-                    $slideId = $this->slideModel->create($slideData);
+                $slideId = $this->slideModel->create($slideData);
                     Logger::log("Successfully created slide with ID: " . $slideId);
-                    
-                    $_SESSION['success'] = 'Слайдът е създаден успешно';
+                
+                $_SESSION['success'] = 'Слайдът е създаден успешно';
                     
                     if ($isAjax) {
                         // За AJAX заявки връщаме JSON отговор
@@ -241,28 +241,33 @@ class SlideController extends Controller
             $title = $_POST['title'] ?? '';
             $layout = $_POST['layout'] ?? 'full';
             
+            // Проверяваме дали заявката е AJAX
+            $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
+                      strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+            
             // Collect elements from form
             $elements = [];
-            $index = 0;
-            while (isset($_POST["content_type_$index"])) {
-                $type = $_POST["content_type_$index"];
-                $elementTitle = $_POST["content_title_$index"] ?? '';
-                $elementContent = $_POST["content_content_$index"] ?? '';
-                $elementText = $_POST["content_text_$index"] ?? '';
-                $elementStyle = $_POST["content_style_$index"] ?? null;
-                
+            if (isset($_POST['elements']) && is_array($_POST['elements'])) {
+                foreach ($_POST['elements'] as $element) {
                 $elements[] = [
-                    'type' => $type,
-                    'title' => $elementTitle,
-                    'content' => $elementContent,
-                    'text' => $elementText,
-                    'style' => $elementStyle ? json_decode($elementStyle, true) : null
+                        'type' => $element['type'] ?? 'text',
+                        'title' => $element['title'] ?? '',
+                        'content' => $element['content'] ?? '',
+                        'text' => $element['text'] ?? '',
+                        'style' => isset($element['style']) ? json_decode($element['style'], true) : null
                 ];
-                
-                $index++;
+                }
             }
             
             if (empty($title)) {
+                if ($isAjax) {
+                    header('Content-Type: application/json');
+                    echo json_encode([
+                        'success' => false,
+                        'message' => 'Заглавието е задължително'
+                    ]);
+                    return;
+                }
                 $_SESSION['error'] = 'Заглавието е задължително';
                 header("Location: " . BASE_URL . "/slides/edit/" . $id);
                 exit;
@@ -276,12 +281,31 @@ class SlideController extends Controller
                     'elements' => $elements
                 ]);
                 
+                if ($isAjax) {
+                    header('Content-Type: application/json');
+                    echo json_encode([
+                        'success' => true,
+                        'message' => 'Слайдът е редактиран успешно'
+                    ]);
+                    return;
+                }
+                
                 $_SESSION['success'] = 'Слайдът е редактиран успешно';
                 header("Location: " . BASE_URL . "/presentation/viewPresentation/" . $presentation_id);
                 exit;
             } catch (Exception $e) {
                 error_log("Грешка при редактиране на слайд: " . $e->getMessage());
                 error_log("Данни: " . print_r($_POST, true));
+                
+                if ($isAjax) {
+                    header('Content-Type: application/json');
+                    echo json_encode([
+                        'success' => false,
+                        'message' => 'Грешка при редактиране на слайда: ' . $e->getMessage()
+                    ]);
+                    return;
+                }
+                
                 $_SESSION['error'] = 'Грешка при редактиране на слайда: ' . $e->getMessage();
                 header("Location: " . BASE_URL . "/slides/edit/" . $id);
                 exit;
@@ -304,24 +328,24 @@ class SlideController extends Controller
             header('Location: ' . BASE_URL . '/dashboard');
             exit;
         }
-        
+
         $presentation = $presentationModel->getById($slide['presentation_id']);
         if (!$presentation) {
             header('Location: ' . BASE_URL . '/dashboard');
             exit;
         }
-        
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($slideModel->delete($id)) {
+        if ($slideModel->delete($id)) {
                 header('Location: ' . BASE_URL . '/presentation/viewPresentation/' . $slide['presentation_id']);
-                exit;
-            } else {
-                $error = 'Възникна грешка при изтриването на слайда.';
-                $this->view('slides/delete', [
-                    'title' => 'Изтриване на слайд',
-                    'slide' => $slide,
-                    'error' => $error
-                ]);
+            exit;
+        } else {
+            $error = 'Възникна грешка при изтриването на слайда.';
+            $this->view('slides/delete', [
+                'title' => 'Изтриване на слайд',
+                'slide' => $slide,
+                'error' => $error
+            ]);
                 return;
             }
         }

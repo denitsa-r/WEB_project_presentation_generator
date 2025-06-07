@@ -120,7 +120,7 @@ class PresentationController extends Controller
         ]);
     }
 
-    public function deletePresentation($id)
+    public function delete($id)
     {
         $presentationModel = $this->model('Presentation');
         $workspaceModel = $this->model('Workspace');
