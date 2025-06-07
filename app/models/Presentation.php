@@ -9,44 +9,56 @@ class Presentation extends Model
 
     public function getByWorkspaceId($workspaceId)
     {
-        $stmt = $this->db->query(
-            "SELECT * FROM presentations WHERE workspace_id = ? ORDER BY created_at DESC",
-            [$workspaceId]
-        );
+        $sql = "SELECT * FROM presentations WHERE workspace_id = :workspace_id ORDER BY created_at DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['workspace_id' => $workspaceId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function create($workspaceId, $title, $language = 'bg', $theme = 'light')
     {
         try {
-            $this->db->query(
-                "INSERT INTO presentations (workspace_id, title, language, theme) VALUES (?, ?, ?, ?)",
-                [$workspaceId, $title, $language, $theme]
-            );
+            $sql = "INSERT INTO presentations (workspace_id, title, language, theme) 
+                    VALUES (:workspace_id, :title, :language, :theme)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([
+                'workspace_id' => $workspaceId,
+                'title' => $title,
+                'language' => $language,
+                'theme' => $theme
+            ]);
             return $this->db->lastInsertId();
         } catch (PDOException $e) {
+            error_log("Error creating presentation: " . $e->getMessage());
+            error_log("Stack trace: " . $e->getTraceAsString());
             return false;
         }
     }
 
     public function getById($id)
     {
-        $stmt = $this->db->query(
-            "SELECT * FROM presentations WHERE id = ?",
-            [$id]
-        );
+        $sql = "SELECT * FROM presentations WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function update($id, $title, $language, $theme)
     {
         try {
-            $this->db->query(
-                "UPDATE presentations SET title = ?, language = ?, theme = ? WHERE id = ?",
-                [$title, $language, $theme, $id]
-            );
+            $sql = "UPDATE presentations SET title = :title, language = :language, theme = :theme 
+                    WHERE id = :id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([
+                'id' => $id,
+                'title' => $title,
+                'language' => $language,
+                'theme' => $theme
+            ]);
             return true;
         } catch (PDOException $e) {
+            error_log("Error updating presentation: " . $e->getMessage());
+            error_log("Stack trace: " . $e->getTraceAsString());
             return false;
         }
     }
@@ -55,19 +67,19 @@ class Presentation extends Model
     {
         try {
             // Първо изтриваме всички слайдове, свързани с презентацията
-            $this->db->query(
-                "DELETE FROM slides WHERE presentation_id = ?",
-                [$id]
-            );
+            $sql = "DELETE FROM slides WHERE presentation_id = :presentation_id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute(['presentation_id' => $id]);
             
             // След това изтриваме самата презентация
-            $this->db->query(
-                "DELETE FROM presentations WHERE id = ?",
-                [$id]
-            );
+            $sql = "DELETE FROM presentations WHERE id = :id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute(['id' => $id]);
             
             return true;
         } catch (PDOException $e) {
+            error_log("Error deleting presentation: " . $e->getMessage());
+            error_log("Stack trace: " . $e->getTraceAsString());
             return false;
         }
     }

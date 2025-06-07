@@ -19,10 +19,15 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                 <div class="error"><?= htmlspecialchars($data['error']) ?></div>
             <?php endif; ?>
 
+            <?php if (isset($data['success'])): ?>
+                <div class="success"><?= htmlspecialchars($data['success']) ?></div>
+            <?php endif; ?>
+
             <div class="editor-preview-container">
                 <div class="editor-section">
-                    <form action="<?= BASE_URL ?>/slides/create" method="POST">
+                    <form action="<?= BASE_URL ?>/slides/create/<?= $data['presentation']['id'] ?>" method="POST" id="createSlideForm">
                         <input type="hidden" name="presentation_id" value="<?= $data['presentation']['id'] ?>">
+                        <input type="hidden" name="no_redirect" value="1">
                         
                         <div class="form-group">
                             <label for="title">Заглавие на слайда:</label>
@@ -51,7 +56,7 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                         </div>
 
                         <button type="submit" class="btn">Създай слайд</button>
-                        <a href="<?= BASE_URL ?>/presentations/view/<?= $data['presentation']['id'] ?>" class="btn btn-secondary">Отказ</a>
+                        <a href="<?= BASE_URL ?>/presentation/viewPresentation/<?= $data['presentation']['id'] ?>" class="btn btn-secondary">Отказ</a>
                     </form>
                 </div>
 
@@ -71,7 +76,94 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
         const slidePreview = document.getElementById('slidePreview');
         const titleInput = document.getElementById('title');
 
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Добавяме първия елемент при зареждане на страницата
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded, initializing first element');
+            const firstElement = createContentElement(0);
+            contentElements.appendChild(firstElement);
+            updateLayout();
+        });
+
+        // Добавяме логване при изпращане на формата
+        document.getElementById('createSlideForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Предотвратяваме автоматичното изпращане
+            console.log('Form submitted');
+            
+            // Събираме всички данни от формата
+            const formData = new FormData(this);
+            const formDataObj = {};
+            formData.forEach((value, key) => {
+                console.log(`${key}: ${value}`);
+                formDataObj[key] = value;
+            });
+            
+            console.log('Form data object:', formDataObj);
+            console.log('Form action URL:', this.action);
+            
+            // Изпращаме формата чрез AJAX
+            fetch(this.action, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: formData
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Server response:', data);
+                if (data.success) {
+                    // Показваме съобщение за успех
+                    const successDiv = document.createElement('div');
+                    successDiv.className = 'success';
+                    successDiv.textContent = data.message;
+                    const existingMessages = document.querySelector('.error, .success');
+                    if (existingMessages) {
+                        existingMessages.remove();
+                    }
+                    document.querySelector('.form-container').insertBefore(successDiv, document.querySelector('.editor-preview-container'));
+                    
+                    // Изчистваме формата
+                    document.getElementById('createSlideForm').reset();
+                    contentElements.innerHTML = '';
+                    const firstElement = createContentElement(0);
+                    contentElements.appendChild(firstElement);
+                    updateLayout();
+                } else {
+                    // Показваме съобщение за грешка
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'error';
+                    errorDiv.textContent = data.message || 'Възникна грешка при създаването на слайда';
+                    const existingMessages = document.querySelector('.error, .success');
+                    if (existingMessages) {
+                        existingMessages.remove();
+                    }
+                    document.querySelector('.form-container').insertBefore(errorDiv, document.querySelector('.editor-preview-container'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error';
+                errorDiv.textContent = 'Възникна грешка при изпращането на формата';
+                document.querySelector('.form-container').insertBefore(errorDiv, document.querySelector('.editor-preview-container'));
+            });
+        });
+
         function createContentElement(index, type = 'text', title = '', content = '', text = '', style = null) {
+            console.log('Creating content element:', { index, type, title, content, text, style });
             const element = document.createElement('div');
             element.className = 'content-element';
             element.innerHTML = `
@@ -104,27 +196,7 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                         <textarea class="content-content" name="elements[${index}][content]" placeholder="Съдържание">${escapeHtml(content)}</textarea>
                     `}
                 </div>
-                <div class="style-editor">
-                    <h5>Стилове</h5>
-                    <div class="style-fields">
-                        <div class="form-group">
-                            <label>Цвят на текста:</label>
-                            <input type="color" class="style-color" onchange="updateStyle(${index}, 'color', this.value)" value="${style?.color || '#000000'}">
-                        </div>
-                        <div class="form-group">
-                            <label>Размер на текста:</label>
-                            <input type="number" class="style-font-size" onchange="updateStyle(${index}, 'fontSize', this.value + 'px')" value="${parseInt(style?.fontSize) || 16}">
-                        </div>
-                        <div class="form-group">
-                            <label>Подравняване:</label>
-                            <select class="style-text-align" onchange="updateStyle(${index}, 'textAlign', this.value)">
-                                <option value="left" ${style?.textAlign === 'left' ? 'selected' : ''}>Ляво</option>
-                                <option value="center" ${style?.textAlign === 'center' ? 'selected' : ''}>Център</option>
-                                <option value="right" ${style?.textAlign === 'right' ? 'selected' : ''}>Дясно</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+                
             `;
 
             // Add event listener for content type change
@@ -391,18 +463,6 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
 
             slidePreview.innerHTML = previewHtml;
         }
-
-        function escapeHtml(unsafe) {
-            return unsafe
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
-        // Initialize the form
-        updateLayout();
     </script>
 </body>
 </html> 

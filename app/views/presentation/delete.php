@@ -23,7 +23,7 @@
 
             <form action="<?= BASE_URL ?>/presentation/delete/<?= $data['presentation']['id'] ?>" method="POST">
                 <button type="submit" class="btn btn-danger">Да, изтрий презентацията</button>
-                <a href="<?= BASE_URL ?>/presentation/view/<?= $data['presentation']['id'] ?>" class="btn btn-secondary">Отказ</a>
+                <a href="<?= BASE_URL ?>/presentation/viewPresentation/<?= $data['presentation']['id'] ?>" class="btn btn-secondary">Отказ</a>
             </form>
         </div>
     </div>

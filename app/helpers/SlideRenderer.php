@@ -93,7 +93,7 @@ class SlideRenderer
 
         switch ($type) {
             case 'text':
-                return $this->formatContent($content);
+                return self::formatContent($content);
             case 'image':
                 $html = '<div class="content-image">';
                 if (!empty($title)) {
@@ -101,7 +101,7 @@ class SlideRenderer
                 }
                 $html .= '<img src="' . htmlspecialchars($content) . '" alt="' . htmlspecialchars($title) . '" onerror="this.style.display=\'none\'">';
                 if (!empty($element['text'])) {
-                    $html .= '<div class="image-text">' . $this->formatContent($element['text']) . '</div>';
+                    $html .= '<div class="image-text">' . self::formatContent($element['text']) . '</div>';
                 }
                 $html .= '</div>';
                 return $html;

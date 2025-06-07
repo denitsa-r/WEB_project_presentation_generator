@@ -40,7 +40,7 @@
 
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Запази промените</button>
-                    <a href="<?= BASE_URL ?>/presentation/view/<?= $data['presentation']['id'] ?>" class="btn btn-secondary">Отказ</a>
+                    <a href="<?= BASE_URL ?>/presentation/viewPresentation/<?= $data['presentation']['id'] ?>" class="btn btn-secondary">Отказ</a>
                 </div>
             </form>
         </div>
