@@ -648,4 +648,79 @@
 .error-message i {
     margin-right: 0.5rem;
     color: #dc3545;
+}
+
+/* Dark theme styles */
+.presentation-view[data-theme="dark"] {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+.presentation-view[data-theme="dark"] .presentation-header h1 {
+    color: #ffffff;
+}
+
+.presentation-view[data-theme="dark"] .presentation-meta {
+    color: #b3b3b3;
+}
+
+.presentation-view[data-theme="dark"] .presentation-meta i {
+    color: #b3b3b3;
+}
+
+.presentation-view[data-theme="dark"] .slide {
+    background-color: #2d2d2d;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.presentation-view[data-theme="dark"] .slide-title {
+    color: #ffffff;
+}
+
+.presentation-view[data-theme="dark"] .slide-title i {
+    color: #b3b3b3;
+}
+
+.presentation-view[data-theme="dark"] .content-element {
+    background-color: #333333;
+    border-color: #404040;
+}
+
+.presentation-view[data-theme="dark"] .content-element h3 {
+    color: #ffffff;
+}
+
+.presentation-view[data-theme="dark"] .content-element p {
+    color: #e0e0e0;
+}
+
+.presentation-view[data-theme="dark"] .content-element.type-list li {
+    color: #e0e0e0;
+}
+
+.presentation-view[data-theme="dark"] .content-element.type-quote blockquote {
+    border-left-color: #666666;
+    color: #e0e0e0;
+}
+
+.presentation-view[data-theme="dark"] .content-element.type-quote cite {
+    color: #b3b3b3;
+}
+
+.presentation-view[data-theme="dark"] .empty-state {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+}
+
+.presentation-view[data-theme="dark"] .empty-state i {
+    color: #b3b3b3;
+}
+
+.presentation-view[data-theme="dark"] .error-message {
+    background-color: #442222;
+    color: #ff6b6b;
+}
+
+.presentation-view[data-theme="dark"] .error-message i {
+    color: #ff6b6b;
 } 
