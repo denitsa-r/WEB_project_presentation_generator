@@ -220,6 +220,46 @@
                 font-size: 1.4rem;
             }
         }
+
+        /* Dark theme styles */
+        .slides-container[data-theme="dark"] {
+            background-color: #1a1a1a;
+        }
+
+        .slides-container[data-theme="dark"] .slide {
+            background-color: #2d2d2d;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .slides-container[data-theme="dark"] .content-element {
+            background-color: #333333;
+            color: #e0e0e0;
+        }
+
+        .slides-container[data-theme="dark"] .content-element h3 {
+            color: #ffffff;
+        }
+
+        .slides-container[data-theme="dark"] .content-element p {
+            color: #e0e0e0;
+        }
+
+        .slides-container[data-theme="dark"] .content-element.type-list li {
+            color: #e0e0e0;
+        }
+
+        .slides-container[data-theme="dark"] .content-element.type-quote blockquote {
+            border-left-color: #666666;
+            color: #e0e0e0;
+        }
+
+        .slides-container[data-theme="dark"] .content-element.type-quote cite {
+            color: #b3b3b3;
+        }
+
+        .slides-container[data-theme="dark"] .slide-number {
+            color: #b3b3b3;
+        }
     </style>
 </head>
 <body>
@@ -234,9 +274,6 @@
         <div class="slides-container" data-theme="<?= htmlspecialchars($data['presentation']['theme']) ?>">
             <?php foreach ($data['slides'] as $index => $slide): ?>
                 <div class="slide" id="slide-<?= $index + 1 ?>">
-                    <div class="slide-header">
-                        <h2><?= htmlspecialchars($data['presentation']['title']) ?></h2>
-                    </div>
                     <div class="slide-content <?= htmlspecialchars($slide['layout'] ?? 'full') ?>">
                         <?php if (!empty($slide['elements'])): ?>
                             <?php foreach ($slide['elements'] as $element): ?>
