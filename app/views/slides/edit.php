@@ -414,7 +414,7 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                         `;
                         break;
                     case 'list':
-                        const items = text.split('\n').filter(item => item.trim());
+                        const items = content.split('\n').filter(item => item.trim());
                         elementHtml += `
                             <ul>
                                 ${items.map(item => `<li>${escapeHtml(item.trim())}</li>`).join('')}

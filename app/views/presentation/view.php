@@ -69,28 +69,33 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                                         if ($styleString) echo 'style="' . $styleString . '"';
                                     }
                                 ?>>
+                                    <?php if (!empty($element['title'])): ?>
+                                        <h3><?= htmlspecialchars($element['title']) ?></h3>
+                                    <?php endif; ?>
+                                    
                                     <?php if ($element['type'] === 'text'): ?>
-                                        <?php if (!empty($element['title'])): ?>
-                                            <h3><?= htmlspecialchars($element['title']) ?></h3>
-                                        <?php endif; ?>
-                                        <p><?= nl2br(htmlspecialchars($element['content'] ?? '')) ?></p>
+                                        <p><?= nl2br(htmlspecialchars($element['content'])) ?></p>
                                     <?php elseif ($element['type'] === 'image'): ?>
-                                        <?php if (!empty($element['title'])): ?>
-                                            <h3><?= htmlspecialchars($element['title']) ?></h3>
-                                        <?php endif; ?>
-                                        <img src="<?= htmlspecialchars($element['content'] ?? '') ?>" alt="<?= htmlspecialchars($element['title'] ?? '') ?>">
+                                        <img src="<?= htmlspecialchars($element['content']) ?>" alt="<?= htmlspecialchars($element['title']) ?>">
                                     <?php elseif ($element['type'] === 'image_text'): ?>
-                                        <?php if (!empty($element['title'])): ?>
-                                            <h3><?= htmlspecialchars($element['title']) ?></h3>
-                                        <?php endif; ?>
                                         <div class="image-text-container">
-                                            <img src="<?= htmlspecialchars($element['content'] ?? '') ?>" alt="<?= htmlspecialchars($element['title'] ?? '') ?>">
-                                            <p><?= nl2br(htmlspecialchars($element['text'] ?? '')) ?></p>
+                                            <img src="<?= htmlspecialchars($element['content']) ?>" alt="<?= htmlspecialchars($element['title']) ?>">
+                                            <p><?= nl2br(htmlspecialchars($element['text'])) ?></p>
                                         </div>
+                                    <?php elseif ($element['type'] === 'list'): ?>
+                                        <ul>
+                                            <?php 
+                                            $items = explode("\n", $element['content']);
+                                            foreach ($items as $item):
+                                                if (trim($item) !== ''):
+                                            ?>
+                                                <li><?= htmlspecialchars(trim($item)) ?></li>
+                                            <?php 
+                                                endif;
+                                            endforeach;
+                                            ?>
+                                        </ul>
                                     <?php elseif ($element['type'] === 'image_list'): ?>
-                                        <?php if (!empty($element['title'])): ?>
-                                            <h3><?= htmlspecialchars($element['title']) ?></h3>
-                                        <?php endif; ?>
                                         <div class="image-list-container">
                                             <img src="<?= htmlspecialchars($element['content'] ?? '') ?>" alt="<?= htmlspecialchars($element['title'] ?? '') ?>">
                                             <ul>
@@ -102,18 +107,6 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                                                 <?php endforeach; ?>
                                             </ul>
                                         </div>
-                                    <?php elseif ($element['type'] === 'list'): ?>
-                                        <?php if (!empty($element['title'])): ?>
-                                            <h3><?= htmlspecialchars($element['title']) ?></h3>
-                                        <?php endif; ?>
-                                        <ul>
-                                            <?php 
-                                            $items = !empty($element['text']) ? explode("\n", $element['text']) : [];
-                                            foreach ($items as $item): 
-                                            ?>
-                                                <li><?= htmlspecialchars(trim($item)) ?></li>
-                                            <?php endforeach; ?>
-                                        </ul>
                                     <?php elseif ($element['type'] === 'quote'): ?>
                                         <blockquote>
                                             <?= nl2br(htmlspecialchars($element['content'] ?? '')) ?>
