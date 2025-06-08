@@ -30,6 +30,9 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
             <?php endif; ?>
 
             <div class="presentation-actions">
+                <a href="<?= BASE_URL ?>/presentation/review/<?= $data['presentation']['id'] ?>" class="btn btn-info">
+                    <i class="fas fa-eye"></i> Преглед
+                </a>
                 <a href="<?= BASE_URL ?>/presentation/edit/<?= $data['presentation']['id'] ?>" class="btn btn-primary">
                     <i class="fas fa-edit"></i> Редактирай
                 </a>

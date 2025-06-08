@@ -162,4 +162,27 @@ class PresentationController extends Controller
             'workspace' => $workspace
         ]);
     }
+
+    public function review($id)
+    {
+        $presentationModel = $this->model('Presentation');
+        $workspaceModel = $this->model('Workspace');
+        $slideModel = $this->model('Slide');
+        $userId = AuthMiddleware::currentUserId();
+        
+        $presentation = $presentationModel->getById($id);
+        
+        if (!$presentation || !$workspaceModel->hasAccess($userId, $presentation['workspace_id'])) {
+            header('Location: ' . BASE_URL . '/dashboard');
+            exit;
+        }
+
+        $slides = $slideModel->getByPresentationId($id);
+        
+        $this->view('presentation/review', [
+            'title' => $presentation['title'],
+            'presentation' => $presentation,
+            'slides' => $slides
+        ]);
+    }
 } 
