@@ -5,49 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/main.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/workspace.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>Работно пространство</title>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1><?= htmlspecialchars($data['workspace']['name']) ?></h1>
+            <h1><i class="fas fa-briefcase"></i> <?= htmlspecialchars($data['workspace']['name']) ?></h1>
             <div class="actions">
                 <?php if ($data['isOwner']): ?>
-                    <a href="<?= BASE_URL ?>/dashboard/editWorkspace/<?= $data['workspace']['id'] ?>" class="btn btn-secondary">Редактирай</a>
-                    <a href="<?= BASE_URL ?>/dashboard/shareWorkspace/<?= $data['workspace']['id'] ?>" class="btn btn-success">Сподели</a>
-                    <a href="<?= BASE_URL ?>/dashboard/deleteWorkspace/<?= $data['workspace']['id'] ?>" class="btn btn-danger">Изтрий</a>
+                    <a href="<?= BASE_URL ?>/dashboard/editWorkspace/<?= $data['workspace']['id'] ?>" class="btn btn-secondary"><i class="fas fa-edit"></i> Редактирай</a>
+                    <a href="<?= BASE_URL ?>/dashboard/shareWorkspace/<?= $data['workspace']['id'] ?>" class="btn btn-success"><i class="fas fa-share-alt"></i> Сподели</a>
+                    <a href="<?= BASE_URL ?>/dashboard/deleteWorkspace/<?= $data['workspace']['id'] ?>" class="btn btn-danger"><i class="fas fa-trash"></i> Изтрий</a>
                 <?php endif; ?>
-                <a href="<?= BASE_URL ?>/dashboard" class="btn btn-secondary">Назад към таблото</a>
+                <a href="<?= BASE_URL ?>/dashboard" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Назад към таблото</a>
             </div>
         </div>
 
         <div class="workspace-info">
-            <h2>Информация за работното пространство</h2>
-            <p>Създадено на: <?= date('d.m.Y H:i', strtotime($data['workspace']['created_at'])) ?></p>
+            <h2><i class="fas fa-info-circle"></i> Информация за работното пространство</h2>
+            <p><i class="fas fa-calendar"></i> Създадено на: <?= date('d.m.Y H:i', strtotime($data['workspace']['created_at'])) ?></p>
         </div>
 
         <div class="header">
-            <h2>Презентации</h2>
-            <a href="<?= BASE_URL ?>/presentation/create/<?= $data['workspace']['id'] ?>" class="btn">Нова презентация</a>
+            <h2><i class="fas fa-file-powerpoint"></i> Презентации</h2>
+            <a href="<?= BASE_URL ?>/presentation/create/<?= $data['workspace']['id'] ?>" class="btn"><i class="fas fa-plus"></i> Нова презентация</a>
         </div>
 
         <?php if (empty($data['presentations'])): ?>
             <div class="empty-state">
-                <h2>Няма презентации</h2>
+                <h2><i class="fas fa-folder-open"></i> Няма презентации</h2>
                 <p>Създайте първата си презентация в това работно пространство.</p>
-                <a href="<?= BASE_URL ?>/presentation/create/<?= $data['workspace']['id'] ?>" class="btn">Създай презентация</a>
+                <a href="<?= BASE_URL ?>/presentation/create/<?= $data['workspace']['id'] ?>" class="btn"><i class="fas fa-plus"></i> Създай презентация</a>
             </div>
         <?php else: ?>
             <div class="presentations">
                 <?php foreach ($data['presentations'] as $presentation): ?>
                     <div class="presentation-card">
-                        <h3><?= htmlspecialchars($presentation['title']) ?></h3>
+                        <h3><i class="fas fa-file-powerpoint"></i> <?= htmlspecialchars($presentation['title']) ?></h3>
                         <div class="meta">
-                            <p>Език: <?= strtoupper($presentation['language']) ?></p>
-                            <p>Тема: <?= ucfirst($presentation['theme']) ?></p>
-                            <p>Създадено: <?= date('d.m.Y H:i', strtotime($presentation['created_at'])) ?></p>
+                            <p><i class="fas fa-language"></i> Език: <?= strtoupper($presentation['language']) ?></p>
+                            <p><i class="fas fa-palette"></i> Тема: <?= ucfirst($presentation['theme']) ?></p>
+                            <p><i class="fas fa-calendar"></i> Създадено: <?= date('d.m.Y H:i', strtotime($presentation['created_at'])) ?></p>
                         </div>
-                        <a href="<?= BASE_URL ?>/presentation/viewPresentation/<?= $presentation['id'] ?>" class="btn">Отвори</a>
+                        <a href="<?= BASE_URL ?>/presentation/viewPresentation/<?= $presentation['id'] ?>" class="btn"><i class="fas fa-eye"></i> Отвори</a>
                     </div>
                 <?php endforeach; ?>
             </div>

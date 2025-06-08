@@ -144,15 +144,22 @@
 
 /* Content element styles */
 .content-element {
-    padding: 1rem;
-    border: 1px solid #eee;
-    border-radius: 4px;
     background: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.content-element:last-child {
+    margin-bottom: 0;
 }
 
 .content-element h3 {
+    margin-top: 0;
     margin-bottom: 1rem;
     color: #333;
+    font-size: 1.5rem;
 }
 
 .content-element p {
@@ -283,6 +290,7 @@
     padding: 2rem;
     background: #f8f9fa;
     border-radius: 4px;
+    font-style: italic;
 }
 
 /* Error message */
@@ -611,4 +619,33 @@
 
 .modal.show .modal-dialog {
     transform: none;
+}
+
+.presentation-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.presentation-meta i {
+    color: #666;
+}
+
+.btn i {
+    margin-right: 0.5rem;
+}
+
+.empty-state i {
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.slide-title i {
+    margin-right: 0.5rem;
+    color: #666;
+}
+
+.error-message i {
+    margin-right: 0.5rem;
+    color: #dc3545;
 } 
