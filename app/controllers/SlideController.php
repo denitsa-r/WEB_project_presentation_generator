@@ -355,4 +355,45 @@ class SlideController extends Controller
             'slide' => $slide
         ]);
     }
+
+    public function updateOrder()
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Трябва да сте влезли в системата']);
+            return;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Невалиден метод на заявката']);
+            return;
+        }
+
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+
+        if (!isset($data['slides']) || !is_array($data['slides'])) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Невалидни данни']);
+            return;
+        }
+
+        $slideModel = $this->model('Slide');
+        $success = true;
+
+        foreach ($data['slides'] as $slide) {
+            if (!isset($slide['id']) || !isset($slide['order'])) {
+                continue;
+            }
+
+            if (!$slideModel->updateOrder($slide['id'], $slide['order'])) {
+                $success = false;
+                break;
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode(['success' => $success]);
+    }
 } 

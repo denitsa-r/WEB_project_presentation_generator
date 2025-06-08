@@ -58,7 +58,7 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                     </div>
                 <?php else: ?>
                     <?php foreach ($data['slides'] as $key => $slide): ?>
-                        <div class="slide">
+                        <div class="slide" draggable="true" data-slide-id="<?= $slide['id'] ?>" data-slide-order="<?= $slide['slide_order'] ?>">
                             <div class="slide-header">
                                 <div class="slide-header-content">
                                     <h2 class="slide-title">
@@ -149,5 +149,105 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slidesContainer = document.querySelector('.slides-container');
+            const slides = document.querySelectorAll('.slide');
+            let draggedSlide = null;
+
+            // Добавяме събития за drag and drop
+            slides.forEach(slide => {
+                slide.addEventListener('dragstart', function(e) {
+                    draggedSlide = this;
+                    this.classList.add('dragging');
+                    e.dataTransfer.setData('text/plain', this.dataset.slideId);
+                });
+
+                slide.addEventListener('dragend', function() {
+                    this.classList.remove('dragging');
+                    draggedSlide = null;
+                });
+
+                slide.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    const draggingSlide = document.querySelector('.dragging');
+                    if (draggingSlide !== this) {
+                        const rect = this.getBoundingClientRect();
+                        const midY = rect.top + rect.height / 2;
+                        
+                        if (e.clientY < midY) {
+                            this.parentNode.insertBefore(draggingSlide, this);
+                        } else {
+                            this.parentNode.insertBefore(draggingSlide, this.nextSibling);
+                        }
+                    }
+                });
+
+                slide.addEventListener('dragenter', function(e) {
+                    e.preventDefault();
+                    this.classList.add('drag-over');
+                });
+
+                slide.addEventListener('dragleave', function() {
+                    this.classList.remove('drag-over');
+                });
+
+                slide.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('drag-over');
+                    
+                    if (draggedSlide !== this) {
+                        const allSlides = [...slides];
+                        const draggedIndex = allSlides.indexOf(draggedSlide);
+                        const droppedIndex = allSlides.indexOf(this);
+
+                        if (draggedIndex < droppedIndex) {
+                            this.parentNode.insertBefore(draggedSlide, this.nextSibling);
+                        } else {
+                            this.parentNode.insertBefore(draggedSlide, this);
+                        }
+
+                        // Обновяваме реда на слайдовете
+                        updateSlideOrder();
+                    }
+                });
+            });
+
+            function updateSlideOrder() {
+                const slides = document.querySelectorAll('.slide');
+                const newOrder = Array.from(slides).map((slide, index) => ({
+                    id: slide.dataset.slideId,
+                    order: index + 1
+                }));
+
+                // Изпращаме AJAX заявка за обновяване на реда
+                fetch('<?= BASE_URL ?>/slides/updateOrder', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({
+                        slides: newOrder
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Обновяваме data-slide-order атрибутите
+                        slides.forEach((slide, index) => {
+                            slide.dataset.slideOrder = index + 1;
+                        });
+                    } else {
+                        console.error('Грешка при обновяване на реда на слайдовете');
+                    }
+                })
+                .catch(error => {
+                    console.error('Грешка при изпращане на заявката:', error);
+                });
+            }
+        });
+    </script>
 </body>
 </html> 
