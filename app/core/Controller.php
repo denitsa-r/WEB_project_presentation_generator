@@ -39,4 +39,16 @@ class Controller {
             throw new Exception("View file not found: $viewFile");
         }
     }
+
+    protected function redirect($path, $params = []) {
+        $url = BASE_URL . '/' . $path;
+        
+        if (!empty($params)) {
+            $query = http_build_query($params);
+            $url .= '?' . $query;
+        }
+        
+        header('Location: ' . $url);
+        exit;
+    }
 }

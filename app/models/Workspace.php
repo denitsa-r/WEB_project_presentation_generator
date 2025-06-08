@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/User.php';
+
 class Workspace extends Model
 {
     public function __construct()
@@ -100,7 +102,7 @@ class Workspace extends Model
         try {
             // Проверяваме дали потребителят съществува
             $userModel = new User();
-            $user = $userModel->getByEmail($email);
+            $user = $userModel->findByEmail($email);
             
             if (!$user) {
                 return ['success' => false, 'message' => 'Потребителят не съществува'];

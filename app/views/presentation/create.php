@@ -46,6 +46,7 @@
 
                 <div class="actions">
                     <button type="submit" class="btn">Създай</button>
+                    <button type="submit" class="btn">Импортирай</button>
                     <a href="<?= BASE_URL ?>/dashboard/viewWorkspace/<?= $data['workspace']['id'] ?>" class="btn btn-secondary">Отказ</a>
                 </div>
             </form>
