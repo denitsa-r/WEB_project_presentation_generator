@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo isset($title) ? $title . ' - ' : ''; ?>Презентационен генератор</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/main.css">
     <?php if (strpos($_SERVER['REQUEST_URI'], '/dashboard') !== false): ?>
         <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/dashboard.css">
@@ -25,7 +26,6 @@
                 <a href="<?php echo BASE_URL; ?>" class="logo">Презентационен генератор</a>
                 <ul class="nav-links">
                     <li><a href="<?php echo BASE_URL; ?>/dashboard">Табло</a></li>
-                    <li><a href="<?php echo BASE_URL; ?>/presentations">Презентации</a></li>
                     <li><a href="<?php echo BASE_URL; ?>/auth/logout" class="btn btn-danger">Изход</a></li>
                 </ul>
             </div>
@@ -36,6 +36,7 @@
         <?php echo $content; ?>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="<?php echo BASE_URL; ?>/assets/js/main.js"></script>
 </body>
 </html> 

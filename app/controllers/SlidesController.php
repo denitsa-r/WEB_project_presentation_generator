@@ -38,12 +38,16 @@ class SlidesController extends Controller
             $success = true;
             $errorMessage = '';
 
-            foreach ($data['slides'] as $index => $slideId) {
-                error_log("Updating slide ID: $slideId to order: " . ($index + 1));
-                if (!$slideModel->updateOrder($slideId, $index + 1)) {
+            foreach ($data['slides'] as $slide) {
+                if (!isset($slide['id']) || !isset($slide['order'])) {
+                    continue;
+                }
+                
+                error_log("Updating slide ID: {$slide['id']} to order: {$slide['order']}");
+                if (!$slideModel->updateOrder($slide['id'], $slide['order'])) {
                     $success = false;
-                    $errorMessage = "Failed to update slide ID: $slideId";
-                    error_log("Failed to update slide order. Slide ID: $slideId, New order: " . ($index + 1));
+                    $errorMessage = "Failed to update slide ID: {$slide['id']}";
+                    error_log("Failed to update slide order. Slide ID: {$slide['id']}, New order: {$slide['order']}");
                     break;
                 }
             }

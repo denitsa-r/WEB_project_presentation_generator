@@ -369,33 +369,46 @@ class Slide extends Model
         try {
             error_log("Updating slide order in database. Slide ID: $slideId, New order: $newOrder");
             
-            // Първо намираме текущия ред на слайда
-            $currentOrderSql = "SELECT slide_order FROM slides WHERE id = :id";
-            $currentOrderStmt = $this->db->prepare($currentOrderSql);
-            $currentOrderStmt->execute(['id' => $slideId]);
-            $currentOrder = (int)$currentOrderStmt->fetchColumn();
-            
-            if ($currentOrder === false) {
-                error_log("Slide with ID $slideId not found");
-                return false;
-            }
-            
-            error_log("Current order: $currentOrder, New order: $newOrder");
-            
             // Започваме транзакция
             $this->db->beginTransaction();
             
             try {
+                // Първо намираме presentation_id за слайда
+                $presentationSql = "SELECT presentation_id FROM slides WHERE id = :id";
+                $presentationStmt = $this->db->prepare($presentationSql);
+                $presentationStmt->execute(['id' => $slideId]);
+                $presentationId = $presentationStmt->fetchColumn();
+                
+                if (!$presentationId) {
+                    error_log("Slide with ID $slideId not found");
+                    $this->db->rollBack();
+                    return false;
+                }
+                
+                // Намираме текущия ред на слайда
+                $currentOrderSql = "SELECT slide_order FROM slides WHERE id = :id";
+                $currentOrderStmt = $this->db->prepare($currentOrderSql);
+                $currentOrderStmt->execute(['id' => $slideId]);
+                $currentOrder = (int)$currentOrderStmt->fetchColumn();
+                
+                error_log("Current order: $currentOrder, New order: $newOrder");
+                
+                if ($currentOrder === $newOrder) {
+                    error_log("Order unchanged, no update needed");
+                    $this->db->commit();
+                    return true;
+                }
+                
                 if ($currentOrder < $newOrder) {
                     // Преместваме надолу - намаляме реда на всички слайдове между текущата и новата позиция
                     $sql = "UPDATE slides 
                            SET slide_order = slide_order - 1 
-                           WHERE presentation_id = (SELECT presentation_id FROM slides WHERE id = :id)
+                           WHERE presentation_id = :presentation_id
                            AND slide_order > :current_order 
                            AND slide_order <= :new_order";
                     $stmt = $this->db->prepare($sql);
                     $stmt->execute([
-                        'id' => $slideId,
+                        'presentation_id' => $presentationId,
                         'current_order' => $currentOrder,
                         'new_order' => $newOrder
                     ]);
@@ -403,12 +416,12 @@ class Slide extends Model
                     // Преместваме нагоре - увеличаваме реда на всички слайдове между новата и текущата позиция
                     $sql = "UPDATE slides 
                            SET slide_order = slide_order + 1 
-                           WHERE presentation_id = (SELECT presentation_id FROM slides WHERE id = :id)
+                           WHERE presentation_id = :presentation_id
                            AND slide_order >= :new_order 
                            AND slide_order < :current_order";
                     $stmt = $this->db->prepare($sql);
                     $stmt->execute([
-                        'id' => $slideId,
+                        'presentation_id' => $presentationId,
                         'current_order' => $currentOrder,
                         'new_order' => $newOrder
                     ]);
@@ -417,10 +430,28 @@ class Slide extends Model
                 // Обновяваме реда на преместения слайд
                 $updateSql = "UPDATE slides SET slide_order = :new_order WHERE id = :id";
                 $updateStmt = $this->db->prepare($updateSql);
-                $updateStmt->execute([
+                $result = $updateStmt->execute([
                     'id' => $slideId,
                     'new_order' => $newOrder
                 ]);
+                
+                if (!$result) {
+                    error_log("Failed to update slide order. PDO Error Info: " . print_r($updateStmt->errorInfo(), true));
+                    $this->db->rollBack();
+                    return false;
+                }
+                
+                // Проверяваме дали обновяването е било успешно
+                $checkSql = "SELECT slide_order FROM slides WHERE id = :id";
+                $checkStmt = $this->db->prepare($checkSql);
+                $checkStmt->execute(['id' => $slideId]);
+                $updatedOrder = (int)$checkStmt->fetchColumn();
+                
+                if ($updatedOrder !== $newOrder) {
+                    error_log("Order update verification failed. Expected: $newOrder, Got: $updatedOrder");
+                    $this->db->rollBack();
+                    return false;
+                }
                 
                 $this->db->commit();
                 error_log("Successfully updated slide order");
@@ -429,6 +460,7 @@ class Slide extends Model
             } catch (PDOException $e) {
                 $this->db->rollBack();
                 error_log("Error in transaction: " . $e->getMessage());
+                error_log("Stack trace: " . $e->getTraceAsString());
                 throw $e;
             }
             
@@ -463,6 +495,44 @@ class Slide extends Model
             
         } catch (Exception $e) {
             error_log("Error getting next order: " . $e->getMessage());
+            error_log("Stack trace: " . $e->getTraceAsString());
+            throw $e;
+        }
+    }
+
+    public function addElement($slideId, $type, $content, $title = null)
+    {
+        try {
+            // Първо намираме максималния ред
+            $sql = "SELECT COALESCE(MAX(element_order), -1) + 1 as next_order 
+                    FROM slide_elements 
+                    WHERE slide_id = :slide_id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute(['slide_id' => $slideId]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $nextOrder = $result['next_order'];
+
+            // След това добавяме елемента
+            $sql = "INSERT INTO slide_elements (slide_id, type, content, title, element_order) 
+                    VALUES (:slide_id, :type, :content, :title, :element_order)";
+            
+            $stmt = $this->db->prepare($sql);
+            $result = $stmt->execute([
+                'slide_id' => $slideId,
+                'type' => $type,
+                'content' => $content,
+                'title' => $title,
+                'element_order' => $nextOrder
+            ]);
+
+            if (!$result) {
+                error_log("PDO Error Info: " . print_r($stmt->errorInfo(), true));
+                throw new Exception("Failed to add element: " . implode(", ", $stmt->errorInfo()));
+            }
+
+            return $this->db->lastInsertId();
+        } catch (Exception $e) {
+            error_log("Error adding element: " . $e->getMessage());
             error_log("Stack trace: " . $e->getTraceAsString());
             throw $e;
         }

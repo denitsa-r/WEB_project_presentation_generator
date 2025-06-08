@@ -75,10 +75,18 @@ textarea {
 
 .btn-danger {
     background-color: #dc3545;
+    color: white !important;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s;
 }
 
 .btn-danger:hover {
     background-color: #c82333;
+    color: white !important;
+    text-decoration: none;
 }
 
 /* Alerts */
@@ -326,4 +334,13 @@ textarea {
 .ml-auto { margin-left: auto !important; }
 .mr-auto { margin-right: auto !important; }
 .mx-auto { margin-left: auto !important; margin-right: auto !important; }
-.my-auto { margin-top: auto !important; margin-bottom: auto !important; } 
+.my-auto { margin-top: auto !important; margin-bottom: auto !important; }
+
+.form-container {
+    width: 100%;
+    margin: auto;
+    padding: 20px;
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+} 

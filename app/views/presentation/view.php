@@ -21,6 +21,18 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                     <span><i class="fas fa-language"></i> Език: <?= htmlspecialchars($data['presentation']['language']) ?></span>
                     <span><i class="fas fa-palette"></i> Тема: <?= htmlspecialchars($data['presentation']['theme']) ?></span>
                 </div>
+                <div class="presentation-actions">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Експорт
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="exportDropdown">
+                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/presentation/export/<?php echo $data['presentation']['id']; ?>/html">HTML</a></li>
+                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/presentation/export/<?php echo $data['presentation']['id']; ?>/xml">XML</a></li>
+                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/presentation/export/<?php echo $data['presentation']['id']; ?>/slim">SLIM</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
 
             <?php if (isset($_GET['error'])): ?>
@@ -47,105 +59,71 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                 </a>
             </div>
 
-            <div class="slides-container">
-                <?php if (empty($data['slides'])): ?>
-                    <div class="empty-state">
-                        <i class="fas fa-file-alt fa-3x"></i>
-                        <p>Няма добавени слайдове.</p>
-                        <a href="<?= BASE_URL ?>/slide/create/<?= $data['presentation']['id'] ?>" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Добави първи слайд
-                        </a>
-                    </div>
-                <?php else: ?>
-                    <?php foreach ($data['slides'] as $key => $slide): ?>
-                        <div class="slide" draggable="true" data-slide-id="<?= $slide['id'] ?>" data-slide-order="<?= $slide['slide_order'] ?>">
-                            <div class="slide-header">
-                                <div class="slide-header-content">
-                                    <h2 class="slide-title">
-                                        <i class="fas fa-file-alt"></i> <?= htmlspecialchars($slide['title']) ?>
-                                    </h2>
-                                    <div class="slide-actions">
-                                        <a href="<?= BASE_URL ?>/slide/edit/<?= $slide['id'] ?>" class="btn btn-primary">
-                                            <i class="fas fa-edit"></i> Редактирай
-                                        </a>
-                                        <a href="<?= BASE_URL ?>/slides/delete/<?= $slide['id'] ?>" class="btn btn-danger">
-                                            <i class="fas fa-trash"></i> Изтрий
-                                        </a>
+            <div class="presentation-preview">
+                <div class="slides-container">
+                    <?php if (empty($data['slides'])): ?>
+                        <div class="empty-state">
+                            <i class="fas fa-file-alt fa-3x"></i>
+                            <p>Няма добавени слайдове.</p>
+                            <a href="<?= BASE_URL ?>/slide/create/<?= $data['presentation']['id'] ?>" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Добави първи слайд
+                            </a>
+                        </div>
+                    <?php else: ?>
+                        <?php foreach ($data['slides'] as $index => $slide): ?>
+                            <div class="slide-container">
+                                <div class="slide" data-slide-id="<?php echo $slide['id']; ?>">
+                                    <div class="slide-header">
+                                        <div class="slide-header-content">
+                                            <h2 class="slide-title">
+                                                <i class="fas fa-file-alt"></i> <?php echo htmlspecialchars($slide['title']); ?>
+                                            </h2>
+                                            <div class="slide-actions">
+                                                <a href="<?php echo BASE_URL; ?>/slide/edit/<?php echo $slide['id']; ?>" class="btn btn-primary">
+                                                    <i class="fas fa-edit"></i> Редактирай
+                                                </a>
+                                                <a href="<?php echo BASE_URL; ?>/slides/delete/<?php echo $slide['id']; ?>" class="btn btn-danger">
+                                                    <i class="fas fa-trash"></i> Изтрий
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slide-content <?php echo htmlspecialchars($slide['layout'] ?? 'full'); ?>">
+                                        <?php if (!empty($slide['elements'])): ?>
+                                            <?php foreach ($slide['elements'] as $element): ?>
+                                                <?php if (!empty($element['title'])): ?>
+                                                    <h3 class="element-title"><?php echo htmlspecialchars($element['title']); ?></h3>
+                                                <?php endif; ?>
+                                                <div class="slide-element <?php echo $element['type']; ?>" 
+                                                     <?php if ($element['type'] === 'image'): ?>
+                                                     style="background-image: url('<?php echo $element['content']; ?>');"
+                                                     <?php endif; ?>>
+                                                    <?php if ($element['type'] !== 'image'): ?>
+                                                        <?php echo $element['content']; ?>
+                                                    <?php endif; ?>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <div class="empty-content">Няма добавено съдържание</div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
+                                <div class="slide-controls">
+                                    <?php if ($index > 0): ?>
+                                        <button class="move-up" onclick="moveSlide(<?php echo $slide['id']; ?>, 'up')">
+                                            <i class="fas fa-arrow-up"></i>
+                                        </button>
+                                    <?php endif; ?>
+                                    <?php if ($index < count($data['slides']) - 1): ?>
+                                        <button class="move-down" onclick="moveSlide(<?php echo $slide['id']; ?>, 'down')">
+                                            <i class="fas fa-arrow-down"></i>
+                                        </button>
+                                    <?php endif; ?>
+                                </div>
                             </div>
-                            <div class="slide-content <?= htmlspecialchars($slide['layout'] ?? 'full') ?>">
-                                <?php if (!empty($slide['elements'])): ?>
-                                <?php foreach ($slide['elements'] as $element): ?>
-                                    <div class="content-element type-<?= htmlspecialchars($element['type'] ?? 'text') ?>" <?php 
-                                        if (!empty($element['style'])) {
-                                            $style = json_decode($element['style'], true);
-                                            $styleString = '';
-                                            if (!empty($style['color'])) $styleString .= 'color: ' . htmlspecialchars($style['color']) . ';';
-                                            if (!empty($style['fontSize'])) $styleString .= 'font-size: ' . htmlspecialchars($style['fontSize']) . ';';
-                                            if (!empty($style['textAlign'])) $styleString .= 'text-align: ' . htmlspecialchars($style['textAlign']) . ';';
-                                            if ($styleString) echo 'style="' . $styleString . '"';
-                                        }
-                                    ?>>
-                                        <?php if (!empty($element['title'])): ?>
-                                            <h3><?= htmlspecialchars($element['title']) ?></h3>
-                                        <?php endif; ?>
-                                        
-                                        <?php if ($element['type'] === 'text'): ?>
-                                            <p><?= nl2br(htmlspecialchars($element['content'] ?? '')) ?></p>
-                                        <?php elseif ($element['type'] === 'image'): ?>
-                                            <img src="<?= htmlspecialchars($element['content'] ?? '') ?>" alt="<?= htmlspecialchars($element['title'] ?? '') ?>">
-                                        <?php elseif ($element['type'] === 'image_text'): ?>
-                                            <div class="image-text-container">
-                                                <img src="<?= htmlspecialchars($element['content'] ?? '') ?>" alt="<?= htmlspecialchars($element['title'] ?? '') ?>">
-                                                <p><?= nl2br(htmlspecialchars($element['text'] ?? '')) ?></p>
-                                            </div>
-                                        <?php elseif ($element['type'] === 'list'): ?>
-                                            <ul>
-                                                <?php 
-                                                $items = !empty($element['content']) ? explode("\n", $element['content']) : [];
-                                                foreach ($items as $item):
-                                                    if (trim($item) !== ''):
-                                                ?>
-                                                    <li><?= htmlspecialchars(trim($item)) ?></li>
-                                                <?php 
-                                                    endif;
-                                                endforeach;
-                                                ?>
-                                            </ul>
-                                        <?php elseif ($element['type'] === 'image_list'): ?>
-                                            <div class="image-list-container">
-                                                <img src="<?= htmlspecialchars($element['content'] ?? '') ?>" alt="<?= htmlspecialchars($element['title'] ?? '') ?>">
-                                                <ul>
-                                                    <?php 
-                                                    $items = !empty($element['text']) ? explode("\n", $element['text']) : [];
-                                                    foreach ($items as $item): 
-                                                        if (trim($item) !== ''):
-                                                    ?>
-                                                        <li><?= htmlspecialchars(trim($item)) ?></li>
-                                                    <?php 
-                                                        endif;
-                                                    endforeach; 
-                                                    ?>
-                                                </ul>
-                                            </div>
-                                        <?php elseif ($element['type'] === 'quote'): ?>
-                                            <blockquote>
-                                                <?= nl2br(htmlspecialchars($element['content'] ?? '')) ?>
-                                                <?php if (!empty($element['title'])): ?>
-                                                    <cite>— <?= htmlspecialchars($element['title']) ?></cite>
-                                                <?php endif; ?>
-                                            </blockquote>
-                                        <?php endif; ?>
-                                    </div>
-                                <?php endforeach; ?>
-                                <?php else: ?>
-                                    <div class="empty-content">Няма добавено съдържание</div>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
     </div>

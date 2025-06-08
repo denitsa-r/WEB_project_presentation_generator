@@ -44,12 +44,47 @@
                     </select>
                 </div>
 
+                <div class="presentation-actions">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importModal">
+                        Импортиране
+                    </button>
+                </div>
+
                 <div class="actions">
                     <button type="submit" class="btn">Създай</button>
-                    <button type="submit" class="btn">Импортирай</button>
                     <a href="<?= BASE_URL ?>/dashboard/viewWorkspace/<?= $data['workspace']['id'] ?>" class="btn btn-secondary">Отказ</a>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Modal за импортиране -->
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importModalLabel">Импортиране на презентация</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="<?php echo BASE_URL; ?>/presentation/import" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="workspaceId" value="<?php echo $data['workspace']['id']; ?>">
+                        <div class="mb-3">
+                            <label for="importFile" class="form-label">Изберете файл</label>
+                            <input type="file" class="form-control" id="importFile" name="importFile" accept=".html,.xml,.slim" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="importFormat" class="form-label">Формат на файла</label>
+                            <select class="form-select" id="importFormat" name="importFormat" required>
+                                <option value="html">HTML</option>
+                                <option value="xml">XML</option>
+                                <option value="slim">SLIM</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Импортиране</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </body>
