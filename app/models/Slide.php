@@ -5,72 +5,113 @@ class Slide extends Model
     public function __construct()
     {
         parent::__construct();
+        $this->ensureSlideOrderColumn();
+    }
+
+    private function ensureSlideOrderColumn()
+    {
+        try {
+            // Проверяваме дали колоната съществува
+            $sql = "SHOW COLUMNS FROM slides LIKE 'slide_order'";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            
+            if ($stmt->rowCount() === 0) {
+                error_log("slide_order column does not exist, creating it...");
+                
+                // Добавяме колоната
+                $alterSql = "ALTER TABLE slides ADD COLUMN slide_order INT DEFAULT 0";
+                $alterStmt = $this->db->prepare($alterSql);
+                $alterStmt->execute();
+                
+                // Обновяваме съществуващите записи
+                $updateSql = "UPDATE slides SET slide_order = id WHERE slide_order = 0";
+                $updateStmt = $this->db->prepare($updateSql);
+                $updateStmt->execute();
+                
+                error_log("Successfully created and initialized slide_order column");
+            }
+        } catch (PDOException $e) {
+            error_log("Error ensuring slide_order column: " . $e->getMessage());
+            error_log("Stack trace: " . $e->getTraceAsString());
+        }
     }
 
     public function getByPresentationId($presentationId)
     {
-        error_log("Getting slides for presentation ID: " . $presentationId);
-        
-        $sql = "SELECT s.*, se.id as element_id, se.type as element_type, 
-                se.title as element_title, se.content as element_content, 
-                se.text as element_text, se.style as element_style, 
-                se.element_order
-             FROM slides s
-             LEFT JOIN slide_elements se ON s.id = se.slide_id
-                WHERE s.presentation_id = :presentation_id 
-                ORDER BY s.slide_order, se.element_order";
+        try {
+            error_log("Getting slides for presentation ID: " . $presentationId);
+            
+            $sql = "SELECT s.*, se.id as element_id, se.type as element_type, 
+                    se.title as element_title, se.content as element_content, 
+                    se.text as element_text, se.style as element_style, 
+                    se.element_order
+                 FROM slides s
+                 LEFT JOIN slide_elements se ON s.id = se.slide_id
+                    WHERE s.presentation_id = :presentation_id 
+                    ORDER BY s.slide_order ASC, se.element_order";
+                    
+            error_log("SQL Query: " . $sql);
+            
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute(['presentation_id' => $presentationId]);
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            error_log("Found " . count($rows) . " rows");
+            
+            $slides = [];
+            $currentSlide = null;
+            
+            foreach ($rows as $row) {
+                error_log("Processing row: " . print_r($row, true));
                 
-        error_log("SQL Query: " . $sql);
-        
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute(['presentation_id' => $presentationId]);
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        error_log("Raw slides data: " . print_r($rows, true));
-        
-        $slides = [];
-        $currentSlide = null;
-        
-        foreach ($rows as $row) {
-            if ($currentSlide === null || $currentSlide['id'] !== $row['id']) {
-                if ($currentSlide !== null) {
-                    $slides[] = $currentSlide;
+                if ($currentSlide === null || $currentSlide['id'] !== $row['id']) {
+                    if ($currentSlide !== null) {
+                        $slides[] = $currentSlide;
+                    }
+                    
+                    $currentSlide = [
+                        'id' => $row['id'],
+                        'presentation_id' => $row['presentation_id'],
+                        'title' => $row['title'],
+                        'slide_order' => (int)$row['slide_order'],
+                        'layout' => $row['layout'],
+                        'elements' => []
+                    ];
                 }
                 
-                $currentSlide = [
-                    'id' => $row['id'],
-                    'presentation_id' => $row['presentation_id'],
-                    'title' => $row['title'],
-                    'slide_order' => $row['slide_order'],
-                    'layout' => $row['layout'],
-                    'elements' => []
-                ];
+                if (!empty($row['element_id'])) {
+                    $element = [
+                        'id' => $row['element_id'],
+                        'type' => $row['element_type'],
+                        'title' => $row['element_title'],
+                        'content' => $row['element_content'],
+                        'text' => $row['element_text'],
+                        'style' => json_decode($row['element_style'] ?? '{}', true),
+                        'element_order' => $row['element_order']
+                    ];
+                    
+                    $currentSlide['elements'][] = $element;
+                }
             }
             
-            if (!empty($row['element_id'])) {
-                $element = [
-                    'id' => $row['element_id'],
-                    'type' => $row['element_type'],
-                    'title' => $row['element_title'],
-                    'content' => $row['element_content'],
-                    'text' => $row['element_text'],
-                    'style' => json_decode($row['element_style'] ?? '{}', true),
-                    'element_order' => $row['element_order']
-                ];
-                
-                error_log("Created element: " . print_r($element, true));
-                
-                $currentSlide['elements'][] = $element;
+            if ($currentSlide !== null) {
+                $slides[] = $currentSlide;
             }
+            
+            // Сортираме слайдовете по slide_order
+            usort($slides, function($a, $b) {
+                return $a['slide_order'] - $b['slide_order'];
+            });
+            
+            error_log("Final sorted slides array: " . print_r($slides, true));
+            return $slides;
+            
+        } catch (PDOException $e) {
+            error_log("Error getting slides: " . $e->getMessage());
+            error_log("Stack trace: " . $e->getTraceAsString());
+            throw $e;
         }
-        
-        if ($currentSlide !== null) {
-            $slides[] = $currentSlide;
-        }
-        
-        error_log("Final slides data: " . print_r($slides, true));
-        
-        return $slides;
     }
 
     public function create($data)
@@ -323,32 +364,78 @@ class Slide extends Model
         }
     }
 
-    public function updateOrder($id, $newOrder)
+    public function updateOrder($slideId, $newOrder)
     {
         try {
-            error_log("Attempting to update slide order. ID: " . $id . ", New order: " . $newOrder);
+            error_log("Updating slide order in database. Slide ID: $slideId, New order: $newOrder");
             
-            $sql = "UPDATE slides SET slide_order = :slide_order WHERE id = :id";
-            error_log("SQL for updating slide order: " . $sql);
+            // Първо намираме текущия ред на слайда
+            $currentOrderSql = "SELECT slide_order FROM slides WHERE id = :id";
+            $currentOrderStmt = $this->db->prepare($currentOrderSql);
+            $currentOrderStmt->execute(['id' => $slideId]);
+            $currentOrder = (int)$currentOrderStmt->fetchColumn();
             
-            $stmt = $this->db->prepare($sql);
-            $result = $stmt->execute([
-                'id' => $id,
-                'slide_order' => $newOrder
-            ]);
-            
-            if (!$result) {
-                error_log("PDO Error Info: " . print_r($stmt->errorInfo(), true));
-                throw new Exception("Failed to update slide order: " . implode(", ", $stmt->errorInfo()));
+            if ($currentOrder === false) {
+                error_log("Slide with ID $slideId not found");
+                return false;
             }
             
-            error_log("Successfully updated slide order");
-            return true;
+            error_log("Current order: $currentOrder, New order: $newOrder");
             
-        } catch (Exception $e) {
+            // Започваме транзакция
+            $this->db->beginTransaction();
+            
+            try {
+                if ($currentOrder < $newOrder) {
+                    // Преместваме надолу - намаляме реда на всички слайдове между текущата и новата позиция
+                    $sql = "UPDATE slides 
+                           SET slide_order = slide_order - 1 
+                           WHERE presentation_id = (SELECT presentation_id FROM slides WHERE id = :id)
+                           AND slide_order > :current_order 
+                           AND slide_order <= :new_order";
+                    $stmt = $this->db->prepare($sql);
+                    $stmt->execute([
+                        'id' => $slideId,
+                        'current_order' => $currentOrder,
+                        'new_order' => $newOrder
+                    ]);
+                } else {
+                    // Преместваме нагоре - увеличаваме реда на всички слайдове между новата и текущата позиция
+                    $sql = "UPDATE slides 
+                           SET slide_order = slide_order + 1 
+                           WHERE presentation_id = (SELECT presentation_id FROM slides WHERE id = :id)
+                           AND slide_order >= :new_order 
+                           AND slide_order < :current_order";
+                    $stmt = $this->db->prepare($sql);
+                    $stmt->execute([
+                        'id' => $slideId,
+                        'current_order' => $currentOrder,
+                        'new_order' => $newOrder
+                    ]);
+                }
+                
+                // Обновяваме реда на преместения слайд
+                $updateSql = "UPDATE slides SET slide_order = :new_order WHERE id = :id";
+                $updateStmt = $this->db->prepare($updateSql);
+                $updateStmt->execute([
+                    'id' => $slideId,
+                    'new_order' => $newOrder
+                ]);
+                
+                $this->db->commit();
+                error_log("Successfully updated slide order");
+                return true;
+                
+            } catch (PDOException $e) {
+                $this->db->rollBack();
+                error_log("Error in transaction: " . $e->getMessage());
+                throw $e;
+            }
+            
+        } catch (PDOException $e) {
             error_log("Error updating slide order: " . $e->getMessage());
             error_log("Stack trace: " . $e->getTraceAsString());
-            throw $e;
+            return false;
         }
     }
 

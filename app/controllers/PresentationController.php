@@ -185,4 +185,81 @@ class PresentationController extends Controller
             'slides' => $slides
         ]);
     }
+
+    public function updateSlideOrder()
+    {
+        // Изключваме извеждането на грешки
+        error_reporting(0);
+        ini_set('display_errors', 0);
+        
+        // Изчистваме буфера за да сме сигурни, че няма изведен текст преди JSON
+        if (ob_get_length()) ob_clean();
+        
+        try {
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+                throw new Exception('Invalid request method');
+            }
+
+            $rawInput = file_get_contents('php://input');
+            if (empty($rawInput)) {
+                throw new Exception('No input data received');
+            }
+
+            $data = json_decode($rawInput, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception('Invalid JSON data: ' . json_last_error_msg());
+            }
+            
+            if (!isset($data['presentationId']) || !isset($data['slideOrder'])) {
+                throw new Exception('Missing required data');
+            }
+
+            $presentationId = $data['presentationId'];
+            $slideOrder = $data['slideOrder'];
+
+            if (!is_array($slideOrder)) {
+                throw new Exception('Slide order must be an array');
+            }
+
+            $slideModel = new Slide();
+            $success = true;
+            $errorMessage = '';
+
+            foreach ($slideOrder as $index => $slideId) {
+                if (!$slideModel->updateOrder($slideId, $index + 1)) {
+                    $success = false;
+                    $errorMessage = "Failed to update slide ID: $slideId";
+                    error_log("Failed to update slide order. Slide ID: $slideId, New order: " . ($index + 1));
+                    break;
+                }
+            }
+
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => $success,
+                'message' => $success ? 'Slide order updated successfully' : $errorMessage
+            ]);
+        } catch (Exception $e) {
+            error_log("Error in updateSlideOrder: " . $e->getMessage());
+            error_log("Stack trace: " . $e->getTraceAsString());
+            
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        } catch (Error $e) {
+            error_log("PHP Error in updateSlideOrder: " . $e->getMessage());
+            error_log("Stack trace: " . $e->getTraceAsString());
+            
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'message' => 'Internal server error'
+            ]);
+        }
+        
+        // Спираме изпълнението след изпращане на JSON
+        exit;
+    }
 } 
