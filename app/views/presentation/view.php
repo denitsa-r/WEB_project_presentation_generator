@@ -91,20 +91,46 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                                     <div class="slide-content <?php echo htmlspecialchars($slide['layout'] ?? 'full'); ?>">
                                         <?php if (!empty($slide['elements'])): ?>
                                             <?php foreach ($slide['elements'] as $element): ?>
-                                                <?php if (!empty($element['title'])): ?>
-                                                    <h3 class="element-title"><?php echo htmlspecialchars($element['title']); ?></h3>
-                                                <?php endif; ?>
-                                                <div class="slide-element <?php echo $element['type']; ?>" 
-                                                     <?php if ($element['type'] === 'image' ): ?>
-                                                     style="background-image: url('<?php echo $element['content']; ?>');"
-                                                     <?php endif; ?>>
-                                                    <?php if ($element['type'] === 'image_text'): ?>
-                                                        <div class="image-text-container">
+                                                <div class="element-container">
+                                                    <?php if (!empty($element['title'])): ?>
+                                                        <h3 class="element-title"><?php echo htmlspecialchars($element['title']); ?></h3>
+                                                    <?php endif; ?>
+
+                                                    <?php if ($element['type'] === 'image'): ?>
+                                                        <div class="content-element image">
                                                             <div class="image-container" style="background-image: url('<?php echo $element['content']; ?>');"></div>
-                                                            <div class="text"><?php echo nl2br(htmlspecialchars($element['text'])); ?></div>
                                                         </div>
-                                                    <?php elseif ($element['type'] !== 'image'): ?>
-                                                        <?php echo $element['content']; ?>
+                                                    <?php elseif ($element['type'] === 'image_text'): ?>
+                                                        <div class="content-element type-image_text">
+                                                            <div class="image-text-container">
+                                                                <div class="image-container" style="background-image: url('<?php echo $element['content']; ?>');"></div>
+                                                                <div class="text"><p><?php echo nl2br(htmlspecialchars($element['text'])); ?></p></div>
+                                                            </div>
+                                                        </div>
+                                                    <?php elseif ($element['type'] === 'image_list'): ?>
+                                                        <div class="content-element type-image_list">
+                                                            <div class="image-list-container">
+                                                                <div class="image-container" style="background-image: url('<?php echo $element['content']; ?>');"></div>
+                                                                <ul>
+                                                                    <?php foreach (explode("\n", $element['text']) as $item): if (trim($item) !== ''): ?>
+                                                                        <li><?php echo htmlspecialchars($item); ?></li>
+                                                                    <?php endif; endforeach; ?>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    <?php elseif ($element['type'] === 'quote'): ?>
+                                                        <div class="content-element type-quote">
+                                                            <blockquote>
+                                                                <?php echo nl2br(htmlspecialchars($element['content'])); ?>
+                                                                <?php if (!empty($element['title'])): ?>
+                                                                    <cite>— <?php echo htmlspecialchars($element['title']); ?></cite>
+                                                                <?php endif; ?>
+                                                            </blockquote>
+                                                        </div>
+                                                    <?php else: ?>
+                                                        <div class="content-element <?php echo $element['type']; ?>">
+                                                            <?php echo nl2br(htmlspecialchars($element['content'])); ?>
+                                                        </div>
                                                     <?php endif; ?>
                                                 </div>
                                             <?php endforeach; ?>

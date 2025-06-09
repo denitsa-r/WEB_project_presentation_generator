@@ -221,6 +221,7 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
             const contentInput = element.querySelector('.content-content');
             const textTextarea = element.querySelector('.content-text');
             const styleInput = element.querySelector('input[name^="elements["][name$="][style]"]');
+            const index = element.querySelector('.content-type').name.match(/\[(\d+)\]/)[1];
 
             // Store current values
             const currentTitle = titleInput.value;
@@ -238,13 +239,13 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                 case 'text':
                     titleInput.placeholder = 'Заглавие (по желание)';
                     contentFields.innerHTML += `
-                        <textarea class="content-content" name="${contentInput.name}" placeholder="Въведете текст">${currentContent}</textarea>
+                        <textarea class="content-content" name="elements[${index}][content]" placeholder="Въведете текст">${currentText || currentContent}</textarea>
                     `;
                     break;
                 case 'image':
                     titleInput.placeholder = 'Заглавие на изображението (по желание)';
                     contentFields.innerHTML += `
-                        <input type="url" class="content-content" name="${contentInput.name}" placeholder="URL на изображението" value="${currentContent}">
+                        <input type="url" class="content-content" name="elements[${index}][content]" placeholder="URL на изображението" value="${currentContent}">
                     `;
                     break;
                 case 'image_text':
@@ -253,11 +254,11 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                         <div class="image-text-fields">
                             <div class="image-field">
                                 <label>Изображение:</label>
-                                <input type="url" class="content-content" name="${contentInput.name}" placeholder="URL на изображението" value="${currentContent}">
+                                <input type="url" class="content-content" name="elements[${index}][content]" placeholder="URL на изображението" value="${currentContent}">
                             </div>
                             <div class="text-field">
                                 <label>Текст:</label>
-                                <textarea class="content-text" name="${textTextarea.name}" placeholder="Въведете текст">${currentText}</textarea>
+                                <textarea class="content-text" name="elements[${index}][text]" placeholder="Въведете текст">${currentText || currentContent}</textarea>
                             </div>
                         </div>
                     `;
@@ -268,11 +269,11 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                         <div class="image-list-fields">
                             <div class="image-field">
                                 <label>Изображение:</label>
-                                <input type="url" class="content-content" name="${contentInput.name}" placeholder="URL на изображението" value="${currentContent}">
+                                <input type="url" class="content-content" name="elements[${index}][content]" placeholder="URL на изображението" value="${currentContent}">
                             </div>
                             <div class="list-field">
                                 <label>Списък:</label>
-                                <textarea class="content-text" name="${textTextarea.name}" placeholder="Въведете елементи на списъка (по един на ред)">${currentText}</textarea>
+                                <textarea class="content-text" name="elements[${index}][text]" placeholder="Въведете елементи на списъка (по един на ред)">${currentText || currentContent}</textarea>
                             </div>
                         </div>
                     `;
@@ -280,13 +281,13 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                 case 'list':
                     titleInput.placeholder = 'Заглавие на списъка (по желание)';
                     contentFields.innerHTML += `
-                        <textarea class="content-text" name="${textTextarea.name}" placeholder="Въведете елементи на списъка (по един на ред)">${currentText}</textarea>
+                        <textarea class="content-content" name="elements[${index}][content]" placeholder="Въведете елементи на списъка (по един на ред)">${currentText || currentContent}</textarea>
                     `;
                     break;
                 case 'quote':
                     titleInput.placeholder = 'Автор на цитата (по желание)';
                     contentFields.innerHTML += `
-                        <textarea class="content-content" name="${contentInput.name}" placeholder="Въведете цитат">${currentContent}</textarea>
+                        <textarea class="content-content" name="elements[${index}][content]" placeholder="Въведете цитат">${currentText || currentContent}</textarea>
                     `;
                     break;
             }
@@ -296,7 +297,21 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                 input.addEventListener('input', updatePreview);
             });
 
-            updatePreview();
+            // Force preview update
+            setTimeout(() => {
+                const newContentInput = contentFields.querySelector('.content-content');
+                const newTextTextarea = contentFields.querySelector('.content-text');
+                
+                if (newContentInput && type === 'list') {
+                    newContentInput.value = currentText || currentContent;
+                }
+                
+                if (newTextTextarea && (type === 'image_text' || type === 'image_list')) {
+                    newTextTextarea.value = currentText || currentContent;
+                }
+                
+                updatePreview();
+            }, 0);
         }
 
         function updateLayout() {
@@ -400,7 +415,7 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                         elementHtml += `
                             <div class="image-text-container">
                                 <div class="image-container" style="background-image: url('${escapeHtml(content)}');"></div>
-                                <div class="text">${escapeHtml(text).replace(/\n/g, '<br>')}</div>
+                                <div class="text"><p>${escapeHtml(text).replace(/\n/g, '<br>')}</p></div>
                             </div>
                         `;
                         break;
@@ -408,7 +423,7 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                         const listItems = text.split('\n').filter(item => item.trim());
                         elementHtml += `
                             <div class="image-list-container">
-                                <img src="${escapeHtml(content)}" alt="${escapeHtml(title)}">
+                                <div class="image-container" style="background-image: url('${escapeHtml(content)}');"></div>
                                 <ul>
                                     ${listItems.map(item => `<li>${escapeHtml(item.trim())}</li>`).join('')}
                                 </ul>
