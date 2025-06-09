@@ -56057,3 +56057,1142 @@ okook
 )
 
 [2025-06-09 20:56:25] App::__construct - Calling controller method with parameters
+[2025-06-09 21:01:07] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => auth
+    [1] => login
+)
+
+[2025-06-09 21:01:07] App::parseUrl - Final URL segments: Array
+(
+    [0] => auth
+    [1] => login
+)
+
+[2025-06-09 21:01:07] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/auth/login
+[2025-06-09 21:01:07] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:01:07] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:01:07] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:01:07] App::__construct - Selected controller: AuthController
+[2025-06-09 21:01:07] App::__construct - Selected method: login
+[2025-06-09 21:01:07] App::__construct - Parameters: Array
+(
+)
+
+[2025-06-09 21:01:07] App::__construct - Calling controller method with parameters
+[2025-06-09 21:01:56] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:01:56] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:01:56] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:01:56] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:01:56] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:01:56] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:01:56] App::__construct - Selected controller: SlideController
+[2025-06-09 21:01:56] App::__construct - Selected method: create
+[2025-06-09 21:01:56] App::__construct - Parameters: Array
+(
+    [0] => 20
+)
+
+[2025-06-09 21:01:56] App::__construct - Calling controller method with parameters
+[2025-06-09 21:01:56] SlideController::create called with presentationId: 20
+[2025-06-09 21:01:56] Request method: GET
+[2025-06-09 21:01:56] Raw POST data: 
+[2025-06-09 21:01:56] POST contents: []
+[2025-06-09 21:01:56] FILES contents: []
+[2025-06-09 21:01:56] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:01:56] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:01:56] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:01:56] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:02:04] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => dcdccd
+)
+
+[2025-06-09 21:02:04] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => dcdccd
+)
+
+[2025-06-09 21:02:04] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/dcdccd
+[2025-06-09 21:02:04] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:02:04] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:02:04] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:02:04] App::__construct - Selected controller: SlideController
+[2025-06-09 21:02:04] App::__construct - Selected method: create
+[2025-06-09 21:02:04] App::__construct - Parameters: Array
+(
+    [0] => dcdccd
+)
+
+[2025-06-09 21:02:04] App::__construct - Calling controller method with parameters
+[2025-06-09 21:02:04] SlideController::create called with presentationId: dcdccd
+[2025-06-09 21:02:04] Request method: GET
+[2025-06-09 21:02:04] Raw POST data: 
+[2025-06-09 21:02:04] POST contents: []
+[2025-06-09 21:02:04] FILES contents: []
+[2025-06-09 21:02:04] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/dcdccd
+[2025-06-09 21:02:04] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:02:04] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:02:04] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:02:04] Error: Presentation not found with ID: dcdccd
+[2025-06-09 21:02:06] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => dcdccd
+)
+
+[2025-06-09 21:02:06] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => dcdccd
+)
+
+[2025-06-09 21:02:06] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/dcdccd
+[2025-06-09 21:02:06] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:02:06] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:02:06] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:02:06] App::__construct - Selected controller: SlideController
+[2025-06-09 21:02:07] App::__construct - Selected method: create
+[2025-06-09 21:02:07] App::__construct - Parameters: Array
+(
+    [0] => dcdccd
+)
+
+[2025-06-09 21:02:07] App::__construct - Calling controller method with parameters
+[2025-06-09 21:02:07] SlideController::create called with presentationId: dcdccd
+[2025-06-09 21:02:07] Request method: GET
+[2025-06-09 21:02:07] Raw POST data: 
+[2025-06-09 21:02:07] POST contents: []
+[2025-06-09 21:02:07] FILES contents: []
+[2025-06-09 21:02:07] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/dcdccd
+[2025-06-09 21:02:07] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:02:07] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:02:07] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:02:07] Error: Presentation not found with ID: dcdccd
+[2025-06-09 21:02:36] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => edit
+    [2] => 38
+)
+
+[2025-06-09 21:02:36] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => edit
+    [2] => 38
+)
+
+[2025-06-09 21:02:36] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/edit/38
+[2025-06-09 21:02:36] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:02:36] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:02:36] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:02:36] App::__construct - Selected controller: SlideController
+[2025-06-09 21:02:36] App::__construct - Selected method: edit
+[2025-06-09 21:02:36] App::__construct - Parameters: Array
+(
+    [0] => 38
+)
+
+[2025-06-09 21:02:36] App::__construct - Calling controller method with parameters
+[2025-06-09 21:03:39] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:03:39] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:03:39] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:03:39] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:03:39] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:03:39] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:03:39] App::__construct - Selected controller: SlideController
+[2025-06-09 21:03:39] App::__construct - Selected method: create
+[2025-06-09 21:03:39] App::__construct - Parameters: Array
+(
+    [0] => 20
+)
+
+[2025-06-09 21:03:39] App::__construct - Calling controller method with parameters
+[2025-06-09 21:03:39] SlideController::create called with presentationId: 20
+[2025-06-09 21:03:39] Request method: GET
+[2025-06-09 21:03:39] Raw POST data: 
+[2025-06-09 21:03:39] POST contents: []
+[2025-06-09 21:03:39] FILES contents: []
+[2025-06-09 21:03:39] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:03:39] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:03:39] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:03:39] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:04:28] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+)
+
+[2025-06-09 21:04:28] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+)
+
+[2025-06-09 21:04:28] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:28] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:04:28] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:28] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:28] App::__construct - Selected controller: SlideController
+[2025-06-09 21:04:28] App::__construct - Selected method: create
+[2025-06-09 21:04:28] App::__construct - Parameters: Array
+(
+    [0] => sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+)
+
+[2025-06-09 21:04:28] App::__construct - Calling controller method with parameters
+[2025-06-09 21:04:28] SlideController::create called with presentationId: sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:28] Request method: GET
+[2025-06-09 21:04:28] Raw POST data: 
+[2025-06-09 21:04:28] POST contents: []
+[2025-06-09 21:04:28] FILES contents: []
+[2025-06-09 21:04:28] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:28] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:28] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:28] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:04:28] Error: Presentation not found with ID: sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:30] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+)
+
+[2025-06-09 21:04:30] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+)
+
+[2025-06-09 21:04:30] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:30] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:04:30] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:30] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:30] App::__construct - Selected controller: SlideController
+[2025-06-09 21:04:30] App::__construct - Selected method: create
+[2025-06-09 21:04:30] App::__construct - Parameters: Array
+(
+    [0] => sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+)
+
+[2025-06-09 21:04:30] App::__construct - Calling controller method with parameters
+[2025-06-09 21:04:30] SlideController::create called with presentationId: sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:30] Request method: GET
+[2025-06-09 21:04:30] Raw POST data: 
+[2025-06-09 21:04:30] POST contents: []
+[2025-06-09 21:04:30] FILES contents: []
+[2025-06-09 21:04:30] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:30] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:30] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:30] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:04:30] Error: Presentation not found with ID: sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:31] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+)
+
+[2025-06-09 21:04:31] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+)
+
+[2025-06-09 21:04:31] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:31] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:04:31] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:31] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:31] App::__construct - Selected controller: SlideController
+[2025-06-09 21:04:31] App::__construct - Selected method: create
+[2025-06-09 21:04:31] App::__construct - Parameters: Array
+(
+    [0] => sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+)
+
+[2025-06-09 21:04:31] App::__construct - Calling controller method with parameters
+[2025-06-09 21:04:31] SlideController::create called with presentationId: sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:31] Request method: GET
+[2025-06-09 21:04:31] Raw POST data: 
+[2025-06-09 21:04:31] POST contents: []
+[2025-06-09 21:04:31] FILES contents: []
+[2025-06-09 21:04:31] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:31] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:31] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:31] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:04:31] Error: Presentation not found with ID: sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:37] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+)
+
+[2025-06-09 21:04:37] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+)
+
+[2025-06-09 21:04:37] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:37] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:04:37] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:37] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:37] App::__construct - Selected controller: SlideController
+[2025-06-09 21:04:37] App::__construct - Selected method: create
+[2025-06-09 21:04:37] App::__construct - Parameters: Array
+(
+    [0] => sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+)
+
+[2025-06-09 21:04:37] App::__construct - Calling controller method with parameters
+[2025-06-09 21:04:37] SlideController::create called with presentationId: sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:37] Request method: GET
+[2025-06-09 21:04:37] Raw POST data: 
+[2025-06-09 21:04:37] POST contents: []
+[2025-06-09 21:04:37] FILES contents: []
+[2025-06-09 21:04:37] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:37] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:37] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:37] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:04:37] Error: Presentation not found with ID: sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:38] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+)
+
+[2025-06-09 21:04:38] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+)
+
+[2025-06-09 21:04:38] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:38] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:04:38] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:38] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:38] App::__construct - Selected controller: SlideController
+[2025-06-09 21:04:38] App::__construct - Selected method: create
+[2025-06-09 21:04:38] App::__construct - Parameters: Array
+(
+    [0] => sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+)
+
+[2025-06-09 21:04:38] App::__construct - Calling controller method with parameters
+[2025-06-09 21:04:38] SlideController::create called with presentationId: sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:38] Request method: GET
+[2025-06-09 21:04:38] Raw POST data: 
+[2025-06-09 21:04:38] POST contents: []
+[2025-06-09 21:04:38] FILES contents: []
+[2025-06-09 21:04:38] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:38] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:38] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:38] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:04:38] Error: Presentation not found with ID: sssxssxsxsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+[2025-06-09 21:04:40] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:04:40] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:04:40] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:04:40] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:04:40] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:40] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:40] App::__construct - Selected controller: SlideController
+[2025-06-09 21:04:40] App::__construct - Selected method: create
+[2025-06-09 21:04:40] App::__construct - Parameters: Array
+(
+    [0] => 20
+)
+
+[2025-06-09 21:04:40] App::__construct - Calling controller method with parameters
+[2025-06-09 21:04:40] SlideController::create called with presentationId: 20
+[2025-06-09 21:04:40] Request method: GET
+[2025-06-09 21:04:40] Raw POST data: 
+[2025-06-09 21:04:40] POST contents: []
+[2025-06-09 21:04:40] FILES contents: []
+[2025-06-09 21:04:40] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:04:40] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:40] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:40] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:04:52] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => %D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+)
+
+[2025-06-09 21:04:52] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => %D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+)
+
+[2025-06-09 21:04:52] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/%D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+[2025-06-09 21:04:52] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:04:52] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:52] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:52] App::__construct - Selected controller: SlideController
+[2025-06-09 21:04:52] App::__construct - Selected method: create
+[2025-06-09 21:04:52] App::__construct - Parameters: Array
+(
+    [0] => %D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+)
+
+[2025-06-09 21:04:52] App::__construct - Calling controller method with parameters
+[2025-06-09 21:04:52] SlideController::create called with presentationId: %D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+[2025-06-09 21:04:52] Request method: GET
+[2025-06-09 21:04:52] Raw POST data: 
+[2025-06-09 21:04:52] POST contents: []
+[2025-06-09 21:04:52] FILES contents: []
+[2025-06-09 21:04:52] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/%D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+[2025-06-09 21:04:52] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:52] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:52] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:04:52] Error: Presentation not found with ID: %D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+[2025-06-09 21:04:53] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => %D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+)
+
+[2025-06-09 21:04:53] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => %D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+)
+
+[2025-06-09 21:04:53] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/%D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+[2025-06-09 21:04:53] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:04:53] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:53] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:53] App::__construct - Selected controller: SlideController
+[2025-06-09 21:04:54] App::__construct - Selected method: create
+[2025-06-09 21:04:54] App::__construct - Parameters: Array
+(
+    [0] => %D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+)
+
+[2025-06-09 21:04:54] App::__construct - Calling controller method with parameters
+[2025-06-09 21:04:54] SlideController::create called with presentationId: %D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+[2025-06-09 21:04:54] Request method: GET
+[2025-06-09 21:04:54] Raw POST data: 
+[2025-06-09 21:04:54] POST contents: []
+[2025-06-09 21:04:54] FILES contents: []
+[2025-06-09 21:04:54] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/%D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+[2025-06-09 21:04:54] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:54] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:54] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:04:54] Error: Presentation not found with ID: %D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+[2025-06-09 21:04:55] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => %D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+)
+
+[2025-06-09 21:04:55] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => %D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+)
+
+[2025-06-09 21:04:55] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/%D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+[2025-06-09 21:04:55] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:04:55] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:55] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:55] App::__construct - Selected controller: SlideController
+[2025-06-09 21:04:55] App::__construct - Selected method: create
+[2025-06-09 21:04:55] App::__construct - Parameters: Array
+(
+    [0] => %D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+)
+
+[2025-06-09 21:04:55] App::__construct - Calling controller method with parameters
+[2025-06-09 21:04:55] SlideController::create called with presentationId: %D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+[2025-06-09 21:04:55] Request method: GET
+[2025-06-09 21:04:55] Raw POST data: 
+[2025-06-09 21:04:55] POST contents: []
+[2025-06-09 21:04:55] FILES contents: []
+[2025-06-09 21:04:55] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/%D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+[2025-06-09 21:04:55] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:55] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:04:55] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:04:55] Error: Presentation not found with ID: %D0%B0%D1%8A%D0%B0%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D1%8A%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0
+[2025-06-09 21:06:46] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:06:46] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:06:46] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:06:46] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:06:46] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:06:46] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:06:46] App::__construct - Selected controller: SlideController
+[2025-06-09 21:06:47] App::__construct - Selected method: create
+[2025-06-09 21:06:47] App::__construct - Parameters: Array
+(
+    [0] => 20
+)
+
+[2025-06-09 21:06:47] App::__construct - Calling controller method with parameters
+[2025-06-09 21:06:47] SlideController::create called with presentationId: 20
+[2025-06-09 21:06:47] Request method: GET
+[2025-06-09 21:06:47] Raw POST data: 
+[2025-06-09 21:06:47] POST contents: []
+[2025-06-09 21:06:47] FILES contents: []
+[2025-06-09 21:06:47] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:06:47] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:06:47] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:06:47] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:08:49] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:08:49] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:08:49] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:08:49] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:08:49] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:08:49] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:08:49] App::__construct - Selected controller: SlideController
+[2025-06-09 21:08:49] App::__construct - Selected method: create
+[2025-06-09 21:08:49] App::__construct - Parameters: Array
+(
+    [0] => 20
+)
+
+[2025-06-09 21:08:49] App::__construct - Calling controller method with parameters
+[2025-06-09 21:08:49] SlideController::create called with presentationId: 20
+[2025-06-09 21:08:49] Request method: GET
+[2025-06-09 21:08:49] Raw POST data: 
+[2025-06-09 21:08:49] POST contents: []
+[2025-06-09 21:08:49] FILES contents: []
+[2025-06-09 21:08:49] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:08:49] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:08:49] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:08:49] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:09:10] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:09:10] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:09:10] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:09:10] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:09:10] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:09:10] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:09:10] App::__construct - Selected controller: SlideController
+[2025-06-09 21:09:10] App::__construct - Selected method: create
+[2025-06-09 21:09:10] App::__construct - Parameters: Array
+(
+    [0] => 20
+)
+
+[2025-06-09 21:09:10] App::__construct - Calling controller method with parameters
+[2025-06-09 21:09:10] SlideController::create called with presentationId: 20
+[2025-06-09 21:09:10] Request method: GET
+[2025-06-09 21:09:10] Raw POST data: 
+[2025-06-09 21:09:10] POST contents: []
+[2025-06-09 21:09:10] FILES contents: []
+[2025-06-09 21:09:10] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:09:10] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:09:10] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:09:10] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:09:53] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => auth
+    [1] => login
+)
+
+[2025-06-09 21:09:53] App::parseUrl - Final URL segments: Array
+(
+    [0] => auth
+    [1] => login
+)
+
+[2025-06-09 21:09:53] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/auth/login
+[2025-06-09 21:09:53] App::__construct - REQUEST_METHOD: POST
+[2025-06-09 21:09:53] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:09:53] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:09:53] App::__construct - Selected controller: AuthController
+[2025-06-09 21:09:53] App::__construct - Selected method: login
+[2025-06-09 21:09:53] App::__construct - Parameters: Array
+(
+)
+
+[2025-06-09 21:09:53] App::__construct - Calling controller method with parameters
+[2025-06-09 21:09:53] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => home
+    [1] => index
+)
+
+[2025-06-09 21:09:53] App::parseUrl - Final URL segments: Array
+(
+    [0] => home
+    [1] => index
+)
+
+[2025-06-09 21:09:53] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/home/index
+[2025-06-09 21:09:53] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:09:53] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:09:53] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:09:53] App::__construct - Selected controller: HomeController
+[2025-06-09 21:09:53] App::__construct - Selected method: index
+[2025-06-09 21:09:53] App::__construct - Parameters: Array
+(
+)
+
+[2025-06-09 21:09:53] App::__construct - Calling controller method with parameters
+[2025-06-09 21:09:53] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => dashboard
+)
+
+[2025-06-09 21:09:53] App::parseUrl - Final URL segments: Array
+(
+    [0] => dashboard
+)
+
+[2025-06-09 21:09:53] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard
+[2025-06-09 21:09:53] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:09:53] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:09:53] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:09:53] App::__construct - Selected controller: DashboardController
+[2025-06-09 21:09:53] App::__construct - Parameters: Array
+(
+)
+
+[2025-06-09 21:09:53] App::__construct - Calling controller method with parameters
+[2025-06-09 21:10:01] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => dashboard
+    [1] => viewWorkspace
+    [2] => 19
+)
+
+[2025-06-09 21:10:01] App::parseUrl - Final URL segments: Array
+(
+    [0] => dashboard
+    [1] => viewWorkspace
+    [2] => 19
+)
+
+[2025-06-09 21:10:01] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard/viewWorkspace/19
+[2025-06-09 21:10:01] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:10:01] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:01] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:01] App::__construct - Selected controller: DashboardController
+[2025-06-09 21:10:01] App::__construct - Selected method: viewWorkspace
+[2025-06-09 21:10:01] App::__construct - Parameters: Array
+(
+    [0] => 19
+)
+
+[2025-06-09 21:10:01] App::__construct - Calling controller method with parameters
+[2025-06-09 21:10:04] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => presentation
+    [1] => viewPresentation
+    [2] => 20
+)
+
+[2025-06-09 21:10:04] App::parseUrl - Final URL segments: Array
+(
+    [0] => presentation
+    [1] => viewPresentation
+    [2] => 20
+)
+
+[2025-06-09 21:10:04] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/viewPresentation/20
+[2025-06-09 21:10:04] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:10:04] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:04] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:04] App::__construct - Selected controller: PresentationController
+[2025-06-09 21:10:04] App::__construct - Selected method: viewPresentation
+[2025-06-09 21:10:04] App::__construct - Parameters: Array
+(
+    [0] => 20
+)
+
+[2025-06-09 21:10:04] App::__construct - Calling controller method with parameters
+[2025-06-09 21:10:05] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:10:05] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:10:05] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:10:05] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:10:05] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:05] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:05] App::__construct - Selected controller: SlideController
+[2025-06-09 21:10:06] App::__construct - Selected method: create
+[2025-06-09 21:10:06] App::__construct - Parameters: Array
+(
+    [0] => 20
+)
+
+[2025-06-09 21:10:06] App::__construct - Calling controller method with parameters
+[2025-06-09 21:10:06] SlideController::create called with presentationId: 20
+[2025-06-09 21:10:06] Request method: GET
+[2025-06-09 21:10:06] Raw POST data: 
+[2025-06-09 21:10:06] POST contents: []
+[2025-06-09 21:10:06] FILES contents: []
+[2025-06-09 21:10:06] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:10:06] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:06] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:06] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:10:18] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => ygygy
+)
+
+[2025-06-09 21:10:18] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => ygygy
+)
+
+[2025-06-09 21:10:18] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/ygygy
+[2025-06-09 21:10:18] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:10:18] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:18] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:18] App::__construct - Selected controller: SlideController
+[2025-06-09 21:10:18] App::__construct - Selected method: create
+[2025-06-09 21:10:18] App::__construct - Parameters: Array
+(
+    [0] => ygygy
+)
+
+[2025-06-09 21:10:18] App::__construct - Calling controller method with parameters
+[2025-06-09 21:10:18] SlideController::create called with presentationId: ygygy
+[2025-06-09 21:10:18] Request method: GET
+[2025-06-09 21:10:18] Raw POST data: 
+[2025-06-09 21:10:18] POST contents: []
+[2025-06-09 21:10:18] FILES contents: []
+[2025-06-09 21:10:18] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/ygygy
+[2025-06-09 21:10:18] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:18] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:18] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:10:18] Error: Presentation not found with ID: ygygy
+[2025-06-09 21:10:37] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:10:37] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:10:37] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:10:37] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:10:37] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:37] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:37] App::__construct - Selected controller: SlideController
+[2025-06-09 21:10:38] App::__construct - Selected method: create
+[2025-06-09 21:10:38] App::__construct - Parameters: Array
+(
+    [0] => 20
+)
+
+[2025-06-09 21:10:38] App::__construct - Calling controller method with parameters
+[2025-06-09 21:10:38] SlideController::create called with presentationId: 20
+[2025-06-09 21:10:38] Request method: GET
+[2025-06-09 21:10:38] Raw POST data: 
+[2025-06-09 21:10:38] POST contents: []
+[2025-06-09 21:10:38] FILES contents: []
+[2025-06-09 21:10:38] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:10:38] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:38] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:38] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:10:48] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:10:48] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:10:48] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:10:48] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:10:48] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:48] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:48] App::__construct - Selected controller: SlideController
+[2025-06-09 21:10:48] App::__construct - Selected method: create
+[2025-06-09 21:10:48] App::__construct - Parameters: Array
+(
+    [0] => 20
+)
+
+[2025-06-09 21:10:48] App::__construct - Calling controller method with parameters
+[2025-06-09 21:10:48] SlideController::create called with presentationId: 20
+[2025-06-09 21:10:48] Request method: GET
+[2025-06-09 21:10:48] Raw POST data: 
+[2025-06-09 21:10:48] POST contents: []
+[2025-06-09 21:10:48] FILES contents: []
+[2025-06-09 21:10:48] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:10:48] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:48] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:10:48] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:13:30] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:13:30] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:13:30] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:13:30] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:13:30] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:13:30] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:13:30] App::__construct - Selected controller: SlideController
+[2025-06-09 21:13:30] App::__construct - Selected method: create
+[2025-06-09 21:13:30] App::__construct - Parameters: Array
+(
+    [0] => 20
+)
+
+[2025-06-09 21:13:30] App::__construct - Calling controller method with parameters
+[2025-06-09 21:13:30] SlideController::create called with presentationId: 20
+[2025-06-09 21:13:30] Request method: GET
+[2025-06-09 21:13:30] Raw POST data: 
+[2025-06-09 21:13:30] POST contents: []
+[2025-06-09 21:13:30] FILES contents: []
+[2025-06-09 21:13:30] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:13:30] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:13:30] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:13:30] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:14:29] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:14:29] App::parseUrl - Final URL segments: Array
+(
+    [0] => slide
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:14:29] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:14:29] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:14:29] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:14:29] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:14:29] App::__construct - Selected controller: SlideController
+[2025-06-09 21:14:29] App::__construct - Selected method: create
+[2025-06-09 21:14:29] App::__construct - Parameters: Array
+(
+    [0] => 20
+)
+
+[2025-06-09 21:14:29] App::__construct - Calling controller method with parameters
+[2025-06-09 21:14:29] SlideController::create called with presentationId: 20
+[2025-06-09 21:14:29] Request method: GET
+[2025-06-09 21:14:29] Raw POST data: 
+[2025-06-09 21:14:29] POST contents: []
+[2025-06-09 21:14:29] FILES contents: []
+[2025-06-09 21:14:29] REQUEST_URI: /WEB_project_presentation_generator/public/slide/create/20
+[2025-06-09 21:14:29] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:14:29] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:14:29] HTTP_X_REQUESTED_WITH: not set
+[2025-06-09 21:16:02] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => slides
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:16:02] App::parseUrl - Final URL segments: Array
+(
+    [0] => slides
+    [1] => create
+    [2] => 20
+)
+
+[2025-06-09 21:16:02] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/slides/create/20
+[2025-06-09 21:16:02] App::__construct - REQUEST_METHOD: POST
+[2025-06-09 21:16:02] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:16:02] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:16:02] App::__construct - Selected controller: SlideController
+[2025-06-09 21:16:02] App::__construct - Selected method: create
+[2025-06-09 21:16:02] App::__construct - Parameters: Array
+(
+    [0] => 20
+)
+
+[2025-06-09 21:16:02] App::__construct - Calling controller method with parameters
+[2025-06-09 21:16:02] SlideController::create called with presentationId: 20
+[2025-06-09 21:16:02] Request method: POST
+[2025-06-09 21:16:02] Raw POST data: 
+[2025-06-09 21:16:02] POST contents: {"presentation_id":"20","no_redirect":"1","title":"\u0433\u0433\u0433\u0433","layout":"full","elements":[{"type":"image_list","title":"ddd\u0433","style":"{}","content":"https:\/\/i.pinimg.com\/736x\/2f\/7d\/3d\/2f7d3df8754e679449ebf9f26a14b1b1.jpg","text":"ddd"}]}
+[2025-06-09 21:16:02] FILES contents: []
+[2025-06-09 21:16:02] REQUEST_URI: /WEB_project_presentation_generator/public/slides/create/20
+[2025-06-09 21:16:02] SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:16:02] PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:16:02] HTTP_X_REQUESTED_WITH: XMLHttpRequest
+[2025-06-09 21:16:02] Received POST request for slide creation
+[2025-06-09 21:16:02] POST data: Array
+(
+    [presentation_id] => 20
+    [no_redirect] => 1
+    [title] => гггг
+    [layout] => full
+    [elements] => Array
+        (
+            [0] => Array
+                (
+                    [type] => image_list
+                    [title] => dddг
+                    [style] => {}
+                    [content] => https://i.pinimg.com/736x/2f/7d/3d/2f7d3df8754e679449ebf9f26a14b1b1.jpg
+                    [text] => ddd
+                )
+
+        )
+
+)
+
+[2025-06-09 21:16:02] Processing slide creation with data:
+[2025-06-09 21:16:02] presentation_id: 20
+[2025-06-09 21:16:02] title: гггг
+[2025-06-09 21:16:02] layout: full
+[2025-06-09 21:16:02] no_redirect: true
+[2025-06-09 21:16:02] Processing element 0: Array
+(
+    [type] => image_list
+    [title] => dddг
+    [style] => {}
+    [content] => https://i.pinimg.com/736x/2f/7d/3d/2f7d3df8754e679449ebf9f26a14b1b1.jpg
+    [text] => ddd
+)
+
+[2025-06-09 21:16:02] Prepared elements data: Array
+(
+    [0] => Array
+        (
+            [type] => image_list
+            [title] => dddг
+            [content] => https://i.pinimg.com/736x/2f/7d/3d/2f7d3df8754e679449ebf9f26a14b1b1.jpg
+            [text] => ddd
+            [style] => Array
+                (
+                )
+
+        )
+
+)
+
+[2025-06-09 21:16:02] Final slide data: Array
+(
+    [presentation_id] => 20
+    [title] => гггг
+    [layout] => full
+    [elements] => Array
+        (
+            [0] => Array
+                (
+                    [type] => image_list
+                    [title] => dddг
+                    [content] => https://i.pinimg.com/736x/2f/7d/3d/2f7d3df8754e679449ebf9f26a14b1b1.jpg
+                    [text] => ddd
+                    [style] => Array
+                        (
+                        )
+
+                )
+
+        )
+
+)
+
+[2025-06-09 21:16:02] Is AJAX request: true
+[2025-06-09 21:16:02] Successfully created slide with ID: 39
+[2025-06-09 21:16:02] Sending JSON response for AJAX request
+[2025-06-09 21:16:09] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => presentation
+    [1] => viewPresentation
+    [2] => 20
+)
+
+[2025-06-09 21:16:09] App::parseUrl - Final URL segments: Array
+(
+    [0] => presentation
+    [1] => viewPresentation
+    [2] => 20
+)
+
+[2025-06-09 21:16:09] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/viewPresentation/20
+[2025-06-09 21:16:09] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:16:09] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:16:09] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:16:09] App::__construct - Selected controller: PresentationController
+[2025-06-09 21:16:09] App::__construct - Selected method: viewPresentation
+[2025-06-09 21:16:09] App::__construct - Parameters: Array
+(
+    [0] => 20
+)
+
+[2025-06-09 21:16:09] App::__construct - Calling controller method with parameters
+[2025-06-09 21:16:10] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => presentation
+    [1] => review
+    [2] => 20
+)
+
+[2025-06-09 21:16:10] App::parseUrl - Final URL segments: Array
+(
+    [0] => presentation
+    [1] => review
+    [2] => 20
+)
+
+[2025-06-09 21:16:10] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/review/20
+[2025-06-09 21:16:10] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:16:10] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:16:10] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:16:10] App::__construct - Selected controller: PresentationController
+[2025-06-09 21:16:10] App::__construct - Selected method: review
+[2025-06-09 21:16:10] App::__construct - Parameters: Array
+(
+    [0] => 20
+)
+
+[2025-06-09 21:16:10] App::__construct - Calling controller method with parameters
+[2025-06-09 21:16:21] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => presentation
+    [1] => viewPresentation
+    [2] => 20
+)
+
+[2025-06-09 21:16:21] App::parseUrl - Final URL segments: Array
+(
+    [0] => presentation
+    [1] => viewPresentation
+    [2] => 20
+)
+
+[2025-06-09 21:16:21] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/viewPresentation/20
+[2025-06-09 21:16:21] App::__construct - REQUEST_METHOD: GET
+[2025-06-09 21:16:21] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:16:21] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-09 21:16:21] App::__construct - Selected controller: PresentationController
+[2025-06-09 21:16:21] App::__construct - Selected method: viewPresentation
+[2025-06-09 21:16:21] App::__construct - Parameters: Array
+(
+    [0] => 20
+)
+
+[2025-06-09 21:16:21] App::__construct - Calling controller method with parameters

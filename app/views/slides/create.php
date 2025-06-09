@@ -227,8 +227,9 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
             const titleInput = element.querySelector('.content-title');
             const contentInput = element.querySelector('.content-content');
             const textTextarea = element.querySelector('.content-text');
+            const styleInput = element.querySelector('input[name^="elements["][name$="][style]"]');
             const index = element.querySelector('.content-type').name.match(/\[(\d+)\]/)[1];
-            const styleInput = element.querySelector(`input[name="elements[${index}][style]"]`);
+            const currentType = element.querySelector('.content-type').value;
 
             // Store current values
             const currentTitle = titleInput.value;
@@ -241,22 +242,31 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                 contentFields.removeChild(contentFields.lastChild);
             }
 
-            // Update title placeholder
+            // Update title placeholder and add appropriate fields
             switch (type) {
                 case 'text':
                     titleInput.placeholder = 'Заглавие (по желание)';
+                    if (currentType === 'quote') {
+                        titleInput.value = currentTitle;
+                    }
                     contentFields.innerHTML += `
-                        <textarea class="content-content" name="elements[${index}][content]" placeholder="Въведете текст">${currentContent}</textarea>
+                        <textarea class="content-content" name="elements[${index}][content]" placeholder="Въведете текст">${currentText || currentContent}</textarea>
                     `;
                     break;
                 case 'image':
                     titleInput.placeholder = 'Заглавие на изображението (по желание)';
+                    if (currentType === 'text' || currentType === 'list' || currentType === 'quote') {
+                        titleInput.value = currentTitle;
+                    }
                     contentFields.innerHTML += `
                         <input type="url" class="content-content" name="elements[${index}][content]" placeholder="URL на изображението" value="${currentContent}">
                     `;
                     break;
                 case 'image_text':
                     titleInput.placeholder = 'Заглавие (по желание)';
+                    if (currentType === 'text' || currentType === 'list' || currentType === 'quote') {
+                        titleInput.value = currentTitle;
+                    }
                     contentFields.innerHTML += `
                         <div class="image-text-fields">
                             <div class="image-field">
@@ -265,44 +275,69 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                             </div>
                             <div class="text-field">
                                 <label>Текст:</label>
-                                <textarea class="content-text" name="elements[${index}][text]" placeholder="Въведете текст">${currentText}</textarea>
+                                <textarea class="content-text" name="elements[${index}][text]" placeholder="Въведете текст">${currentText || currentContent}</textarea>
                             </div>
                         </div>
                     `;
                     break;
                 case 'image_list':
                     titleInput.placeholder = 'Заглавие (по желание)';
+                    if (currentType === 'text' || currentType === 'list' || currentType === 'quote') {
+                        titleInput.value = currentTitle;
+                    }
                     contentFields.innerHTML += `
-                        <div class="image-text-fields">
+                        <div class="image-list-fields">
                             <div class="image-field">
                                 <label>Изображение:</label>
                                 <input type="url" class="content-content" name="elements[${index}][content]" placeholder="URL на изображението" value="${currentContent}">
                             </div>
-                            <div class="text-field">
+                            <div class="list-field">
                                 <label>Списък:</label>
-                                <textarea class="content-text" name="elements[${index}][text]" placeholder="Въведете всеки елемент на нов ред">${currentText}</textarea>
+                                <textarea class="content-text" name="elements[${index}][text]" placeholder="Въведете елементи на списъка (по един на ред)">${currentText || currentContent}</textarea>
                             </div>
                         </div>
                     `;
                     break;
                 case 'list':
                     titleInput.placeholder = 'Заглавие на списъка (по желание)';
+                    if (currentType === 'text' || currentType === 'quote') {
+                        titleInput.value = currentTitle;
+                    }
                     contentFields.innerHTML += `
-                        <textarea class="content-content" name="elements[${index}][content]" placeholder="Въведете всеки елемент на нов ред">${currentContent}</textarea>
+                        <textarea class="content-content" name="elements[${index}][content]" placeholder="Въведете елементи на списъка (по един на ред)">${currentText || currentContent}</textarea>
                     `;
                     break;
                 case 'quote':
                     titleInput.placeholder = 'Автор на цитата (по желание)';
+                    if (currentType === 'text' || currentType === 'list') {
+                        titleInput.value = currentTitle;
+                    }
                     contentFields.innerHTML += `
-                        <textarea class="content-content" name="elements[${index}][content]" placeholder="Въведете цитата">${currentContent}</textarea>
+                        <textarea class="content-content" name="elements[${index}][content]" placeholder="Въведете цитат">${currentText || currentContent}</textarea>
                     `;
                     break;
             }
 
-            // Add event listeners for content changes
-            contentFields.querySelectorAll('input, textarea').forEach(input => {
+            // Add event listeners to new fields
+            element.querySelectorAll('input, textarea').forEach(input => {
                 input.addEventListener('input', updatePreview);
             });
+
+            // Force preview update
+            setTimeout(() => {
+                const newContentInput = contentFields.querySelector('.content-content');
+                const newTextTextarea = contentFields.querySelector('.content-text');
+                
+                if (newContentInput && type === 'list') {
+                    newContentInput.value = currentText || currentContent;
+                }
+                
+                if (newTextTextarea && (type === 'image_text' || type === 'image_list')) {
+                    newTextTextarea.value = currentText || currentContent;
+                }
+                
+                updatePreview();
+            }, 0);
         }
 
         function updateLayout() {
@@ -397,15 +432,15 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                 switch (element.type) {
                     case 'text':
                         previewHtml += `
-                            <div class="element type-text" style="${styleString}">
+                            <div class="content-element type-text" style="${styleString}">
                                 ${element.title ? `<h3>${escapeHtml(element.title)}</h3>` : ''}
-                                <div>${escapeHtml(element.content).replace(/\n/g, '<br>')}</div>
+                                <p>${escapeHtml(element.content).replace(/\n/g, '<br>')}</p>
                             </div>
                         `;
                         break;
                     case 'image':
                         previewHtml += `
-                            <div class="element type-image" style="${styleString}">
+                            <div class="content-element type-image" style="${styleString}">
                                 ${element.title ? `<h3>${escapeHtml(element.title)}</h3>` : ''}
                                 <div class="image-container" style="background-image: url('${escapeHtml(element.content)}');"></div>
                             </div>
@@ -413,7 +448,7 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                         break;
                     case 'image_text':
                         previewHtml += `
-                            <div class="element type-image-text" style="${styleString}">
+                            <div class="content-element type-image_text" style="${styleString}">
                                 ${element.title ? `<h3>${escapeHtml(element.title)}</h3>` : ''}
                                 <div class="image-text-container">
                                     <div class="image-container" style="background-image: url('${escapeHtml(element.content)}');"></div>
@@ -424,10 +459,10 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                         break;
                     case 'image_list':
                         previewHtml += `
-                            <div class="element image-list" style="${styleString}">
+                            <div class="content-element type-image_list" style="${styleString}">
                                 ${element.title ? `<h3>${escapeHtml(element.title)}</h3>` : ''}
                                 <div class="image-list-container">
-                                    <img src="${escapeHtml(element.content)}" alt="${escapeHtml(element.title)}">
+                                    <div class="image-container" style="background-image: url('${escapeHtml(element.content)}');"></div>
                                     <ul>
                                         ${element.text.split('\n').map(item => `<li>${escapeHtml(item)}</li>`).join('')}
                                     </ul>
@@ -437,7 +472,7 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                         break;
                     case 'list':
                         previewHtml += `
-                            <div class="element list" style="${styleString}">
+                            <div class="content-element list" style="${styleString}">
                                 ${element.title ? `<h3>${escapeHtml(element.title)}</h3>` : ''}
                                 <ul>
                                     ${element.content.split('\n').map(item => `<li>${escapeHtml(item)}</li>`).join('')}
@@ -447,7 +482,7 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                         break;
                     case 'quote':
                         previewHtml += `
-                            <div class="element type-quote" style="${styleString}">
+                            <div class="content-element type-quote" style="${styleString}">
                                 <blockquote>
                                     ${escapeHtml(element.content).replace(/\n/g, '<br>')}
                                     ${element.title ? `<cite>— ${escapeHtml(element.title)}</cite>` : ''}
