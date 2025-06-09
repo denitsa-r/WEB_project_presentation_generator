@@ -51,8 +51,8 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                             <!-- Content elements will be added here -->
                         </div>
 
-                        <button type="submit" class="btn">Запази промените</button>
-                        <a href="<?= BASE_URL ?>/presentation/viewPresentation/<?= $data['slide']['presentation_id'] ?>" class="btn btn-secondary">Отказ</a>
+                        <button type="submit" class="btn my-3">Запази промените</button>
+                        <a href="<?= BASE_URL ?>/presentation/viewPresentation/<?= $data['slide']['presentation_id'] ?>" class="btn btn-secondary my-3">Отказ</a>
                     </form>
                 </div>
 
@@ -392,13 +392,15 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                         elementHtml += `<p>${escapeHtml(content).replace(/\n/g, '<br>')}</p>`;
                         break;
                     case 'image':
-                        elementHtml += `<img src="${escapeHtml(content)}" alt="${escapeHtml(title)}">`;
+                        elementHtml += `
+                            <div class="image-container" style="background-image: url('${escapeHtml(content)}');"></div>
+                        `;
                         break;
                     case 'image_text':
                         elementHtml += `
                             <div class="image-text-container">
-                                <img src="${escapeHtml(content)}" alt="${escapeHtml(title)}">
-                                <p>${escapeHtml(text).replace(/\n/g, '<br>')}</p>
+                                <div class="image-container" style="background-image: url('${escapeHtml(content)}');"></div>
+                                <div class="text">${escapeHtml(text).replace(/\n/g, '<br>')}</div>
                             </div>
                         `;
                         break;

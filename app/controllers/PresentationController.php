@@ -7,8 +7,13 @@ class PresentationController extends Controller
         AuthMiddleware::requireLogin();
     }
 
-    public function create($workspaceId)
+    public function create($workspaceId = null)
     {
+        if ($workspaceId === null) {
+            header('Location: ' . BASE_URL . '/dashboard');
+            exit;
+        }
+
         $workspaceModel = $this->model('Workspace');
         $userId = AuthMiddleware::currentUserId();
         
@@ -447,9 +452,13 @@ class PresentationController extends Controller
                     $slim .= "    title: " . $element['title'] . "\n";
                 }
                 
-                // Заменяме новите редове с \n и екранираме специалните символи
-                $content = str_replace(["\r\n", "\r", "\n"], "\\n", $element['content']);
+                // Екранираме специалните символи
+                $content = $element['content'];
                 $content = str_replace(":", "\\:", $content); // Екранираме двоеточието
+                $content = str_replace("\n", "\\n", $content); // Екранираме новите редове
+                $content = str_replace("\r", "\\r", $content); // Екранираме carriage return
+                $content = str_replace("\t", "\\t", $content); // Екранираме табулации
+                
                 $slim .= "    content: " . $content . "\n";
             }
             $slim .= "\n";
@@ -462,58 +471,90 @@ class PresentationController extends Controller
 
     public function import()
     {
+        error_log("Starting import process");
+        
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            error_log("Invalid request method: " . $_SERVER['REQUEST_METHOD']);
             header('Location: ' . BASE_URL . '/dashboard');
             exit;
         }
 
         $userId = AuthMiddleware::currentUserId();
+        
+        if (!isset($_POST['workspaceId'])) {
+            error_log("Missing workspaceId in POST data");
+            $_SESSION['error'] = 'Липсващо ID на работно пространство.';
+            header('Location: ' . BASE_URL . '/dashboard');
+            exit;
+        }
+        
+        if (!isset($_POST['importFormat'])) {
+            error_log("Missing importFormat in POST data");
+            $_SESSION['error'] = 'Липсващ формат на файла.';
+            header('Location: ' . BASE_URL . '/dashboard');
+            exit;
+        }
+        
         $workspaceId = $_POST['workspaceId'];
         $format = $_POST['importFormat'];
+        
+        error_log("Import parameters - workspaceId: $workspaceId, format: $format");
         
         // Проверка за достъп до работното пространство
         $workspaceModel = $this->model('Workspace');
         if (!$workspaceModel->hasAccess($userId, $workspaceId)) {
+            error_log("User $userId does not have access to workspace $workspaceId");
             $_SESSION['error'] = 'Нямате достъп до това работно пространство.';
             header('Location: ' . BASE_URL . '/dashboard');
             exit;
         }
 
         if (!isset($_FILES['importFile']) || $_FILES['importFile']['error'] !== UPLOAD_ERR_OK) {
+            error_log("File upload error: " . ($_FILES['importFile']['error'] ?? 'No file uploaded'));
             $_SESSION['error'] = 'Грешка при качване на файла.';
-            header('Location: ' . BASE_URL . '/presentation/create');
+            header('Location: ' . BASE_URL . '/presentation/create/' . $workspaceId);
             exit;
         }
 
         $fileContent = file_get_contents($_FILES['importFile']['tmp_name']);
         if ($fileContent === false) {
+            error_log("Failed to read file contents");
             $_SESSION['error'] = 'Грешка при четене на файла.';
-            header('Location: ' . BASE_URL . '/presentation/create');
+            header('Location: ' . BASE_URL . '/presentation/create/' . $workspaceId);
             exit;
         }
 
+        error_log("File content length: " . strlen($fileContent));
+        
         $presentationData = null;
         switch ($format) {
             case 'html':
+                error_log("Parsing HTML format");
                 $presentationData = $this->parseHTML($fileContent);
                 break;
             case 'xml':
+                error_log("Parsing XML format");
                 $presentationData = $this->parseXML($fileContent);
                 break;
             case 'slim':
+                error_log("Parsing SLIM format");
                 $presentationData = $this->parseSLIM($fileContent);
                 break;
             default:
+                error_log("Unsupported format: $format");
                 $_SESSION['error'] = 'Неподдържан формат.';
-                header('Location: ' . BASE_URL . '/presentation/create');
+                header('Location: ' . BASE_URL . '/presentation/create/' . $workspaceId);
                 exit;
         }
 
         if (!$presentationData) {
+            error_log("Failed to parse file data");
             $_SESSION['error'] = 'Грешка при обработка на файла.';
-            header('Location: ' . BASE_URL . '/presentation/create');
+            header('Location: ' . BASE_URL . '/presentation/create/' . $workspaceId);
             exit;
         }
+
+        error_log("Parsed presentation data: " . print_r($presentationData, true));
 
         $presentationModel = $this->model('Presentation');
         $slideModel = $this->model('Slide');
@@ -527,13 +568,18 @@ class PresentationController extends Controller
         );
 
         if (!$presentationId) {
+            error_log("Failed to create presentation");
             $_SESSION['error'] = 'Грешка при създаване на презентацията.';
-            header('Location: ' . BASE_URL . '/presentation/create');
+            header('Location: ' . BASE_URL . '/presentation/create/' . $workspaceId);
             exit;
         }
 
+        error_log("Created presentation with ID: $presentationId");
+
         // Създаване на слайдовете
         foreach ($presentationData['slides'] as $index => $slide) {
+            error_log("Creating slide $index: " . print_r($slide, true));
+            
             $slideId = $slideModel->create([
                 'presentation_id' => $presentationId,
                 'title' => $slide['title'],
@@ -542,9 +588,13 @@ class PresentationController extends Controller
             ]);
 
             if ($slideId) {
+                error_log("Created slide with ID: $slideId");
                 foreach ($slide['elements'] as $element) {
+                    error_log("Adding element to slide: " . print_r($element, true));
                     $slideModel->addElement($slideId, $element['type'], $element['content'], $element['title'] ?? null);
                 }
+            } else {
+                error_log("Failed to create slide");
             }
         }
 
@@ -710,8 +760,8 @@ class PresentationController extends Controller
                 $currentElement['type'] = trim(substr($line, 9));
                 error_log("Set element type: " . $currentElement['type']);
             } elseif (strpos($line, '    content:') === 0 && $currentElement) {
-                // Премахваме екранираните двоеточия и нови редове
                 $content = trim(substr($line, 11));
+                // Премахваме екранираните двоеточия и нови редове
                 $content = str_replace('\\:', ':', $content);
                 $content = str_replace('\\n', "\n", $content);
                 $currentElement['content'] = $content;
@@ -725,6 +775,38 @@ class PresentationController extends Controller
         if ($currentSlide) {
             error_log("Adding final slide to slides array: " . print_r($currentSlide, true));
             $slides[] = $currentSlide;
+        }
+
+        // Валидация на данните
+        if (empty($title)) {
+            error_log("Error: Empty presentation title");
+            return null;
+        }
+
+        if (empty($slides)) {
+            error_log("Error: No slides found");
+            return null;
+        }
+
+        foreach ($slides as $slide) {
+            if (empty($slide['title'])) {
+                error_log("Error: Empty slide title");
+                return null;
+            }
+            if (empty($slide['elements'])) {
+                error_log("Error: Empty slide elements");
+                return null;
+            }
+            foreach ($slide['elements'] as $element) {
+                if (empty($element['type'])) {
+                    error_log("Error: Empty element type");
+                    return null;
+                }
+                if (empty($element['content'])) {
+                    error_log("Error: Empty element content");
+                    return null;
+                }
+            }
         }
 
         $result = [

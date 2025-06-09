@@ -203,6 +203,10 @@ textarea {
     font-weight: 500;
 }
 
+.nav-links .btn-danger {
+    color: white;
+}
+
 .nav-links a:hover {
     color: #007bff;
 }
@@ -343,4 +347,9 @@ textarea {
     background-color: var(--bg-color);
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-} 
+}
+
+/* Modal styles */
+.modal-backdrop.show {
+    z-index: 0;
+}

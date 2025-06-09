@@ -55,8 +55,8 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                             <!-- Content elements will be added here -->
                         </div>
 
-                        <button type="submit" class="btn">Създай слайд</button>
-                        <a href="<?= BASE_URL ?>/presentation/viewPresentation/<?= $data['presentation']['id'] ?>" class="btn btn-secondary">Отказ</a>
+                        <button type="submit" class="btn my-3">Създай слайд</button>
+                        <a href="<?= BASE_URL ?>/presentation/viewPresentation/<?= $data['presentation']['id'] ?>" class="btn btn-secondary my-3">Отказ</a>
                     </form>
                 </div>
 
@@ -407,7 +407,7 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                         previewHtml += `
                             <div class="element image" style="${styleString}">
                                 ${element.title ? `<h3>${escapeHtml(element.title)}</h3>` : ''}
-                                <img src="${escapeHtml(element.content)}" alt="${escapeHtml(element.title)}">
+                                <div class="image-container" style="background-image: url('${escapeHtml(element.content)}');"></div>
                             </div>
                         `;
                         break;
@@ -416,7 +416,7 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                             <div class="element image-text" style="${styleString}">
                                 ${element.title ? `<h3>${escapeHtml(element.title)}</h3>` : ''}
                                 <div class="image-text-container">
-                                    <img src="${escapeHtml(element.content)}" alt="${escapeHtml(element.title)}">
+                                    <div class="image-container" style="background-image: url('${escapeHtml(element.content)}');"></div>
                                     <div class="text">${escapeHtml(element.text).replace(/\n/g, '<br>')}</div>
                                 </div>
                             </div>

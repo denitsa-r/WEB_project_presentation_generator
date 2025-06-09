@@ -95,10 +95,15 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                                                     <h3 class="element-title"><?php echo htmlspecialchars($element['title']); ?></h3>
                                                 <?php endif; ?>
                                                 <div class="slide-element <?php echo $element['type']; ?>" 
-                                                     <?php if ($element['type'] === 'image'): ?>
+                                                     <?php if ($element['type'] === 'image' ): ?>
                                                      style="background-image: url('<?php echo $element['content']; ?>');"
                                                      <?php endif; ?>>
-                                                    <?php if ($element['type'] !== 'image'): ?>
+                                                    <?php if ($element['type'] === 'image_text'): ?>
+                                                        <div class="image-text-container">
+                                                            <div class="image-container" style="background-image: url('<?php echo $element['content']; ?>');"></div>
+                                                            <div class="text"><?php echo nl2br(htmlspecialchars($element['text'])); ?></div>
+                                                        </div>
+                                                    <?php elseif ($element['type'] !== 'image'): ?>
                                                         <?php echo $element['content']; ?>
                                                     <?php endif; ?>
                                                 </div>

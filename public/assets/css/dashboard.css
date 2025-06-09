@@ -143,6 +143,10 @@
     font-size: 0.8em;
 }
 
+.actions {
+    justify-content: center;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .dashboard-header {
