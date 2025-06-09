@@ -17,7 +17,7 @@
             width: 100%;
         }
         .review-container {
-            width: 100%;
+            width: 1200px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -70,7 +70,7 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             position: relative;
             padding: 3rem;
-            min-height: 600px;
+            height: 900px;
             display: flex;
             flex-direction: column;
             width: 100%;
@@ -274,6 +274,14 @@
         <div class="slides-container" data-theme="<?= htmlspecialchars($data['presentation']['theme']) ?>">
             <?php foreach ($data['slides'] as $index => $slide): ?>
                 <div class="slide" id="slide-<?= $index + 1 ?>">
+                    <div class="slide-header">
+                        <div class="slide-header-content">
+                            <h2 class="slide-title">
+                                <?php echo htmlspecialchars($slide['title']); ?>
+                            </h2>
+                        </div>
+                    </div>
+
                     <div class="slide-content <?= htmlspecialchars($slide['layout'] ?? 'full') ?>">
                         <?php if (!empty($slide['elements'])): ?>
                             <?php foreach ($slide['elements'] as $element): ?>
@@ -294,11 +302,11 @@
                                     <?php if ($element['type'] === 'text'): ?>
                                         <p><?= nl2br(htmlspecialchars($element['content'] ?? '')) ?></p>
                                     <?php elseif ($element['type'] === 'image'): ?>
-                                        <img src="<?= htmlspecialchars($element['content'] ?? '') ?>" alt="<?= htmlspecialchars($element['title'] ?? '') ?>">
+                                            <div class="image-container" style="background-image: url('<?= htmlspecialchars($element['content'] ?? '') ?>');"></div>
                                     <?php elseif ($element['type'] === 'image_text'): ?>
                                         <div class="image-text-container">
-                                            <img src="<?= htmlspecialchars($element['content'] ?? '') ?>" alt="<?= htmlspecialchars($element['title'] ?? '') ?>">
-                                            <p><?= nl2br(htmlspecialchars($element['text'] ?? '')) ?></p>
+                                            <div class="image-container" style="background-image: url('<?php echo $element['content']; ?>');"></div>
+                                            <div class="text"><p><?php echo nl2br(htmlspecialchars($element['text'])); ?></p></div>
                                         </div>
                                     <?php elseif ($element['type'] === 'list'): ?>
                                         <ul>
@@ -315,7 +323,7 @@
                                         </ul>
                                     <?php elseif ($element['type'] === 'image_list'): ?>
                                         <div class="image-list-container">
-                                            <img src="<?= htmlspecialchars($element['content'] ?? '') ?>" alt="<?= htmlspecialchars($element['title'] ?? '') ?>">
+                                            <div class="image-container" style="background-image: url('<?php echo $element['content']; ?>');"></div>
                                             <ul>
                                                 <?php 
                                                 $items = !empty($element['text']) ? explode("\n", $element['text']) : [];
