@@ -873,7 +873,7 @@ class PresentationController extends Controller
                 'presentation_id' => $presentationId,
                 'title' => $slide['title'],
                 'slide_order' => $index,
-                'layout' => 'default'
+                'layout' => $slide['layout'] ?? 'full'
             ]);
 
             if ($slideId) {
@@ -897,6 +897,14 @@ class PresentationController extends Controller
         $dom = new DOMDocument();
         @$dom->loadHTML($content, LIBXML_NOERROR);
         
+        // Извличане на темата
+        $theme = 'light';
+        $presentationView = $dom->getElementsByTagName('div')->item(0);
+        if ($presentationView && $presentationView->getAttribute('class') === 'presentation-view') {
+            $theme = $presentationView->getAttribute('data-theme') ?? 'light';
+        }
+        
+        // Извличане на заглавието
         $title = '';
         $titleElements = $dom->getElementsByTagName('title');
         if ($titleElements->length > 0) {
@@ -909,47 +917,39 @@ class PresentationController extends Controller
             if ($slideElement->getAttribute('class') === 'slide') {
                 $slide = [
                     'title' => '',
+                    'layout' => 'full',
                     'elements' => []
                 ];
 
+                // Извличане на заглавието на слайда
                 $titleElements = $slideElement->getElementsByTagName('h2');
                 if ($titleElements->length > 0) {
                     $slide['title'] = $titleElements->item(0)->textContent;
                 }
 
-                $contentElement = $slideElement->getElementsByTagName('div')->item(0);
-                if ($contentElement) {
-                    foreach ($contentElement->childNodes as $node) {
-                        if ($node->nodeType === XML_ELEMENT_NODE) {
-                            switch ($node->nodeName) {
-                                case 'p':
-                                    $slide['elements'][] = [
-                                        'type' => 'text',
-                                        'content' => $node->textContent
-                                    ];
-                                    break;
-                                case 'img':
-                                    $slide['elements'][] = [
-                                        'type' => 'image',
-                                        'content' => $node->getAttribute('src')
-                                    ];
-                                    break;
-                                case 'ul':
-                                    $items = [];
-                                    foreach ($node->getElementsByTagName('li') as $li) {
-                                        $items[] = $li->textContent;
-                                    }
-                                    $slide['elements'][] = [
-                                        'type' => 'list',
-                                        'content' => implode("\n", $items)
-                                    ];
-                                    break;
-                                case 'h3':
-                                    if (!empty($slide['elements'])) {
-                                        $slide['elements'][count($slide['elements']) - 1]['title'] = $node->textContent;
-                                    }
-                                    break;
+                // Извличане на layout-а
+                $contentElements = $slideElement->getElementsByTagName('div');
+                foreach ($contentElements as $contentElement) {
+                    $classes = explode(' ', $contentElement->getAttribute('class'));
+                    foreach ($classes as $class) {
+                        if ($class === 'slide-content') {
+                            // Намираме следващия клас, който е layout-ът
+                            foreach ($classes as $layoutClass) {
+                                if ($layoutClass !== 'slide-content' && !empty($layoutClass)) {
+                                    $slide['layout'] = $layoutClass;
+                                    break 2;
+                                }
                             }
+                        }
+                    }
+                }
+
+                // Обработка на елементите
+                foreach ($contentElements as $contentElement) {
+                    if ($contentElement->getAttribute('class') === 'element-container') {
+                        $element = $this->parseElement($contentElement);
+                        if ($element) {
+                            $slide['elements'][] = $element;
                         }
                     }
                 }
@@ -960,8 +960,134 @@ class PresentationController extends Controller
 
         return [
             'title' => $title,
+            'theme' => $theme,
             'slides' => $slides
         ];
+    }
+
+    private function parseElement($contentElement)
+    {
+        $element = [
+            'type' => '',
+            'content' => '',
+            'title' => '',
+            'text' => '',
+            'style' => '{}'
+        ];
+
+        // Извличане на заглавието
+        $titleElement = $contentElement->getElementsByTagName('h3')->item(0);
+        if ($titleElement) {
+            $element['title'] = $titleElement->textContent;
+        }
+
+        // Извличане на типа на елемента
+        $contentElementDiv = $contentElement->getElementsByTagName('div')->item(0);
+        if ($contentElementDiv) {
+            $classes = explode(' ', $contentElementDiv->getAttribute('class'));
+            foreach ($classes as $class) {
+                if (strpos($class, 'type-') === 0) {
+                    $element['type'] = substr($class, 5);
+                    break;
+                }
+            }
+        }
+
+        // Извличане на стиловете
+        if ($contentElementDiv) {
+            $style = $contentElementDiv->getAttribute('style');
+            if ($style) {
+                $element['style'] = json_encode(['style' => $style]);
+            }
+        }
+
+        // Обработка според типа на елемента
+        switch ($element['type']) {
+            case 'image':
+                $imageContainer = $contentElementDiv->getElementsByTagName('div')->item(0);
+                if ($imageContainer) {
+                    $style = $imageContainer->getAttribute('style');
+                    if (preg_match('/background-image:\s*url\([\'"](.+?)[\'"]\)/', $style, $matches)) {
+                        $element['content'] = $matches[1];
+                    }
+                }
+                break;
+
+            case 'image_text':
+                $imageTextContainer = $contentElementDiv->getElementsByTagName('div')->item(0);
+                if ($imageTextContainer) {
+                    $imageContainer = $imageTextContainer->getElementsByTagName('div')->item(0);
+                    $textContainer = $imageTextContainer->getElementsByTagName('div')->item(1);
+                    
+                    if ($imageContainer) {
+                        $style = $imageContainer->getAttribute('style');
+                        if (preg_match('/background-image:\s*url\([\'"](.+?)[\'"]\)/', $style, $matches)) {
+                            $element['content'] = $matches[1];
+                        }
+                    }
+                    
+                    if ($textContainer) {
+                        $paragraph = $textContainer->getElementsByTagName('p')->item(0);
+                        if ($paragraph) {
+                            $element['text'] = $paragraph->textContent;
+                        } else {
+                            $element['text'] = $textContainer->textContent;
+                        }
+                    }
+                }
+                break;
+
+            case 'image_list':
+                $imageListContainer = $contentElementDiv->getElementsByTagName('div')->item(0);
+                if ($imageListContainer) {
+                    $imageContainer = $imageListContainer->getElementsByTagName('div')->item(0);
+                    $listContainer = $imageListContainer->getElementsByTagName('ul')->item(0);
+                    
+                    if ($imageContainer) {
+                        $style = $imageContainer->getAttribute('style');
+                        if (preg_match('/background-image:\s*url\([\'"](.+?)[\'"]\)/', $style, $matches)) {
+                            $element['content'] = $matches[1];
+                        }
+                    }
+                    
+                    if ($listContainer) {
+                        $items = [];
+                        foreach ($listContainer->getElementsByTagName('li') as $li) {
+                            $items[] = $li->textContent;
+                        }
+                        $element['text'] = implode("\n", $items);
+                    }
+                }
+                break;
+
+            case 'quote':
+                $blockquote = $contentElementDiv->getElementsByTagName('blockquote')->item(0);
+                if ($blockquote) {
+                    $element['content'] = $blockquote->textContent;
+                    $cite = $blockquote->getElementsByTagName('cite')->item(0);
+                    if ($cite) {
+                        $element['title'] = trim(str_replace('—', '', $cite->textContent));
+                    }
+                }
+                break;
+
+            case 'list':
+                $ul = $contentElementDiv->getElementsByTagName('ul')->item(0);
+                if ($ul) {
+                    $items = [];
+                    foreach ($ul->getElementsByTagName('li') as $li) {
+                        $items[] = $li->textContent;
+                    }
+                    $element['content'] = implode("\n", $items);
+                }
+                break;
+
+            case 'text':
+                $element['content'] = $contentElementDiv->textContent;
+                break;
+        }
+
+        return $element;
     }
 
     private function parseXML($content)
