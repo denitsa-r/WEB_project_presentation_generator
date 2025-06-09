@@ -302,11 +302,13 @@ class PresentationController extends Controller
 
     private function exportHTML($presentation, $slides)
     {
-        header('Content-Type: text/html; charset=utf-8');
-        header('Content-Disposition: attachment; filename="' . $presentation['title'] . '.html"');
+        error_log("Exporting presentation: " . print_r($presentation, true));
+        error_log("Exporting slides: " . print_r($slides, true));
         
-        $theme = $presentation['theme'];
-        $isDark = $theme === 'dark';
+        header('Content-Type: text/html; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . htmlspecialchars($presentation['title']) . '.html"');
+        
+        $theme = $presentation['theme'] ?? 'light';
         
         $html = '<!DOCTYPE html>
 <html lang="bg">
@@ -315,89 +317,376 @@ class PresentationController extends Controller
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>' . htmlspecialchars($presentation['title']) . '</title>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            margin: 0; 
-            padding: 20px; 
-            background-color: ' . ($isDark ? '#1a1a1a' : '#f5f5f5') . ';
-            color: ' . ($isDark ? '#e0e0e0' : '#333') . ';
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
         }
-        .slide { 
-            width: 800px; 
-            height: 600px; 
-            margin: 20px auto; 
-            border: 1px solid ' . ($isDark ? '#404040' : '#ccc') . '; 
-            padding: 20px; 
-            box-sizing: border-box; 
-            background-color: ' . ($isDark ? '#2d2d2d' : 'white') . '; 
-            box-shadow: 0 2px 4px rgba(0,0,0,' . ($isDark ? '0.3' : '0.1') . '); 
+        .presentation-view {
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        .slide-title { 
-            font-size: 24px; 
-            margin-bottom: 20px; 
-            color: ' . ($isDark ? '#fff' : '#333') . '; 
+        .slide {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+            position: relative;
         }
-        .slide-content { 
-            font-size: 18px; 
-            color: ' . ($isDark ? '#e0e0e0' : '#444') . '; 
+        .slide-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
         }
-        .slide-image { 
-            max-width: 100%; 
-            max-height: 400px; 
-            display: block; 
-            margin: 10px auto; 
-        }
-        ul { 
-            margin: 10px 0; 
-            padding-left: 20px; 
-        }
-        li { 
-            margin: 5px 0; 
-            color: ' . ($isDark ? '#e0e0e0' : '#444') . '; 
-        }
-        .element-title {
-            font-size: 20px;
+        .content-element {
             margin-bottom: 15px;
-            color: ' . ($isDark ? '#fff' : '#333') . ';
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .content-element h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .content-element p {
+            margin: 0;
+        }
+        .content-element.type-list ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .content-element.type-quote blockquote {
+            margin: 0;
+            padding-left: 15px;
+            border-left: 4px solid #ddd;
+            font-style: italic;
+        }
+        .content-element.type-quote cite {
+            display: block;
+            margin-top: 10px;
+            font-style: normal;
+        }
+        .content-element.type-image .image-container {
+            width: 100%;
+            height: 300px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .content-element.type-image_text {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .content-element.type-image_text .image-container {
+            flex: 1;
+            height: 300px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .content-element.type-image_text .text {
+            flex: 1;
+        }
+        .content-element.type-image_list {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .content-element.type-image_list .image-container {
+            flex: 1;
+            height: 300px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .content-element.type-image_list ul {
+            flex: 1;
+        }
+
+        /* Layout styles */
+        .slide-content.full {
+            width: 100%;
+        }
+        
+        .slide-content.two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .slide-content.two-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .slide-content.three-columns {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        
+        .slide-content.three-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .slide-content.grid-2x2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 2rem;
+        }
+        
+        .slide-content.grid-2x3 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        
+        .slide-content.grid-2x4 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 2rem;
+        }
+        
+        .slide-content.grid-3x2 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 2rem;
+        }
+        
+        .slide-content.grid-3x3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        
+        .slide-content.grid-4x2 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .slide-content.two-columns,
+            .slide-content.three-columns,
+            .slide-content.grid-2x2,
+            .slide-content.grid-2x3,
+            .slide-content.grid-2x4,
+            .slide-content.grid-3x2,
+            .slide-content.grid-3x3,
+            .slide-content.grid-4x2 {
+                grid-template-columns: 1fr;
+            }
+
+            .content-element.type-image_text .image-text-container,
+            .content-element.type-image_list .image-list-container {
+                flex-direction: column;
+            }
+
+            .content-element.type-image_text .image-container,
+            .content-element.type-image_list .image-container {
+                height: 200px;
+            }
+        }
+
+        .presentation-view[data-theme="dark"] .slide {
+            background-color: #2d2d2d;
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .presentation-view[data-theme="dark"] .slide-title {
+            color: #ffffff;
+        }
+        .presentation-view[data-theme="dark"] .content-element {
+            background-color: #333333;
+            border-color: #404040;
+        }
+        .presentation-view[data-theme="dark"] .content-element h3 {
+            color: #ffffff;
+        }
+        .presentation-view[data-theme="dark"] .content-element p {
+            color: #e0e0e0;
+        }
+        .presentation-view[data-theme="dark"] .content-element.type-list li {
+            color: #e0e0e0;
+        }
+        .presentation-view[data-theme="dark"] .content-element.type-quote blockquote {
+            border-left-color: #666666;
+            color: #e0e0e0;
+        }
+        .presentation-view[data-theme="dark"] .content-element.type-quote cite {
+            color: #b3b3b3;
+        }
+
+        .presentation-view[data-theme="barbie"] .slide {
+            background-color: #ffc3f0;
+            color: #FD269B;
+            box-shadow: 0 2px 4px rgba(253, 38, 155, 0.3);
+        }
+        .presentation-view[data-theme="barbie"] .slide-title {
+            color: #FD269B;
+        }
+        .presentation-view[data-theme="barbie"] .content-element {
+            background-color: #ffc3f0;
+            border-color: #FD269B;
+        }
+        .presentation-view[data-theme="barbie"] .content-element h3 {
+            color: #FD269B;
+        }
+        .presentation-view[data-theme="barbie"] .content-element p {
+            color: #FD269B;
+        }
+        .presentation-view[data-theme="barbie"] .content-element.type-list li {
+            color: #FD269B;
+        }
+        .presentation-view[data-theme="barbie"] .content-element.type-quote blockquote {
+            border-left-color: #FBB659;
+            color: #FD269B;
+        }
+        .presentation-view[data-theme="barbie"] .content-element.type-quote cite {
+            color: #FBB659;
+        }
+
+        .presentation-view[data-theme="ken"] .slide {
+            background-color: #B4E6FF;
+            color: #1963ad;
+            box-shadow: 0 2px 4px rgba(58, 142, 228, 0.3);
+        }
+        .presentation-view[data-theme="ken"] .slide-title {
+            color: #1963ad;
+        }
+        .presentation-view[data-theme="ken"] .content-element {
+            background-color: #B4E6FF;
+            border-color: #1963ad;
+        }
+        .presentation-view[data-theme="ken"] .content-element h3 {
+            color: #1963ad;
+        }
+        .presentation-view[data-theme="ken"] .content-element p {
+            color: #1963ad;
+        }
+        .presentation-view[data-theme="ken"] .content-element.type-list li {
+            color: #1963ad;
+        }
+        .presentation-view[data-theme="ken"] .content-element.type-quote blockquote {
+            border-left-color: #ffa5be;
+            color: #1963ad;
+        }
+        .presentation-view[data-theme="ken"] .content-element.type-quote cite {
+            color: #ffa5be;
         }
     </style>
 </head>
-<body>';
+<body>
+    <div class="presentation-view" data-theme="' . htmlspecialchars($theme) . '">';
 
         foreach ($slides as $slide) {
-            $html .= '<div class="slide">';
-            $html .= '<h2 class="slide-title">' . htmlspecialchars($slide['title']) . '</h2>';
-            $html .= '<div class="slide-content">';
+            error_log("Processing slide: " . print_r($slide, true));
             
-            foreach ($slide['elements'] as $element) {
-                if (!empty($element['title'])) {
-                    $html .= '<h3 class="element-title">' . htmlspecialchars($element['title']) . '</h3>';
-                }
+            $slideTitle = $slide['title'] ?? '';
+            $slideLayout = $slide['layout'] ?? 'full';
+            
+            $html .= '<div class="slide">
+                <h2 class="slide-title">' . htmlspecialchars($slideTitle) . '</h2>
+                <div class="slide-content ' . htmlspecialchars($slideLayout) . '">';
+
+            if (!empty($slide['elements'])) {
+                error_log("Slide has elements: " . print_r($slide['elements'], true));
                 
-                switch ($element['type']) {
-                    case 'text':
-                        $html .= '<p>' . nl2br(htmlspecialchars($element['content'])) . '</p>';
-                        break;
-                    case 'image':
-                        $html .= '<img src="' . htmlspecialchars($element['content']) . '" class="slide-image" alt="Slide image">';
-                        break;
-                    case 'list':
-                        $items = explode("\n", $element['content']);
-                        $html .= '<ul>';
-                        foreach ($items as $item) {
-                            if (trim($item) !== '') {
-                                $html .= '<li>' . htmlspecialchars($item) . '</li>';
+                foreach ($slide['elements'] as $element) {
+                    error_log("Processing element: " . print_r($element, true));
+                    
+                    $elementType = $element['type'] ?? '';
+                    $elementTitle = $element['title'] ?? '';
+                    $elementContent = $element['content'] ?? '';
+                    $elementText = $element['text'] ?? '';
+                    
+                    error_log("Element data - Type: $elementType, Title: $elementTitle, Content: $elementContent, Text: $elementText");
+                    
+                    $html .= '<div class="element-container">';
+                    
+                    if (!empty($elementTitle)) {
+                        $html .= '<h3 class="element-title">' . htmlspecialchars($elementTitle) . '</h3>';
+                    }
+
+                    switch ($elementType) {
+                        case 'image':
+                            $html .= '<div class="content-element type-image">
+                                <div class="image-container" style="background-image: url(\'' . htmlspecialchars($elementContent) . '\');"></div>
+                            </div>';
+                            break;
+                        
+                        case 'image_text':
+                            $html .= '<div class="content-element type-image_text">
+                                <div class="image-text-container">
+                                    <div class="image-container" style="background-image: url(\'' . htmlspecialchars($elementContent) . '\');"></div>
+                                    <div class="text"><p>' . nl2br(htmlspecialchars($elementText)) . '</p></div>
+                                </div>
+                            </div>';
+                            break;
+                        
+                        case 'image_list':
+                            $html .= '<div class="content-element type-image_list">
+                                <div class="image-list-container">
+                                    <div class="image-container" style="background-image: url(\'' . htmlspecialchars($elementContent) . '\');"></div>
+                                    <ul>';
+                            foreach (explode("\n", $elementText) as $item) {
+                                if (trim($item) !== '') {
+                                    $html .= '<li>' . htmlspecialchars($item) . '</li>';
+                                }
                             }
-                        }
-                        $html .= '</ul>';
-                        break;
+                            $html .= '</ul></div></div>';
+                            break;
+                        
+                        case 'quote':
+                            $html .= '<div class="content-element type-quote">
+                                <blockquote>' . nl2br(htmlspecialchars($elementContent));
+                            if (!empty($elementTitle)) {
+                                $html .= '<cite>— ' . htmlspecialchars($elementTitle) . '</cite>';
+                            }
+                            $html .= '</blockquote></div>';
+                            break;
+                        
+                        case 'list':
+                            $html .= '<div class="content-element type-list"><ul>';
+                            foreach (explode("\n", $elementContent) as $item) {
+                                if (trim($item) !== '') {
+                                    $html .= '<li>' . htmlspecialchars($item) . '</li>';
+                                }
+                            }
+                            $html .= '</ul></div>';
+                            break;
+                        
+                        case 'text':
+                        default:
+                            $html .= '<div class="content-element type-text">' . 
+                                nl2br(htmlspecialchars($elementContent)) . 
+                            '</div>';
+                            break;
+                    }
+                    
+                    $html .= '</div>';
                 }
+            } else {
+                $html .= '<div class="empty-content">Няма добавено съдържание</div>';
             }
-            
+
             $html .= '</div></div>';
         }
 
-        $html .= '</body></html>';
+        $html .= '</div></body></html>';
         
         echo $html;
         exit;

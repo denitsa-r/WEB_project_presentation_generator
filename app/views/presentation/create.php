@@ -38,9 +38,11 @@
 
                 <div class="form-group">
                     <label for="theme">Тема</label>
-                    <select id="theme" name="theme" required>
-                        <option value="light">Светла</option>
-                        <option value="dark">Тъмна</option>
+                    <select id="theme" name="theme" class="form-control">
+                        <option value="light">Светла тема</option>
+                        <option value="dark">Тъмна тема</option>
+                        <option value="barbie">Barbie тема</option>
+                        <option value="ken">Ken тема</option>
                     </select>
                 </div>
 

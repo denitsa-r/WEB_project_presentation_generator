@@ -127,8 +127,16 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                                                                 <?php endif; ?>
                                                             </blockquote>
                                                         </div>
+                                                    <?php elseif ($element['type'] === 'list'): ?>
+                                                        <div class="content-element type-list">
+                                                            <ul>
+                                                                <?php foreach (explode("\n", $element['content']) as $item): if (trim($item) !== ''): ?>
+                                                                    <li><?php echo htmlspecialchars($item); ?></li>
+                                                                <?php endif; endforeach; ?>
+                                                            </ul>
+                                                        </div>
                                                     <?php else: ?>
-                                                        <div class="content-element <?php echo $element['type']; ?>">
+                                                        <div class="content-element type-text">
                                                             <?php echo nl2br(htmlspecialchars($element['content'])); ?>
                                                         </div>
                                                     <?php endif; ?>
@@ -161,6 +169,40 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
 
     <script>
         // JavaScript кодът е преместен в main.js
+
+        // Функция за експорт на презентацията
+        function exportPresentation() {
+            const presentationId = <?= $data['presentation']['id'] ?>;
+            
+            // Изпращаме AJAX заявка към сървъра
+            fetch(`${BASE_URL}/presentation/export/${presentationId}/html`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'text/html'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Грешка при експорт на презентацията');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                // Създаваме връзка за изтегляне
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = '<?= $data['presentation']['title'] ?>.html';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Възникна грешка при експорт на презентацията');
+            });
+        }
     </script>
 </body>
 </html> 

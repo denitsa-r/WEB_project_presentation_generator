@@ -500,6 +500,13 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
 
             slidePreview.innerHTML = previewHtml;
         }
+
+        // Theme preview
+        document.getElementById('theme').addEventListener('change', function() {
+            const preview = document.querySelector('.slide-preview');
+            preview.setAttribute('data-theme', this.value);
+            updatePreview();
+        });
     </script>
 </body>
 </html> 

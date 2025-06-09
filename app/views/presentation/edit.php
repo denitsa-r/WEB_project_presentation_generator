@@ -32,9 +32,11 @@
 
                 <div class="form-group">
                     <label for="theme">Тема:</label>
-                    <select id="theme" name="theme" required>
-                        <option value="light" <?= $data['presentation']['theme'] === 'light' ? 'selected' : '' ?>>Светла</option>
-                        <option value="dark" <?= $data['presentation']['theme'] === 'dark' ? 'selected' : '' ?>>Тъмна</option>
+                    <select id="theme" name="theme" class="form-control">
+                        <option value="light" <?php echo $data['presentation']['theme'] === 'light' ? 'selected' : ''; ?>>Светла тема</option>
+                        <option value="dark" <?php echo $data['presentation']['theme'] === 'dark' ? 'selected' : ''; ?>>Тъмна тема</option>
+                        <option value="barbie" <?php echo $data['presentation']['theme'] === 'barbie' ? 'selected' : ''; ?>>Barbie тема</option>
+                        <option value="ken" <?php echo $data['presentation']['theme'] === 'ken' ? 'selected' : ''; ?>>Ken тема</option>
                     </select>
                 </div>
 

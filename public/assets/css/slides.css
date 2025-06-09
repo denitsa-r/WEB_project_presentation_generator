@@ -505,4 +505,57 @@
         width: 100%;
         height: 200px;
     }
+}
+
+/* Barbie Theme */
+.slide-preview[data-theme="barbie"] {
+    background-color: #FEA1E7;
+}
+
+.slide-preview[data-theme="barbie"] .slide-title {
+    color: #FD269B;
+}
+
+.slide-preview[data-theme="barbie"] .content-element {
+    background-color: #ffffff;
+    border-color: #FEA1E7;
+}
+
+.slide-preview[data-theme="barbie"] .content-element h3 {
+    color: #FD269B;
+}
+
+.slide-preview[data-theme="barbie"] .content-element p {
+    color: #FD269B;
+}
+
+.slide-preview[data-theme="barbie"] .content-element.type-list li {
+    color: #FD269B;
+}
+
+.slide-preview[data-theme="barbie"] .content-element.type-quote blockquote {
+    border-left-color: #FBB659;
+    color: #FD269B;
+}
+
+.slide-preview[data-theme="barbie"] .content-element.type-quote cite {
+    color: #FBB659;
+}
+
+.slide-preview[data-theme="barbie"] .empty-state {
+    background-color: #ffffff;
+    color: #FD269B;
+}
+
+.slide-preview[data-theme="barbie"] .empty-state i {
+    color: #FBB659;
+}
+
+.slide-preview[data-theme="barbie"] .error-message {
+    background-color: #FEA1E7;
+    color: #FD269B;
+}
+
+.slide-preview[data-theme="barbie"] .error-message i {
+    color: #FD269B;
 } 

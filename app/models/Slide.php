@@ -42,14 +42,18 @@ class Slide extends Model
         try {
             error_log("Getting slides for presentation ID: " . $presentationId);
             
-            $sql = "SELECT s.*, se.id as element_id, se.type as element_type, 
-                    se.title as element_title, se.content as element_content, 
-                    se.text as element_text, se.style as element_style, 
+            $sql = "SELECT s.*, 
+                    se.id as element_id, 
+                    se.type as element_type, 
+                    se.title as element_title, 
+                    se.content as element_content, 
+                    se.text as element_text, 
+                    COALESCE(se.style, '{}') as element_style, 
                     se.element_order
                  FROM slides s
                  LEFT JOIN slide_elements se ON s.id = se.slide_id
                     WHERE s.presentation_id = :presentation_id 
-                    ORDER BY s.slide_order ASC, se.element_order";
+                    ORDER BY s.slide_order ASC, se.element_order ASC";
                     
             error_log("SQL Query: " . $sql);
             
@@ -84,11 +88,11 @@ class Slide extends Model
                     $element = [
                         'id' => $row['element_id'],
                         'type' => $row['element_type'],
-                        'title' => $row['element_title'],
-                        'content' => $row['element_content'],
-                        'text' => $row['element_text'],
-                        'style' => json_decode($row['element_style'] ?? '{}', true),
-                        'element_order' => $row['element_order']
+                        'title' => $row['element_title'] ?? '',
+                        'content' => $row['element_content'] ?? '',
+                        'text' => $row['element_text'] ?? '',
+                        'style' => json_decode($row['element_style'], true) ?? [],
+                        'element_order' => (int)($row['element_order'] ?? 0)
                     ];
                     
                     $currentSlide['elements'][] = $element;
