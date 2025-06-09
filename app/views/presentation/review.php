@@ -225,6 +225,13 @@
         .slides-container[data-theme="dark"] {
             background-color: #1a1a1a;
         }
+        
+        .slides-container[data-theme="dark"] .slide .slide-header h2 {
+            color: #fff;
+        }
+        .slides-container[data-theme="dark"] .slide .slide-header {
+            background-color: #2d2d2d;
+        }
 
         .slides-container[data-theme="dark"] .slide {
             background-color: #2d2d2d;

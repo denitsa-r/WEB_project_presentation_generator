@@ -182,24 +182,37 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                                 <textarea class="content-text" name="elements[${index}][text]" placeholder="Въведете текст">${escapeHtml(text)}</textarea>
                             </div>
                         </div>
+                    ` : type === 'image_list' ? `
+                        <div class="image-list-fields">
+                            <div class="image-field">
+                                <label>Изображение:</label>
+                                <input type="url" class="content-content" name="elements[${index}][content]" placeholder="URL на изображението" value="${escapeHtml(content)}">
+                            </div>
+                            <div class="list-field">
+                                <label>Списък:</label>
+                                <textarea class="content-text" name="elements[${index}][text]" placeholder="Въведете елементи на списъка (по един на ред)">${escapeHtml(text)}</textarea>
+                            </div>
+                        </div>
                     ` : type === 'image' ? `
                         <input type="url" class="content-content" name="elements[${index}][content]" placeholder="URL на изображението" value="${escapeHtml(content)}">
                     ` : type === 'list' ? `
-                        <textarea class="content-text" name="elements[${index}][text]" placeholder="Въведете елементи на списъка (по един на ред)">${escapeHtml(text)}</textarea>
+                        <textarea class="content-content" name="elements[${index}][content]" placeholder="Въведете елементи на списъка (по един на ред)">${escapeHtml(text || content)}</textarea>
+                    ` : type === 'quote' ? `
+                        <textarea class="content-content" name="elements[${index}][content]" placeholder="Въведете цитат">${escapeHtml(text || content)}</textarea>
                     ` : `
-                        <textarea class="content-content" name="elements[${index}][content]" placeholder="Съдържание">${escapeHtml(content)}</textarea>
+                        <textarea class="content-content" name="elements[${index}][content]" placeholder="Въведете текст">${escapeHtml(text || content)}</textarea>
                     `}
                 </div>
-                
             `;
 
-            // Add event listeners
+            // Add event listener for content type change
             const contentTypeSelect = element.querySelector('.content-type');
             contentTypeSelect.addEventListener('change', function() {
                 updateContentFields(element, this.value);
                 updatePreview();
             });
 
+            // Add event listeners for content changes
             element.querySelectorAll('input, textarea').forEach(input => {
                 input.addEventListener('input', updatePreview);
             });
@@ -222,6 +235,7 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
             const textTextarea = element.querySelector('.content-text');
             const styleInput = element.querySelector('input[name^="elements["][name$="][style]"]');
             const index = element.querySelector('.content-type').name.match(/\[(\d+)\]/)[1];
+            const currentType = element.querySelector('.content-type').value;
 
             // Store current values
             const currentTitle = titleInput.value;
@@ -238,18 +252,27 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
             switch (type) {
                 case 'text':
                     titleInput.placeholder = 'Заглавие (по желание)';
+                    if (currentType === 'quote') {
+                        titleInput.value = currentTitle;
+                    }
                     contentFields.innerHTML += `
                         <textarea class="content-content" name="elements[${index}][content]" placeholder="Въведете текст">${currentText || currentContent}</textarea>
                     `;
                     break;
                 case 'image':
                     titleInput.placeholder = 'Заглавие на изображението (по желание)';
+                    if (currentType === 'text' || currentType === 'list' || currentType === 'quote') {
+                        titleInput.value = currentTitle;
+                    }
                     contentFields.innerHTML += `
                         <input type="url" class="content-content" name="elements[${index}][content]" placeholder="URL на изображението" value="${currentContent}">
                     `;
                     break;
                 case 'image_text':
                     titleInput.placeholder = 'Заглавие (по желание)';
+                    if (currentType === 'text' || currentType === 'list' || currentType === 'quote') {
+                        titleInput.value = currentTitle;
+                    }
                     contentFields.innerHTML += `
                         <div class="image-text-fields">
                             <div class="image-field">
@@ -265,6 +288,9 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                     break;
                 case 'image_list':
                     titleInput.placeholder = 'Заглавие (по желание)';
+                    if (currentType === 'text' || currentType === 'list' || currentType === 'quote') {
+                        titleInput.value = currentTitle;
+                    }
                     contentFields.innerHTML += `
                         <div class="image-list-fields">
                             <div class="image-field">
@@ -280,12 +306,18 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                     break;
                 case 'list':
                     titleInput.placeholder = 'Заглавие на списъка (по желание)';
+                    if (currentType === 'text' || currentType === 'quote') {
+                        titleInput.value = currentTitle;
+                    }
                     contentFields.innerHTML += `
                         <textarea class="content-content" name="elements[${index}][content]" placeholder="Въведете елементи на списъка (по един на ред)">${currentText || currentContent}</textarea>
                     `;
                     break;
                 case 'quote':
                     titleInput.placeholder = 'Автор на цитата (по желание)';
+                    if (currentType === 'text' || currentType === 'list') {
+                        titleInput.value = currentTitle;
+                    }
                     contentFields.innerHTML += `
                         <textarea class="content-content" name="elements[${index}][content]" placeholder="Въведете цитат">${currentText || currentContent}</textarea>
                     `;
