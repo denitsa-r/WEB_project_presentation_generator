@@ -1041,24 +1041,34 @@ class PresentationController extends Controller
             
             // Извличане на слайдовете
             foreach ($xml->slide as $slide) {
-            $slideData = [
+                $slideData = [
                     'title' => (string)$slide['title'],
                     'slide_order' => (int)$slide['slide_order'],
                     'layout' => (string)$slide['layout'],
-                'elements' => []
-            ];
+                    'elements' => []
+                ];
 
                 // Извличане на елементите на слайда
                 foreach ($slide->slide_element as $element) {
+                    error_log("Processing XML element: " . print_r($element, true));
+                    error_log("Element attributes: " . print_r($element->attributes(), true));
+                    
                     $elementType = (string)$element['type'];
-                $elementData = [
+                    $elementTitle = (string)$element['title'];
+                    
+                    error_log("Element type: " . $elementType);
+                    error_log("Element title: " . $elementTitle);
+                    
+                    $elementData = [
                         'element_order' => (int)$element['element_order'],
                         'type' => $elementType,
-                        'title' => (string)$element['title'],
+                        'title' => $elementTitle,
                         'content' => (string)$element['content'],
                         'text' => (string)$element['text'],
                         'style' => (string)$element['style']
                     ];
+
+                    error_log("Created element data: " . print_r($elementData, true));
 
                     // Специална обработка за различните типове елементи
                     switch ($elementType) {
@@ -1076,15 +1086,17 @@ class PresentationController extends Controller
                             break;
                     }
                     
-                $slideData['elements'][] = $elementData;
-            }
+                    $slideData['elements'][] = $elementData;
+                }
 
                 $presentationData['slides'][] = $slideData;
-        }
+            }
 
+            error_log("Final parsed XML data: " . print_r($presentationData, true));
             return $presentationData;
         } catch (Exception $e) {
             error_log("Error parsing XML: " . $e->getMessage());
+            error_log("XML content: " . $content);
             return null;
         }
     }

@@ -1,645 +1,724 @@
-[2025-06-10 09:49:21] App::parseUrl - Parsed URL from REQUEST_URI: Array
+[2025-06-10 10:49:00] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => presentation
+    [1] => import
+    [2] => 25
+)
+
+[2025-06-10 10:49:00] App::parseUrl - Final URL segments: Array
+(
+    [0] => presentation
+    [1] => import
+    [2] => 25
+)
+
+[2025-06-10 10:49:00] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/import/25
+[2025-06-10 10:49:00] App::__construct - REQUEST_METHOD: POST
+[2025-06-10 10:49:00] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:49:00] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:49:00] App::__construct - Selected controller: PresentationController
+[2025-06-10 10:49:00] App::__construct - Selected method: import
+[2025-06-10 10:49:00] App::__construct - Parameters: Array
+(
+    [0] => 25
+)
+
+[2025-06-10 10:49:00] App::__construct - Calling controller method with parameters
+[2025-06-10 10:49:00] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => presentation
+    [1] => viewPresentation
+    [2] => 93
+)
+
+[2025-06-10 10:49:00] App::parseUrl - Final URL segments: Array
+(
+    [0] => presentation
+    [1] => viewPresentation
+    [2] => 93
+)
+
+[2025-06-10 10:49:00] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/viewPresentation/93
+[2025-06-10 10:49:00] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:49:00] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:49:00] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:49:00] App::__construct - Selected controller: PresentationController
+[2025-06-10 10:49:00] App::__construct - Selected method: viewPresentation
+[2025-06-10 10:49:00] App::__construct - Parameters: Array
+(
+    [0] => 93
+)
+
+[2025-06-10 10:49:00] App::__construct - Calling controller method with parameters
+[2025-06-10 10:51:57] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => dashboard
 )
 
-[2025-06-10 09:49:21] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:51:57] App::parseUrl - Final URL segments: Array
 (
     [0] => dashboard
 )
 
-[2025-06-10 09:49:21] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard
-[2025-06-10 09:49:21] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 09:49:21] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 09:49:21] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 09:49:21] App::__construct - Selected controller: DashboardController
-[2025-06-10 09:49:21] App::__construct - Parameters: Array
+[2025-06-10 10:51:57] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard
+[2025-06-10 10:51:57] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:51:57] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:51:57] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:51:57] App::__construct - Selected controller: DashboardController
+[2025-06-10 10:51:57] App::__construct - Parameters: Array
 (
 )
 
-[2025-06-10 09:49:21] App::__construct - Calling controller method with parameters
-[2025-06-10 09:49:22] App::parseUrl - Parsed URL from REQUEST_URI: Array
+[2025-06-10 10:51:57] App::__construct - Calling controller method with parameters
+[2025-06-10 10:51:58] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => dashboard
     [1] => viewWorkspace
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 09:49:22] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:51:58] App::parseUrl - Final URL segments: Array
 (
     [0] => dashboard
     [1] => viewWorkspace
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 09:49:22] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard/viewWorkspace/23
-[2025-06-10 09:49:22] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 09:49:22] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 09:49:22] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 09:49:22] App::__construct - Selected controller: DashboardController
-[2025-06-10 09:49:22] App::__construct - Selected method: viewWorkspace
-[2025-06-10 09:49:22] App::__construct - Parameters: Array
+[2025-06-10 10:51:58] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard/viewWorkspace/25
+[2025-06-10 10:51:58] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:51:58] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:51:58] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:51:58] App::__construct - Selected controller: DashboardController
+[2025-06-10 10:51:58] App::__construct - Selected method: viewWorkspace
+[2025-06-10 10:51:58] App::__construct - Parameters: Array
 (
-    [0] => 23
+    [0] => 25
 )
 
-[2025-06-10 09:49:22] App::__construct - Calling controller method with parameters
-[2025-06-10 09:49:23] App::parseUrl - Parsed URL from REQUEST_URI: Array
-(
-    [0] => presentation
-    [1] => create
-    [2] => 23
-)
-
-[2025-06-10 09:49:23] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:51:58] App::__construct - Calling controller method with parameters
+[2025-06-10 10:51:59] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => presentation
     [1] => create
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 09:49:23] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/create/23
-[2025-06-10 09:49:23] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 09:49:23] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 09:49:23] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 09:49:23] App::__construct - Selected controller: PresentationController
-[2025-06-10 09:49:23] App::__construct - Selected method: create
-[2025-06-10 09:49:23] App::__construct - Parameters: Array
-(
-    [0] => 23
-)
-
-[2025-06-10 09:49:23] App::__construct - Calling controller method with parameters
-[2025-06-10 09:49:28] App::parseUrl - Parsed URL from REQUEST_URI: Array
-(
-    [0] => presentation
-    [1] => import
-    [2] => 23
-)
-
-[2025-06-10 09:49:28] App::parseUrl - Final URL segments: Array
-(
-    [0] => presentation
-    [1] => import
-    [2] => 23
-)
-
-[2025-06-10 09:49:28] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/import/23
-[2025-06-10 09:49:28] App::__construct - REQUEST_METHOD: POST
-[2025-06-10 09:49:28] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 09:49:28] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 09:49:28] App::__construct - Selected controller: PresentationController
-[2025-06-10 09:49:28] App::__construct - Selected method: import
-[2025-06-10 09:49:28] App::__construct - Parameters: Array
-(
-    [0] => 23
-)
-
-[2025-06-10 09:49:28] App::__construct - Calling controller method with parameters
-[2025-06-10 09:49:28] App::parseUrl - Parsed URL from REQUEST_URI: Array
-(
-    [0] => presentation
-    [1] => viewPresentation
-    [2] => 70
-)
-
-[2025-06-10 09:49:28] App::parseUrl - Final URL segments: Array
-(
-    [0] => presentation
-    [1] => viewPresentation
-    [2] => 70
-)
-
-[2025-06-10 09:49:28] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/viewPresentation/70
-[2025-06-10 09:49:28] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 09:49:28] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 09:49:28] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 09:49:28] App::__construct - Selected controller: PresentationController
-[2025-06-10 09:49:28] App::__construct - Selected method: viewPresentation
-[2025-06-10 09:49:28] App::__construct - Parameters: Array
-(
-    [0] => 70
-)
-
-[2025-06-10 09:49:28] App::__construct - Calling controller method with parameters
-[2025-06-10 09:53:42] App::parseUrl - Parsed URL from REQUEST_URI: Array
+[2025-06-10 10:51:59] App::parseUrl - Final URL segments: Array
 (
     [0] => presentation
     [1] => create
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 09:53:42] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:51:59] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/create/25
+[2025-06-10 10:51:59] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:51:59] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:51:59] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:51:59] App::__construct - Selected controller: PresentationController
+[2025-06-10 10:51:59] App::__construct - Selected method: create
+[2025-06-10 10:51:59] App::__construct - Parameters: Array
 (
-    [0] => presentation
-    [1] => create
-    [2] => 23
+    [0] => 25
 )
 
-[2025-06-10 09:53:42] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/create/23
-[2025-06-10 09:53:42] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 09:53:42] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 09:53:42] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 09:53:42] App::__construct - Selected controller: PresentationController
-[2025-06-10 09:53:42] App::__construct - Selected method: create
-[2025-06-10 09:53:42] App::__construct - Parameters: Array
-(
-    [0] => 23
-)
-
-[2025-06-10 09:53:42] App::__construct - Calling controller method with parameters
-[2025-06-10 09:53:46] App::parseUrl - Parsed URL from REQUEST_URI: Array
+[2025-06-10 10:51:59] App::__construct - Calling controller method with parameters
+[2025-06-10 10:52:07] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => presentation
     [1] => import
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 09:53:46] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:52:07] App::parseUrl - Final URL segments: Array
 (
     [0] => presentation
     [1] => import
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 09:53:46] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/import/23
-[2025-06-10 09:53:46] App::__construct - REQUEST_METHOD: POST
-[2025-06-10 09:53:46] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 09:53:46] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 09:53:46] App::__construct - Selected controller: PresentationController
-[2025-06-10 09:53:46] App::__construct - Selected method: import
-[2025-06-10 09:53:46] App::__construct - Parameters: Array
+[2025-06-10 10:52:07] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/import/25
+[2025-06-10 10:52:07] App::__construct - REQUEST_METHOD: POST
+[2025-06-10 10:52:07] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:52:07] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:52:07] App::__construct - Selected controller: PresentationController
+[2025-06-10 10:52:07] App::__construct - Selected method: import
+[2025-06-10 10:52:07] App::__construct - Parameters: Array
 (
-    [0] => 23
+    [0] => 25
 )
 
-[2025-06-10 09:53:46] App::__construct - Calling controller method with parameters
-[2025-06-10 09:53:47] App::parseUrl - Parsed URL from REQUEST_URI: Array
-(
-    [0] => presentation
-    [1] => viewPresentation
-    [2] => 71
-)
-
-[2025-06-10 09:53:47] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:52:07] App::__construct - Calling controller method with parameters
+[2025-06-10 10:52:07] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => presentation
     [1] => viewPresentation
-    [2] => 71
+    [2] => 94
 )
 
-[2025-06-10 09:53:47] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/viewPresentation/71
-[2025-06-10 09:53:47] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 09:53:47] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 09:53:47] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 09:53:47] App::__construct - Selected controller: PresentationController
-[2025-06-10 09:53:47] App::__construct - Selected method: viewPresentation
-[2025-06-10 09:53:47] App::__construct - Parameters: Array
+[2025-06-10 10:52:07] App::parseUrl - Final URL segments: Array
 (
-    [0] => 71
+    [0] => presentation
+    [1] => viewPresentation
+    [2] => 94
 )
 
-[2025-06-10 09:53:47] App::__construct - Calling controller method with parameters
-[2025-06-10 10:05:21] App::parseUrl - Parsed URL from REQUEST_URI: Array
+[2025-06-10 10:52:07] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/viewPresentation/94
+[2025-06-10 10:52:07] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:52:07] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:52:07] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:52:07] App::__construct - Selected controller: PresentationController
+[2025-06-10 10:52:07] App::__construct - Selected method: viewPresentation
+[2025-06-10 10:52:07] App::__construct - Parameters: Array
+(
+    [0] => 94
+)
+
+[2025-06-10 10:52:07] App::__construct - Calling controller method with parameters
+[2025-06-10 10:53:50] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => dashboard
 )
 
-[2025-06-10 10:05:21] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:53:50] App::parseUrl - Final URL segments: Array
 (
     [0] => dashboard
 )
 
-[2025-06-10 10:05:21] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard
-[2025-06-10 10:05:21] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 10:05:21] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:05:21] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:05:21] App::__construct - Selected controller: DashboardController
-[2025-06-10 10:05:21] App::__construct - Parameters: Array
+[2025-06-10 10:53:50] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard
+[2025-06-10 10:53:50] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:53:50] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:53:50] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:53:50] App::__construct - Selected controller: DashboardController
+[2025-06-10 10:53:50] App::__construct - Parameters: Array
 (
 )
 
-[2025-06-10 10:05:21] App::__construct - Calling controller method with parameters
-[2025-06-10 10:05:22] App::parseUrl - Parsed URL from REQUEST_URI: Array
+[2025-06-10 10:53:50] App::__construct - Calling controller method with parameters
+[2025-06-10 10:53:51] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => dashboard
     [1] => viewWorkspace
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 10:05:22] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:53:51] App::parseUrl - Final URL segments: Array
 (
     [0] => dashboard
     [1] => viewWorkspace
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 10:05:22] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard/viewWorkspace/23
-[2025-06-10 10:05:22] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 10:05:22] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:05:22] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:05:22] App::__construct - Selected controller: DashboardController
-[2025-06-10 10:05:22] App::__construct - Selected method: viewWorkspace
-[2025-06-10 10:05:22] App::__construct - Parameters: Array
+[2025-06-10 10:53:51] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard/viewWorkspace/25
+[2025-06-10 10:53:51] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:53:51] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:53:51] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:53:51] App::__construct - Selected controller: DashboardController
+[2025-06-10 10:53:51] App::__construct - Selected method: viewWorkspace
+[2025-06-10 10:53:51] App::__construct - Parameters: Array
 (
-    [0] => 23
+    [0] => 25
 )
 
-[2025-06-10 10:05:22] App::__construct - Calling controller method with parameters
-[2025-06-10 10:05:23] App::parseUrl - Parsed URL from REQUEST_URI: Array
-(
-    [0] => presentation
-    [1] => create
-    [2] => 23
-)
-
-[2025-06-10 10:05:23] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:53:51] App::__construct - Calling controller method with parameters
+[2025-06-10 10:53:52] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => presentation
     [1] => create
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 10:05:23] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/create/23
-[2025-06-10 10:05:23] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 10:05:23] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:05:23] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:05:23] App::__construct - Selected controller: PresentationController
-[2025-06-10 10:05:23] App::__construct - Selected method: create
-[2025-06-10 10:05:23] App::__construct - Parameters: Array
+[2025-06-10 10:53:52] App::parseUrl - Final URL segments: Array
 (
-    [0] => 23
+    [0] => presentation
+    [1] => create
+    [2] => 25
 )
 
-[2025-06-10 10:05:23] App::__construct - Calling controller method with parameters
-[2025-06-10 10:05:28] App::parseUrl - Parsed URL from REQUEST_URI: Array
+[2025-06-10 10:53:52] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/create/25
+[2025-06-10 10:53:52] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:53:52] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:53:52] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:53:52] App::__construct - Selected controller: PresentationController
+[2025-06-10 10:53:52] App::__construct - Selected method: create
+[2025-06-10 10:53:52] App::__construct - Parameters: Array
+(
+    [0] => 25
+)
+
+[2025-06-10 10:53:52] App::__construct - Calling controller method with parameters
+[2025-06-10 10:53:56] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => presentation
     [1] => import
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 10:05:28] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:53:56] App::parseUrl - Final URL segments: Array
 (
     [0] => presentation
     [1] => import
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 10:05:28] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/import/23
-[2025-06-10 10:05:28] App::__construct - REQUEST_METHOD: POST
-[2025-06-10 10:05:28] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:05:28] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:05:28] App::__construct - Selected controller: PresentationController
-[2025-06-10 10:05:28] App::__construct - Selected method: import
-[2025-06-10 10:05:28] App::__construct - Parameters: Array
+[2025-06-10 10:53:56] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/import/25
+[2025-06-10 10:53:56] App::__construct - REQUEST_METHOD: POST
+[2025-06-10 10:53:56] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:53:56] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:53:56] App::__construct - Selected controller: PresentationController
+[2025-06-10 10:53:56] App::__construct - Selected method: import
+[2025-06-10 10:53:56] App::__construct - Parameters: Array
 (
-    [0] => 23
+    [0] => 25
 )
 
-[2025-06-10 10:05:28] App::__construct - Calling controller method with parameters
-[2025-06-10 10:05:28] App::parseUrl - Parsed URL from REQUEST_URI: Array
-(
-    [0] => presentation
-    [1] => viewPresentation
-    [2] => 72
-)
-
-[2025-06-10 10:05:28] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:53:56] App::__construct - Calling controller method with parameters
+[2025-06-10 10:53:57] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => presentation
     [1] => viewPresentation
-    [2] => 72
+    [2] => 95
 )
 
-[2025-06-10 10:05:28] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/viewPresentation/72
-[2025-06-10 10:05:28] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 10:05:28] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:05:28] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:05:28] App::__construct - Selected controller: PresentationController
-[2025-06-10 10:05:28] App::__construct - Selected method: viewPresentation
-[2025-06-10 10:05:28] App::__construct - Parameters: Array
-(
-    [0] => 72
-)
-
-[2025-06-10 10:05:28] App::__construct - Calling controller method with parameters
-[2025-06-10 10:06:48] App::parseUrl - Parsed URL from REQUEST_URI: Array
+[2025-06-10 10:53:57] App::parseUrl - Final URL segments: Array
 (
     [0] => presentation
-    [1] => delete
-    [2] => 72
+    [1] => viewPresentation
+    [2] => 95
 )
 
-[2025-06-10 10:06:48] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:53:57] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/viewPresentation/95
+[2025-06-10 10:53:57] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:53:57] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:53:57] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:53:57] App::__construct - Selected controller: PresentationController
+[2025-06-10 10:53:57] App::__construct - Selected method: viewPresentation
+[2025-06-10 10:53:57] App::__construct - Parameters: Array
+(
+    [0] => 95
+)
+
+[2025-06-10 10:53:57] App::__construct - Calling controller method with parameters
+[2025-06-10 10:53:59] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => presentation
-    [1] => delete
-    [2] => 72
+    [1] => viewPresentation
+    [2] => 95
 )
 
-[2025-06-10 10:06:48] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/delete/72
-[2025-06-10 10:06:48] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 10:06:48] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:06:48] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:06:48] App::__construct - Selected controller: PresentationController
-[2025-06-10 10:06:48] App::__construct - Selected method: delete
-[2025-06-10 10:06:48] App::__construct - Parameters: Array
-(
-    [0] => 72
-)
-
-[2025-06-10 10:06:48] App::__construct - Calling controller method with parameters
-[2025-06-10 10:06:49] App::parseUrl - Parsed URL from REQUEST_URI: Array
+[2025-06-10 10:53:59] App::parseUrl - Final URL segments: Array
 (
     [0] => presentation
-    [1] => delete
-    [2] => 72
+    [1] => viewPresentation
+    [2] => 95
 )
 
-[2025-06-10 10:06:49] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:53:59] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/viewPresentation/95
+[2025-06-10 10:53:59] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:53:59] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:53:59] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:53:59] App::__construct - Selected controller: PresentationController
+[2025-06-10 10:53:59] App::__construct - Selected method: viewPresentation
+[2025-06-10 10:53:59] App::__construct - Parameters: Array
 (
-    [0] => presentation
-    [1] => delete
-    [2] => 72
+    [0] => 95
 )
 
-[2025-06-10 10:06:49] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/delete/72
-[2025-06-10 10:06:49] App::__construct - REQUEST_METHOD: POST
-[2025-06-10 10:06:49] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:06:49] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:06:49] App::__construct - Selected controller: PresentationController
-[2025-06-10 10:06:49] App::__construct - Selected method: delete
-[2025-06-10 10:06:49] App::__construct - Parameters: Array
-(
-    [0] => 72
-)
-
-[2025-06-10 10:06:49] App::__construct - Calling controller method with parameters
-[2025-06-10 10:06:49] App::parseUrl - Parsed URL from REQUEST_URI: Array
-(
-    [0] => dashboard
-    [1] => workspace
-    [2] => 23
-)
-
-[2025-06-10 10:06:49] App::parseUrl - Final URL segments: Array
-(
-    [0] => dashboard
-    [1] => workspace
-    [2] => 23
-)
-
-[2025-06-10 10:06:49] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard/workspace/23
-[2025-06-10 10:06:49] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 10:06:49] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:06:49] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:06:49] App::__construct - Selected controller: DashboardController
-[2025-06-10 10:06:49] App::parseUrl - Parsed URL from REQUEST_URI: Array
+[2025-06-10 10:53:59] App::__construct - Calling controller method with parameters
+[2025-06-10 10:54:00] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => dashboard
 )
 
-[2025-06-10 10:06:49] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:54:00] App::parseUrl - Final URL segments: Array
 (
     [0] => dashboard
 )
 
-[2025-06-10 10:06:49] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard
-[2025-06-10 10:06:49] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 10:06:49] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:06:49] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:06:49] App::__construct - Selected controller: DashboardController
-[2025-06-10 10:06:49] App::__construct - Parameters: Array
+[2025-06-10 10:54:00] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard
+[2025-06-10 10:54:00] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:54:00] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:54:00] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:54:00] App::__construct - Selected controller: DashboardController
+[2025-06-10 10:54:00] App::__construct - Parameters: Array
 (
 )
 
-[2025-06-10 10:06:49] App::__construct - Calling controller method with parameters
-[2025-06-10 10:06:50] App::parseUrl - Parsed URL from REQUEST_URI: Array
+[2025-06-10 10:54:00] App::__construct - Calling controller method with parameters
+[2025-06-10 10:54:02] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => dashboard
     [1] => viewWorkspace
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 10:06:50] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:54:02] App::parseUrl - Final URL segments: Array
 (
     [0] => dashboard
     [1] => viewWorkspace
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 10:06:50] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard/viewWorkspace/23
-[2025-06-10 10:06:50] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 10:06:50] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:06:50] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:06:50] App::__construct - Selected controller: DashboardController
-[2025-06-10 10:06:50] App::__construct - Selected method: viewWorkspace
-[2025-06-10 10:06:50] App::__construct - Parameters: Array
+[2025-06-10 10:54:02] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard/viewWorkspace/25
+[2025-06-10 10:54:02] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:54:02] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:54:02] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:54:02] App::__construct - Selected controller: DashboardController
+[2025-06-10 10:54:02] App::__construct - Selected method: viewWorkspace
+[2025-06-10 10:54:02] App::__construct - Parameters: Array
 (
-    [0] => 23
+    [0] => 25
 )
 
-[2025-06-10 10:06:50] App::__construct - Calling controller method with parameters
-[2025-06-10 10:06:51] App::parseUrl - Parsed URL from REQUEST_URI: Array
-(
-    [0] => presentation
-    [1] => create
-    [2] => 23
-)
-
-[2025-06-10 10:06:51] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:54:02] App::__construct - Calling controller method with parameters
+[2025-06-10 10:54:04] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => presentation
     [1] => create
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 10:06:51] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/create/23
-[2025-06-10 10:06:51] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 10:06:51] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:06:51] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:06:51] App::__construct - Selected controller: PresentationController
-[2025-06-10 10:06:51] App::__construct - Selected method: create
-[2025-06-10 10:06:51] App::__construct - Parameters: Array
+[2025-06-10 10:54:04] App::parseUrl - Final URL segments: Array
 (
-    [0] => 23
+    [0] => presentation
+    [1] => create
+    [2] => 25
 )
 
-[2025-06-10 10:06:51] App::__construct - Calling controller method with parameters
-[2025-06-10 10:06:56] App::parseUrl - Parsed URL from REQUEST_URI: Array
+[2025-06-10 10:54:04] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/create/25
+[2025-06-10 10:54:04] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:54:04] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:54:04] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:54:04] App::__construct - Selected controller: PresentationController
+[2025-06-10 10:54:04] App::__construct - Selected method: create
+[2025-06-10 10:54:04] App::__construct - Parameters: Array
+(
+    [0] => 25
+)
+
+[2025-06-10 10:54:04] App::__construct - Calling controller method with parameters
+[2025-06-10 10:54:12] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => presentation
     [1] => import
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 10:06:56] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:54:12] App::parseUrl - Final URL segments: Array
 (
     [0] => presentation
     [1] => import
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 10:06:56] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/import/23
-[2025-06-10 10:06:56] App::__construct - REQUEST_METHOD: POST
-[2025-06-10 10:06:56] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:06:56] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:06:56] App::__construct - Selected controller: PresentationController
-[2025-06-10 10:06:56] App::__construct - Selected method: import
-[2025-06-10 10:06:56] App::__construct - Parameters: Array
+[2025-06-10 10:54:12] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/import/25
+[2025-06-10 10:54:12] App::__construct - REQUEST_METHOD: POST
+[2025-06-10 10:54:12] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:54:12] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:54:12] App::__construct - Selected controller: PresentationController
+[2025-06-10 10:54:12] App::__construct - Selected method: import
+[2025-06-10 10:54:12] App::__construct - Parameters: Array
 (
-    [0] => 23
+    [0] => 25
 )
 
-[2025-06-10 10:06:56] App::__construct - Calling controller method with parameters
-[2025-06-10 10:06:56] App::parseUrl - Parsed URL from REQUEST_URI: Array
-(
-    [0] => presentation
-    [1] => viewPresentation
-    [2] => 73
-)
-
-[2025-06-10 10:06:56] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:54:12] App::__construct - Calling controller method with parameters
+[2025-06-10 10:54:12] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => presentation
     [1] => viewPresentation
-    [2] => 73
+    [2] => 96
 )
 
-[2025-06-10 10:06:56] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/viewPresentation/73
-[2025-06-10 10:06:56] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 10:06:56] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:06:56] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:06:56] App::__construct - Selected controller: PresentationController
-[2025-06-10 10:06:56] App::__construct - Selected method: viewPresentation
-[2025-06-10 10:06:56] App::__construct - Parameters: Array
+[2025-06-10 10:54:12] App::parseUrl - Final URL segments: Array
 (
-    [0] => 73
+    [0] => presentation
+    [1] => viewPresentation
+    [2] => 96
 )
 
-[2025-06-10 10:06:56] App::__construct - Calling controller method with parameters
-[2025-06-10 10:07:05] App::parseUrl - Parsed URL from REQUEST_URI: Array
+[2025-06-10 10:54:12] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/viewPresentation/96
+[2025-06-10 10:54:12] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:54:12] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:54:12] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:54:12] App::__construct - Selected controller: PresentationController
+[2025-06-10 10:54:12] App::__construct - Selected method: viewPresentation
+[2025-06-10 10:54:12] App::__construct - Parameters: Array
+(
+    [0] => 96
+)
+
+[2025-06-10 10:54:12] App::__construct - Calling controller method with parameters
+[2025-06-10 10:57:28] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => dashboard
+)
+
+[2025-06-10 10:57:28] App::parseUrl - Final URL segments: Array
 (
     [0] => dashboard
 )
 
-[2025-06-10 10:07:05] App::parseUrl - Final URL segments: Array
-(
-    [0] => dashboard
-)
-
-[2025-06-10 10:07:05] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard
-[2025-06-10 10:07:05] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 10:07:05] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:07:05] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:07:05] App::__construct - Selected controller: DashboardController
-[2025-06-10 10:07:05] App::__construct - Parameters: Array
+[2025-06-10 10:57:28] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard
+[2025-06-10 10:57:28] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:57:28] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:57:28] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:57:28] App::__construct - Selected controller: DashboardController
+[2025-06-10 10:57:28] App::__construct - Parameters: Array
 (
 )
 
-[2025-06-10 10:07:05] App::__construct - Calling controller method with parameters
-[2025-06-10 10:07:06] App::parseUrl - Parsed URL from REQUEST_URI: Array
-(
-    [0] => dashboard
-    [1] => viewWorkspace
-    [2] => 23
-)
-
-[2025-06-10 10:07:06] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:57:28] App::__construct - Calling controller method with parameters
+[2025-06-10 10:57:29] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => dashboard
     [1] => viewWorkspace
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 10:07:06] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard/viewWorkspace/23
-[2025-06-10 10:07:06] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 10:07:06] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:07:06] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:07:06] App::__construct - Selected controller: DashboardController
-[2025-06-10 10:07:06] App::__construct - Selected method: viewWorkspace
-[2025-06-10 10:07:06] App::__construct - Parameters: Array
+[2025-06-10 10:57:29] App::parseUrl - Final URL segments: Array
 (
-    [0] => 23
+    [0] => dashboard
+    [1] => viewWorkspace
+    [2] => 25
 )
 
-[2025-06-10 10:07:06] App::__construct - Calling controller method with parameters
-[2025-06-10 10:07:07] App::parseUrl - Parsed URL from REQUEST_URI: Array
+[2025-06-10 10:57:29] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard/viewWorkspace/25
+[2025-06-10 10:57:29] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:57:29] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:57:29] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:57:29] App::__construct - Selected controller: DashboardController
+[2025-06-10 10:57:29] App::__construct - Selected method: viewWorkspace
+[2025-06-10 10:57:29] App::__construct - Parameters: Array
+(
+    [0] => 25
+)
+
+[2025-06-10 10:57:29] App::__construct - Calling controller method with parameters
+[2025-06-10 10:57:30] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => presentation
     [1] => create
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 10:07:07] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:57:30] App::parseUrl - Final URL segments: Array
 (
     [0] => presentation
     [1] => create
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 10:07:07] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/create/23
-[2025-06-10 10:07:07] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 10:07:07] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:07:07] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:07:07] App::__construct - Selected controller: PresentationController
-[2025-06-10 10:07:07] App::__construct - Selected method: create
-[2025-06-10 10:07:07] App::__construct - Parameters: Array
+[2025-06-10 10:57:30] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/create/25
+[2025-06-10 10:57:30] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:57:30] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:57:30] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:57:30] App::__construct - Selected controller: PresentationController
+[2025-06-10 10:57:30] App::__construct - Selected method: create
+[2025-06-10 10:57:30] App::__construct - Parameters: Array
 (
-    [0] => 23
+    [0] => 25
 )
 
-[2025-06-10 10:07:07] App::__construct - Calling controller method with parameters
-[2025-06-10 10:07:13] App::parseUrl - Parsed URL from REQUEST_URI: Array
-(
-    [0] => presentation
-    [1] => import
-    [2] => 23
-)
-
-[2025-06-10 10:07:13] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:57:30] App::__construct - Calling controller method with parameters
+[2025-06-10 10:57:37] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => presentation
     [1] => import
-    [2] => 23
+    [2] => 25
 )
 
-[2025-06-10 10:07:13] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/import/23
-[2025-06-10 10:07:13] App::__construct - REQUEST_METHOD: POST
-[2025-06-10 10:07:13] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:07:13] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:07:13] App::__construct - Selected controller: PresentationController
-[2025-06-10 10:07:13] App::__construct - Selected method: import
-[2025-06-10 10:07:13] App::__construct - Parameters: Array
+[2025-06-10 10:57:37] App::parseUrl - Final URL segments: Array
 (
-    [0] => 23
+    [0] => presentation
+    [1] => import
+    [2] => 25
 )
 
-[2025-06-10 10:07:13] App::__construct - Calling controller method with parameters
-[2025-06-10 10:07:14] App::parseUrl - Parsed URL from REQUEST_URI: Array
+[2025-06-10 10:57:37] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/import/25
+[2025-06-10 10:57:37] App::__construct - REQUEST_METHOD: POST
+[2025-06-10 10:57:37] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:57:37] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:57:37] App::__construct - Selected controller: PresentationController
+[2025-06-10 10:57:37] App::__construct - Selected method: import
+[2025-06-10 10:57:37] App::__construct - Parameters: Array
+(
+    [0] => 25
+)
+
+[2025-06-10 10:57:37] App::__construct - Calling controller method with parameters
+[2025-06-10 10:57:37] App::parseUrl - Parsed URL from REQUEST_URI: Array
 (
     [0] => presentation
     [1] => viewPresentation
-    [2] => 74
+    [2] => 97
 )
 
-[2025-06-10 10:07:14] App::parseUrl - Final URL segments: Array
+[2025-06-10 10:57:37] App::parseUrl - Final URL segments: Array
 (
     [0] => presentation
     [1] => viewPresentation
-    [2] => 74
+    [2] => 97
 )
 
-[2025-06-10 10:07:14] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/viewPresentation/74
-[2025-06-10 10:07:14] App::__construct - REQUEST_METHOD: GET
-[2025-06-10 10:07:14] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:07:14] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
-[2025-06-10 10:07:14] App::__construct - Selected controller: PresentationController
-[2025-06-10 10:07:14] App::__construct - Selected method: viewPresentation
-[2025-06-10 10:07:14] App::__construct - Parameters: Array
+[2025-06-10 10:57:37] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/viewPresentation/97
+[2025-06-10 10:57:37] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:57:37] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:57:37] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:57:37] App::__construct - Selected controller: PresentationController
+[2025-06-10 10:57:37] App::__construct - Selected method: viewPresentation
+[2025-06-10 10:57:37] App::__construct - Parameters: Array
 (
-    [0] => 74
+    [0] => 97
 )
 
-[2025-06-10 10:07:14] App::__construct - Calling controller method with parameters
+[2025-06-10 10:57:37] App::__construct - Calling controller method with parameters
+[2025-06-10 10:58:00] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => presentation
+    [1] => viewPresentation
+    [2] => 60
+)
+
+[2025-06-10 10:58:00] App::parseUrl - Final URL segments: Array
+(
+    [0] => presentation
+    [1] => viewPresentation
+    [2] => 60
+)
+
+[2025-06-10 10:58:00] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/viewPresentation/60
+[2025-06-10 10:58:00] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:58:00] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:58:00] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:58:00] App::__construct - Selected controller: PresentationController
+[2025-06-10 10:58:00] App::__construct - Selected method: viewPresentation
+[2025-06-10 10:58:00] App::__construct - Parameters: Array
+(
+    [0] => 60
+)
+
+[2025-06-10 10:58:00] App::__construct - Calling controller method with parameters
+[2025-06-10 10:58:08] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => dashboard
+)
+
+[2025-06-10 10:58:08] App::parseUrl - Final URL segments: Array
+(
+    [0] => dashboard
+)
+
+[2025-06-10 10:58:08] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard
+[2025-06-10 10:58:08] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:58:08] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:58:08] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:58:08] App::__construct - Selected controller: DashboardController
+[2025-06-10 10:58:08] App::__construct - Parameters: Array
+(
+)
+
+[2025-06-10 10:58:08] App::__construct - Calling controller method with parameters
+[2025-06-10 10:58:09] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => dashboard
+    [1] => viewWorkspace
+    [2] => 25
+)
+
+[2025-06-10 10:58:09] App::parseUrl - Final URL segments: Array
+(
+    [0] => dashboard
+    [1] => viewWorkspace
+    [2] => 25
+)
+
+[2025-06-10 10:58:09] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/dashboard/viewWorkspace/25
+[2025-06-10 10:58:09] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:58:09] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:58:09] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:58:09] App::__construct - Selected controller: DashboardController
+[2025-06-10 10:58:09] App::__construct - Selected method: viewWorkspace
+[2025-06-10 10:58:09] App::__construct - Parameters: Array
+(
+    [0] => 25
+)
+
+[2025-06-10 10:58:09] App::__construct - Calling controller method with parameters
+[2025-06-10 10:58:10] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => presentation
+    [1] => create
+    [2] => 25
+)
+
+[2025-06-10 10:58:10] App::parseUrl - Final URL segments: Array
+(
+    [0] => presentation
+    [1] => create
+    [2] => 25
+)
+
+[2025-06-10 10:58:10] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/create/25
+[2025-06-10 10:58:10] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:58:10] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:58:10] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:58:10] App::__construct - Selected controller: PresentationController
+[2025-06-10 10:58:10] App::__construct - Selected method: create
+[2025-06-10 10:58:10] App::__construct - Parameters: Array
+(
+    [0] => 25
+)
+
+[2025-06-10 10:58:10] App::__construct - Calling controller method with parameters
+[2025-06-10 10:58:15] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => presentation
+    [1] => import
+    [2] => 25
+)
+
+[2025-06-10 10:58:15] App::parseUrl - Final URL segments: Array
+(
+    [0] => presentation
+    [1] => import
+    [2] => 25
+)
+
+[2025-06-10 10:58:15] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/import/25
+[2025-06-10 10:58:15] App::__construct - REQUEST_METHOD: POST
+[2025-06-10 10:58:15] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:58:15] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:58:15] App::__construct - Selected controller: PresentationController
+[2025-06-10 10:58:15] App::__construct - Selected method: import
+[2025-06-10 10:58:15] App::__construct - Parameters: Array
+(
+    [0] => 25
+)
+
+[2025-06-10 10:58:15] App::__construct - Calling controller method with parameters
+[2025-06-10 10:58:16] App::parseUrl - Parsed URL from REQUEST_URI: Array
+(
+    [0] => presentation
+    [1] => viewPresentation
+    [2] => 98
+)
+
+[2025-06-10 10:58:16] App::parseUrl - Final URL segments: Array
+(
+    [0] => presentation
+    [1] => viewPresentation
+    [2] => 98
+)
+
+[2025-06-10 10:58:16] App::__construct - REQUEST_URI: /WEB_project_presentation_generator/public/presentation/viewPresentation/98
+[2025-06-10 10:58:16] App::__construct - REQUEST_METHOD: GET
+[2025-06-10 10:58:16] App::__construct - SCRIPT_NAME: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:58:16] App::__construct - PHP_SELF: /WEB_project_presentation_generator/public/index.php
+[2025-06-10 10:58:16] App::__construct - Selected controller: PresentationController
+[2025-06-10 10:58:16] App::__construct - Selected method: viewPresentation
+[2025-06-10 10:58:16] App::__construct - Parameters: Array
+(
+    [0] => 98
+)
+
+[2025-06-10 10:58:16] App::__construct - Calling controller method with parameters

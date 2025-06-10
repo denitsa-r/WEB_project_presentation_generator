@@ -16,11 +16,15 @@ class SlideElement {
     // Добавяне на нов елемент
     public function addElement($data) {
         $stmt = $this->db->query(
-            'INSERT INTO slide_elements (slide_id, type, content, element_order) VALUES (:slide_id, :type, :content, :element_order)',
+            'INSERT INTO slide_elements (slide_id, type, content, title, text, style, element_order) 
+             VALUES (:slide_id, :type, :content, :title, :text, :style, :element_order)',
             [
                 'slide_id' => $data['slide_id'],
                 'type' => $data['type'],
                 'content' => $data['content'],
+                'title' => $data['title'] ?? '',
+                'text' => $data['text'] ?? '',
+                'style' => $data['style'] ?? '{}',
                 'element_order' => $data['element_order']
             ]
         );
