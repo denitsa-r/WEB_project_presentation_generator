@@ -69,8 +69,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="<?php echo BASE_URL; ?>/presentation/import" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="workspaceId" value="<?php echo $data['workspace']['id']; ?>">
+                    <form action="<?php echo BASE_URL; ?>/presentation/import/<?php echo $data['workspace']['id']; ?>" method="POST" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="importFile" class="form-label">Изберете файл</label>
                             <input type="file" class="form-control" id="importFile" name="importFile" accept=".html,.xml,.slim" required>

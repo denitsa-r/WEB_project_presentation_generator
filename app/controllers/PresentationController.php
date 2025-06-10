@@ -270,19 +270,31 @@ class PresentationController extends Controller
 
     public function export($id, $format)
     {
+        try {
         $presentationModel = $this->model('Presentation');
-        $workspaceModel = $this->model('Workspace');
         $slideModel = $this->model('Slide');
+            $slideElementModel = $this->model('SlideElement');
+            $workspaceModel = $this->model('Workspace');
         $userId = AuthMiddleware::currentUserId();
         
         $presentation = $presentationModel->getById($id);
         
-        if (!$presentation || !$workspaceModel->hasAccess($userId, $presentation['workspace_id'])) {
+            if (!$presentation) {
+                $_SESSION['error'] = 'Презентацията не е намерена.';
+                header('Location: ' . BASE_URL . '/dashboard');
+                exit;
+            }
+            
+            if (!$workspaceModel->hasAccess($userId, $presentation['workspace_id'])) {
+                $_SESSION['error'] = 'Нямате достъп до тази презентация.';
             header('Location: ' . BASE_URL . '/dashboard');
             exit;
         }
 
         $slides = $slideModel->getByPresentationId($id);
+            foreach ($slides as &$slide) {
+                $slide['elements'] = $slideElementModel->getElementsBySlideId($slide['id']);
+            }
         
         switch ($format) {
             case 'html':
@@ -295,6 +307,13 @@ class PresentationController extends Controller
                 $this->exportSLIM($presentation, $slides);
                 break;
             default:
+                    $_SESSION['error'] = 'Неподдържан формат за експорт.';
+                    header('Location: ' . BASE_URL . '/presentation/viewPresentation/' . $id);
+                    exit;
+            }
+        } catch (Exception $e) {
+            error_log("Export error: " . $e->getMessage());
+            $_SESSION['error'] = 'Възникна грешка при експортирането: ' . $e->getMessage();
                 header('Location: ' . BASE_URL . '/presentation/viewPresentation/' . $id);
                 exit;
         }
@@ -624,38 +643,38 @@ class PresentationController extends Controller
                     switch ($elementType) {
                         case 'image':
                             $html .= '<div class="content-element type-image">
-                                <div class="image-container" style="background-image: url(\'' . htmlspecialchars($elementContent) . '\');"></div>
-                            </div>';
+                                    <div class="image-container" style="background-image: url(\'' . htmlspecialchars($elementContent) . '\');"></div>
+                                </div>';
                             break;
                         
                         case 'image_text':
-                            $html .= '<div class="content-element type-image_text">
-                                <div class="image-text-container">
-                                    <div class="image-container" style="background-image: url(\'' . htmlspecialchars($elementContent) . '\');"></div>
-                                    <div class="text"><p>' . nl2br(htmlspecialchars($elementText)) . '</p></div>
-                                </div>
-                            </div>';
+                                $html .= '<div class="content-element type-image_text">
+                                    <div class="image-text-container">
+                                        <div class="image-container" style="background-image: url(\'' . htmlspecialchars($elementContent) . '\');"></div>
+                                        <div class="text"><p>' . nl2br(htmlspecialchars($elementText)) . '</p></div>
+                                    </div>
+                                </div>';
                             break;
                         
                         case 'image_list':
-                            $html .= '<div class="content-element type-image_list">
-                                <div class="image-list-container">
-                                    <div class="image-container" style="background-image: url(\'' . htmlspecialchars($elementContent) . '\');"></div>
-                                    <ul>';
-                            foreach (explode("\n", $elementText) as $item) {
-                                if (trim($item) !== '') {
-                                    $html .= '<li>' . htmlspecialchars($item) . '</li>';
+                                $html .= '<div class="content-element type-image_list">
+                                    <div class="image-list-container">
+                                        <div class="image-container" style="background-image: url(\'' . htmlspecialchars($elementContent) . '\');"></div>
+                                        <ul>';
+                                foreach (explode("\n", $elementText) as $item) {
+                                    if (trim($item) !== '') {
+                                        $html .= '<li>' . htmlspecialchars($item) . '</li>';
+                                    }
                                 }
-                            }
                             $html .= '</ul></div></div>';
                             break;
                         
                         case 'quote':
-                            $html .= '<div class="content-element type-quote">
+                                $html .= '<div class="content-element type-quote">
                                 <blockquote>' . nl2br(htmlspecialchars($elementContent));
-                            if (!empty($elementTitle)) {
-                                $html .= '<cite>— ' . htmlspecialchars($elementTitle) . '</cite>';
-                            }
+                                if (!empty($elementTitle)) {
+                                    $html .= '<cite>— ' . htmlspecialchars($elementTitle) . '</cite>';
+                                }
                             $html .= '</blockquote></div>';
                             break;
                         
@@ -673,7 +692,7 @@ class PresentationController extends Controller
                         default:
                             $html .= '<div class="content-element type-text">' . 
                                 nl2br(htmlspecialchars($elementContent)) . 
-                            '</div>';
+                                '</div>';
                             break;
                     }
                     
@@ -692,204 +711,121 @@ class PresentationController extends Controller
         exit;
     }
 
-    private function exportXML($presentation, $slides)
+    public function import($workspaceId)
     {
-        header('Content-Type: application/xml; charset=utf-8');
-        header('Content-Disposition: attachment; filename="' . $presentation['title'] . '.xml"');
-        
-        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><presentation></presentation>');
-        $xml->addChild('title', htmlspecialchars($presentation['title']));
-        $xml->addChild('theme', htmlspecialchars($presentation['theme']));
-        
-        $slidesNode = $xml->addChild('slides');
-        
-        foreach ($slides as $slide) {
-            $slideNode = $slidesNode->addChild('slide');
-            $slideNode->addChild('title', htmlspecialchars($slide['title']));
-            $slideNode->addChild('order', $slide['slide_order']);
+        try {
+            // Проверка за достъп до работното пространство
+            $workspaceModel = $this->model('Workspace');
+            $userId = AuthMiddleware::currentUserId();
             
-            $elementsNode = $slideNode->addChild('elements');
-            foreach ($slide['elements'] as $element) {
-                $elementNode = $elementsNode->addChild('element');
-                $elementNode->addChild('type', $element['type']);
-                $elementNode->addChild('content', htmlspecialchars($element['content']));
+            if (!$workspaceModel->hasAccess($userId, $workspaceId)) {
+                $_SESSION['error'] = 'Нямате достъп до това работно пространство.';
+                header('Location: ' . BASE_URL . '/dashboard');
+                exit;
             }
-        }
-        
-        echo $xml->asXML();
-        exit;
-    }
 
-    private function exportSLIM($presentation, $slides)
-    {
-        header('Content-Type: text/plain; charset=utf-8');
-        header('Content-Disposition: attachment; filename="' . $presentation['title'] . '.slim"');
-        
-        $slim = "presentation\n";
-        $slim .= "  title: " . $presentation['title'] . "\n";
-        $slim .= "  theme: " . $presentation['theme'] . "\n\n";
-        
-        foreach ($slides as $slide) {
-            $slim .= "slide\n";
-            $slim .= "  title: " . $slide['title'] . "\n";
-            
-            foreach ($slide['elements'] as $element) {
-                $slim .= "  element\n";
-                $slim .= "    type: " . $element['type'] . "\n";
-                
-                if (!empty($element['title'])) {
-                    $slim .= "    title: " . $element['title'] . "\n";
-                }
-                
-                // Екранираме специалните символи
-                $content = $element['content'];
-                $content = str_replace(":", "\\:", $content); // Екранираме двоеточието
-                $content = str_replace("\n", "\\n", $content); // Екранираме новите редове
-                $content = str_replace("\r", "\\r", $content); // Екранираме carriage return
-                $content = str_replace("\t", "\\t", $content); // Екранираме табулации
-                
-                $slim .= "    content: " . $content . "\n";
-            }
-            $slim .= "\n";
-        }
-        
-        error_log("Generated SLIM content: " . $slim);
-        echo $slim;
-        exit;
-    }
-
-    public function import()
-    {
-        error_log("Starting import process");
-        
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            error_log("Invalid request method: " . $_SERVER['REQUEST_METHOD']);
-            header('Location: ' . BASE_URL . '/dashboard');
-            exit;
-        }
-
-        $userId = AuthMiddleware::currentUserId();
-        
-        if (!isset($_POST['workspaceId'])) {
-            error_log("Missing workspaceId in POST data");
-            $_SESSION['error'] = 'Липсващо ID на работно пространство.';
-            header('Location: ' . BASE_URL . '/dashboard');
-            exit;
-        }
-        
-        if (!isset($_POST['importFormat'])) {
-            error_log("Missing importFormat in POST data");
-            $_SESSION['error'] = 'Липсващ формат на файла.';
-            header('Location: ' . BASE_URL . '/dashboard');
-            exit;
-        }
-        
-        $workspaceId = $_POST['workspaceId'];
-        $format = $_POST['importFormat'];
-        
-        error_log("Import parameters - workspaceId: $workspaceId, format: $format");
-        
-        // Проверка за достъп до работното пространство
-        $workspaceModel = $this->model('Workspace');
-        if (!$workspaceModel->hasAccess($userId, $workspaceId)) {
-            error_log("User $userId does not have access to workspace $workspaceId");
-            $_SESSION['error'] = 'Нямате достъп до това работно пространство.';
-            header('Location: ' . BASE_URL . '/dashboard');
-            exit;
-        }
-
-        if (!isset($_FILES['importFile']) || $_FILES['importFile']['error'] !== UPLOAD_ERR_OK) {
-            error_log("File upload error: " . ($_FILES['importFile']['error'] ?? 'No file uploaded'));
-            $_SESSION['error'] = 'Грешка при качване на файла.';
-            header('Location: ' . BASE_URL . '/presentation/create/' . $workspaceId);
-            exit;
-        }
-
-        $fileContent = file_get_contents($_FILES['importFile']['tmp_name']);
-        if ($fileContent === false) {
-            error_log("Failed to read file contents");
-            $_SESSION['error'] = 'Грешка при четене на файла.';
-            header('Location: ' . BASE_URL . '/presentation/create/' . $workspaceId);
-            exit;
-        }
-
-        error_log("File content length: " . strlen($fileContent));
-        
-        $presentationData = null;
-        switch ($format) {
-            case 'html':
-                error_log("Parsing HTML format");
-                $presentationData = $this->parseHTML($fileContent);
-                break;
-            case 'xml':
-                error_log("Parsing XML format");
-                $presentationData = $this->parseXML($fileContent);
-                break;
-            case 'slim':
-                error_log("Parsing SLIM format");
-                $presentationData = $this->parseSLIM($fileContent);
-                break;
-            default:
-                error_log("Unsupported format: $format");
-                $_SESSION['error'] = 'Неподдържан формат.';
+            // Проверка за файл
+            if (!isset($_FILES['importFile']) || $_FILES['importFile']['error'] !== UPLOAD_ERR_OK) {
+                $_SESSION['error'] = 'Моля, изберете файл за импортиране.';
                 header('Location: ' . BASE_URL . '/presentation/create/' . $workspaceId);
                 exit;
-        }
-
-        if (!$presentationData) {
-            error_log("Failed to parse file data");
-            $_SESSION['error'] = 'Грешка при обработка на файла.';
-            header('Location: ' . BASE_URL . '/presentation/create/' . $workspaceId);
-            exit;
-        }
-
-        error_log("Parsed presentation data: " . print_r($presentationData, true));
-
-        $presentationModel = $this->model('Presentation');
-        $slideModel = $this->model('Slide');
-        
-        // Създаване на презентацията
-        $presentationId = $presentationModel->create(
-            $workspaceId,
-            $presentationData['title'],
-            'bg',
-            $presentationData['theme'] ?? 'light'
-        );
-
-        if (!$presentationId) {
-            error_log("Failed to create presentation");
-            $_SESSION['error'] = 'Грешка при създаване на презентацията.';
-            header('Location: ' . BASE_URL . '/presentation/create/' . $workspaceId);
-            exit;
-        }
-
-        error_log("Created presentation with ID: $presentationId");
-
-        // Създаване на слайдовете
-        foreach ($presentationData['slides'] as $index => $slide) {
-            error_log("Creating slide $index: " . print_r($slide, true));
-            
-            $slideId = $slideModel->create([
-                'presentation_id' => $presentationId,
-                'title' => $slide['title'],
-                'slide_order' => $index,
-                'layout' => $slide['layout'] ?? 'full'
-            ]);
-
-            if ($slideId) {
-                error_log("Created slide with ID: $slideId");
-                foreach ($slide['elements'] as $element) {
-                    error_log("Adding element to slide: " . print_r($element, true));
-                    $slideModel->addElement($slideId, $element['type'], $element['content'], $element['title'] ?? null);
-                }
-            } else {
-                error_log("Failed to create slide");
             }
-        }
 
-        $_SESSION['success'] = 'Презентацията е импортирана успешно.';
-        header('Location: ' . BASE_URL . '/presentation/viewPresentation/' . $presentationId);
-        exit;
+            $file = $_FILES['importFile'];
+            $format = $_POST['importFormat'] ?? 'xml';
+
+            // Проверка на разширението на файла
+            $fileExtension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            if (!in_array($fileExtension, ['xml', 'html', 'slim'])) {
+                $_SESSION['error'] = 'Неподдържан формат на файла.';
+                header('Location: ' . BASE_URL . '/presentation/create/' . $workspaceId);
+                exit;
+            }
+
+            // Четене на съдържанието на файла
+            $content = file_get_contents($file['tmp_name']);
+            if ($content === false) {
+                $_SESSION['error'] = 'Грешка при четене на файла.';
+                header('Location: ' . BASE_URL . '/presentation/create/' . $workspaceId);
+                exit;
+            }
+
+            // Избор на метод за парсване според формата
+            switch ($format) {
+                case 'html':
+                    $data = $this->parseHTML($content);
+                    break;
+                case 'xml':
+                    $data = $this->parseXML($content);
+                    break;
+                case 'slim':
+                    $_SESSION['error'] = 'SLIM форматът все още не е имплементиран.';
+                    header('Location: ' . BASE_URL . '/presentation/create/' . $workspaceId);
+                    exit;
+                default:
+                    $_SESSION['error'] = 'Неподдържан формат за импортиране.';
+                    header('Location: ' . BASE_URL . '/presentation/create/' . $workspaceId);
+                    exit;
+            }
+
+            if (empty($data)) {
+                $_SESSION['error'] = 'Грешка при обработка на файла.';
+                header('Location: ' . BASE_URL . '/presentation/create/' . $workspaceId);
+                exit;
+            }
+            
+            $presentationModel = $this->model('Presentation');
+            $slideModel = $this->model('Slide');
+            $slideElementModel = $this->model('SlideElement');
+            
+            // Създаване на презентацията
+            $presentationId = $presentationModel->create(
+                $workspaceId,
+                $data['title'],
+                'bg',
+                $data['theme'] ?? 'light'
+            );
+            
+            if (!$presentationId) {
+                $_SESSION['error'] = 'Грешка при създаване на презентацията.';
+                header('Location: ' . BASE_URL . '/presentation/create/' . $workspaceId);
+                exit;
+            }
+            
+            // Създаване на слайдовете и елементите
+            foreach ($data['slides'] as $slideData) {
+                $slideId = $slideModel->create([
+                    'presentation_id' => $presentationId,
+                    'title' => $slideData['title'],
+                    'slide_order' => $slideData['slide_order'] ?? 0,
+                    'layout' => $slideData['layout'] ?? 'full'
+                ]);
+                
+                if ($slideId && !empty($slideData['elements'])) {
+                    foreach ($slideData['elements'] as $elementData) {
+                        $slideElementModel->addElement([
+                            'slide_id' => $slideId,
+                            'element_order' => $elementData['element_order'] ?? 0,
+                            'type' => $elementData['type'],
+                            'title' => $elementData['title'] ?? '',
+                            'content' => $elementData['content'] ?? '',
+                            'text' => $elementData['text'] ?? '',
+                            'style' => $elementData['style'] ?? '{}'
+                        ]);
+                    }
+                }
+            }
+            
+            $_SESSION['success'] = 'Презентацията е импортирана успешно.';
+            header('Location: ' . BASE_URL . '/presentation/viewPresentation/' . $presentationId);
+            exit;
+            
+        } catch (Exception $e) {
+            error_log("Import error: " . $e->getMessage());
+            $_SESSION['error'] = 'Възникна грешка при импортирането: ' . $e->getMessage();
+            header('Location: ' . BASE_URL . '/presentation/create/' . $workspaceId);
+            exit;
+        }
     }
 
     private function parseHTML($content)
@@ -1047,7 +983,7 @@ class PresentationController extends Controller
                         $style = $imageContainer->getAttribute('style');
                         if (preg_match('/background-image:\s*url\([\'"](.+?)[\'"]\)/', $style, $matches)) {
                             $element['content'] = $matches[1];
-                        }
+        }
                     }
                     
                     if ($listContainer) {
@@ -1092,34 +1028,65 @@ class PresentationController extends Controller
 
     private function parseXML($content)
     {
-        $xml = simplexml_load_string($content);
-        if (!$xml) {
-            return null;
-        }
-
-        $slides = [];
-        foreach ($xml->slides->slide as $slide) {
+        try {
+            $xml = new SimpleXMLElement($content);
+            
+            // Извличане на данните за презентацията
+            $presentationData = [
+                'title' => (string)$xml['title'],
+                'language' => (string)$xml['language'],
+                'theme' => (string)$xml['theme'],
+                'slides' => []
+            ];
+            
+            // Извличане на слайдовете
+            foreach ($xml->slide as $slide) {
             $slideData = [
-                'title' => (string)$slide->title,
+                    'title' => (string)$slide['title'],
+                    'slide_order' => (int)$slide['slide_order'],
+                    'layout' => (string)$slide['layout'],
                 'elements' => []
             ];
 
-            foreach ($slide->elements->element as $element) {
+                // Извличане на елементите на слайда
+                foreach ($slide->slide_element as $element) {
+                    $elementType = (string)$element['type'];
                 $elementData = [
-                    'type' => (string)$element->type,
-                    'content' => (string)$element->content
-                ];
+                        'element_order' => (int)$element['element_order'],
+                        'type' => $elementType,
+                        'title' => (string)$element['title'],
+                        'content' => (string)$element['content'],
+                        'text' => (string)$element['text'],
+                        'style' => (string)$element['style']
+                    ];
+
+                    // Специална обработка за различните типове елементи
+                    switch ($elementType) {
+                        case 'image_text':
+                        case 'image_list':
+                            // За image_text и image_list, текстът трябва да е в полето text
+                            $elementData['text'] = (string)$element['text'];
+                            break;
+                            
+                        case 'quote':
+                            // За цитати, ако има автор, той трябва да е в полето title
+                            if (!empty($element['author'])) {
+                                $elementData['title'] = (string)$element['author'];
+                            }
+                            break;
+                    }
+                    
                 $slideData['elements'][] = $elementData;
             }
 
-            $slides[] = $slideData;
+                $presentationData['slides'][] = $slideData;
         }
 
-        return [
-            'title' => (string)$xml->title,
-            'theme' => (string)$xml->theme,
-            'slides' => $slides
-        ];
+            return $presentationData;
+        } catch (Exception $e) {
+            error_log("Error parsing XML: " . $e->getMessage());
+            return null;
+        }
     }
 
     private function parseSLIM($content)

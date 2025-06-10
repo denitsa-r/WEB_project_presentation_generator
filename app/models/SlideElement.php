@@ -9,21 +9,23 @@ class SlideElement {
 
     // Вземане на всички елементи за даден слайд
     public function getElementsBySlideId($slideId) {
-        $this->db->query('SELECT * FROM slide_elements WHERE slide_id = :slide_id ORDER BY position ASC');
-        $this->db->bind(':slide_id', $slideId);
-        return $this->db->resultSet();
+        $stmt = $this->db->query('SELECT * FROM slide_elements WHERE slide_id = :slide_id ORDER BY element_order ASC', ['slide_id' => $slideId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // Добавяне на нов елемент
     public function addElement($data) {
-        $this->db->query('INSERT INTO slide_elements (slide_id, type, content, position) VALUES (:slide_id, :type, :content, :position)');
+        $stmt = $this->db->query(
+            'INSERT INTO slide_elements (slide_id, type, content, element_order) VALUES (:slide_id, :type, :content, :element_order)',
+            [
+                'slide_id' => $data['slide_id'],
+                'type' => $data['type'],
+                'content' => $data['content'],
+                'element_order' => $data['element_order']
+            ]
+        );
         
-        $this->db->bind(':slide_id', $data['slide_id']);
-        $this->db->bind(':type', $data['type']);
-        $this->db->bind(':content', $data['content']);
-        $this->db->bind(':position', $data['position']);
-
-        if($this->db->execute()) {
+        if($stmt) {
             return $this->db->lastInsertId();
         } else {
             return false;
@@ -32,57 +34,53 @@ class SlideElement {
 
     // Редактиране на елемент
     public function updateElement($data) {
-        $this->db->query('UPDATE slide_elements SET type = :type, content = :content, position = :position WHERE id = :id');
-        
-        $this->db->bind(':id', $data['id']);
-        $this->db->bind(':type', $data['type']);
-        $this->db->bind(':content', $data['content']);
-        $this->db->bind(':position', $data['position']);
-
-        return $this->db->execute();
+        return $this->db->query(
+            'UPDATE slide_elements SET type = :type, content = :content, element_order = :element_order WHERE id = :id',
+            [
+                'id' => $data['id'],
+                'type' => $data['type'],
+                'content' => $data['content'],
+                'element_order' => $data['element_order']
+            ]
+        );
     }
 
     // Изтриване на елемент
     public function deleteElement($id) {
-        $this->db->query('DELETE FROM slide_elements WHERE id = :id');
-        $this->db->bind(':id', $id);
-        return $this->db->execute();
+        return $this->db->query('DELETE FROM slide_elements WHERE id = :id', ['id' => $id]);
     }
 
     // Вземане на елемент по ID
     public function getElementById($id) {
-        $this->db->query('SELECT * FROM slide_elements WHERE id = :id');
-        $this->db->bind(':id', $id);
-        return $this->db->single();
+        $stmt = $this->db->query('SELECT * FROM slide_elements WHERE id = :id', ['id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     // Обновяване на позициите на елементите
     public function updatePositions($slideId, $positions) {
-        $this->db->query('UPDATE slide_elements SET position = :position WHERE id = :id AND slide_id = :slide_id');
-        
         foreach($positions as $position => $elementId) {
-            $this->db->bind(':position', $position);
-            $this->db->bind(':id', $elementId);
-            $this->db->bind(':slide_id', $slideId);
-            $this->db->execute();
+            $this->db->query(
+                'UPDATE slide_elements SET element_order = :element_order WHERE id = :id AND slide_id = :slide_id',
+                [
+                    'element_order' => $position,
+                    'id' => $elementId,
+                    'slide_id' => $slideId
+                ]
+            );
         }
-        
         return true;
     }
 
     // Вземане на максималната позиция за даден слайд
     public function getMaxPosition($slideId) {
-        $this->db->query('SELECT MAX(position) as max_position FROM slide_elements WHERE slide_id = :slide_id');
-        $this->db->bind(':slide_id', $slideId);
-        $result = $this->db->single();
-        return $result->max_position ?? 0;
+        $stmt = $this->db->query('SELECT MAX(element_order) as max_position FROM slide_elements WHERE slide_id = :slide_id', ['slide_id' => $slideId]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['max_position'] ?? 0;
     }
 
     // Изтриване на всички елементи за даден слайд
     public function deleteElementsBySlideId($slideId) {
-        $this->db->query('DELETE FROM slide_elements WHERE slide_id = :slide_id');
-        $this->db->bind(':slide_id', $slideId);
-        return $this->db->execute();
+        return $this->db->query('DELETE FROM slide_elements WHERE slide_id = :slide_id', ['slide_id' => $slideId]);
     }
 
     // Копиране на елементи от един слайд в друг
@@ -90,12 +88,12 @@ class SlideElement {
         $elements = $this->getElementsBySlideId($fromSlideId);
         
         foreach($elements as $element) {
-            $this->db->query('INSERT INTO slide_elements (slide_id, type, content, position) VALUES (:slide_id, :type, :content, :position)');
+            $this->db->query('INSERT INTO slide_elements (slide_id, type, content, element_order) VALUES (:slide_id, :type, :content, :element_order)');
             
             $this->db->bind(':slide_id', $toSlideId);
-            $this->db->bind(':type', $element->type);
-            $this->db->bind(':content', $element->content);
-            $this->db->bind(':position', $element->position);
+            $this->db->bind(':type', $element['type']);
+            $this->db->bind(':content', $element['content']);
+            $this->db->bind(':element_order', $element['element_order']);
             
             $this->db->execute();
         }
