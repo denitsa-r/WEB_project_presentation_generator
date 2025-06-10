@@ -151,7 +151,7 @@ class DashboardController extends Controller
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'] ?? '';
-            $role = $_POST['role'] ?? 'member';
+            $role = 'member';
 
             $result = $workspaceModel->shareWorkspace($id, $email, $role);
             
@@ -173,39 +173,13 @@ class DashboardController extends Controller
         $this->view('dashboard/share_workspace', $data);
     }
 
-    public function updateMemberRole($workspaceId)
-    {
-        if (!$this->isLoggedIn()) {
-            $this->redirect('auth/login');
-        }
-
-        $workspaceModel = new Workspace();
-        
-        if (!$workspaceModel->isOwner($_SESSION['user_id'], $workspaceId)) {
-            $this->redirect('dashboard/workspace/' . $workspaceId, ['error' => 'Нямате права за промяна на роли']);
-        }
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $userId = $_POST['user_id'] ?? '';
-            $role = $_POST['role'] ?? 'member';
-
-            $result = $workspaceModel->updateMemberRole($workspaceId, $userId, $role);
-            
-            if ($result['success']) {
-                $this->redirect('dashboard/shareWorkspace/' . $workspaceId, ['success' => $result['message']]);
-            } else {
-                $this->redirect('dashboard/shareWorkspace/' . $workspaceId, ['error' => $result['message']]);
-            }
-        }
-    }
-
     public function removeMember($workspaceId)
     {
         if (!$this->isLoggedIn()) {
             $this->redirect('auth/login');
         }
 
-        $workspaceModel = new Workspace();
+        $workspaceModel = $this->model('Workspace');
         
         if (!$workspaceModel->isOwner($_SESSION['user_id'], $workspaceId)) {
             $this->redirect('dashboard/workspace/' . $workspaceId, ['error' => 'Нямате права за премахване на членове']);

@@ -29,7 +29,6 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                         <ul class="dropdown-menu" aria-labelledby="exportDropdown">
                             <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/presentation/export/<?php echo $data['presentation']['id']; ?>/html">HTML</a></li>
                             <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/presentation/export/<?php echo $data['presentation']['id']; ?>/xml">XML</a></li>
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/presentation/export/<?php echo $data['presentation']['id']; ?>/slim">SLIM</a></li>
                         </ul>
                     </div>
                 </div>

@@ -23,14 +23,6 @@
                         <input type="email" class="form-control" id="email" name="email" required>
                     </div>
 
-                    <div class="form-group">
-                        <label for="role">Роля:</label>
-                        <select class="form-control" id="role" name="role">
-                            <option value="member">Член</option>
-                            <option value="editor">Редактор</option>
-                        </select>
-                    </div>
-
                     <button type="submit" class="btn btn-primary">Сподели</button>
                 </form>
 
@@ -54,13 +46,6 @@
                                     <td><?= htmlspecialchars($member['email']) ?></td>
                                     <td><?= htmlspecialchars($member['role']) ?></td>
                                     <td>
-                                        <form action="<?= BASE_URL ?>/dashboard/updateMemberRole/<?= $workspace['id'] ?>" method="POST" class="d-inline">
-                                            <input type="hidden" name="user_id" value="<?= $member['user_id'] ?>">
-                                            <select name="role" class="form-control form-control-sm d-inline-block w-auto" onchange="this.form.submit()">
-                                                <option value="member" <?= $member['role'] === 'member' ? 'selected' : '' ?>>Член</option>
-                                                <option value="editor" <?= $member['role'] === 'editor' ? 'selected' : '' ?>>Редактор</option>
-                                            </select>
-                                        </form>
                                         <form action="<?= BASE_URL ?>/dashboard/removeMember/<?= $workspace['id'] ?>" method="POST" class="d-inline">
                                             <input type="hidden" name="user_id" value="<?= $member['user_id'] ?>">
                                             <button type="submit" class="btn btn-danger btn-sm">Премахни</button>

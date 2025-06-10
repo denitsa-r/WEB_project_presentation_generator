@@ -6,8 +6,6 @@
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/main.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/presentation.css">
     <title>Нова презентация</title>
-    <link rel="stylesheet" href="/web-project/WEB_project_presentation_generator/public/assets/css/main.css">
-    <link rel="stylesheet" href="/web-project/WEB_project_presentation_generator/public/assets/css/presentation.css">
 </head>
 <body>
     <div class="container">
@@ -79,7 +77,6 @@
                             <select class="form-select" id="importFormat" name="importFormat" required>
                                 <option value="html">HTML</option>
                                 <option value="xml">XML</option>
-                                <option value="slim">SLIM</option>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Импортиране</button>

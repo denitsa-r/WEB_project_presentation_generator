@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS workspaces (
 CREATE TABLE IF NOT EXISTS user_workspaces (
     user_id INT NOT NULL,
     workspace_id INT NOT NULL,
-    role ENUM('owner', 'editor', 'viewer') DEFAULT 'editor',
+    role ENUM('owner', 'editor', 'member') DEFAULT 'member',
     PRIMARY KEY (user_id, workspace_id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (workspace_id) REFERENCES workspaces(id) ON DELETE CASCADE

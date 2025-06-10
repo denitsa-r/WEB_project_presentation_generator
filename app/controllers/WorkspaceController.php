@@ -35,7 +35,7 @@ class WorkspaceController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'] ?? '';
-            $role = $_POST['role'] ?? 'member';
+            $role = 'member';
 
             $result = $workspaceModel->shareWorkspace($id, $email, $role);
             
@@ -86,22 +86,6 @@ class WorkspaceController
         
         if (!$workspaceModel->isOwner($_SESSION['user_id'], $workspaceId)) {
             $this->redirect('workspace/index', ['error' => 'Нямате права за промяна на роли']);
-        }
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $newRole = $_POST['role'] ?? '';
-            
-            if (!in_array($newRole, ['member', 'editor'])) {
-                $this->redirect('workspace/share/' . $workspaceId, ['error' => 'Невалидна роля']);
-            }
-
-            $result = $workspaceModel->updateMemberRole($workspaceId, $userId, $newRole);
-            
-            if ($result['success']) {
-                $this->redirect('workspace/share/' . $workspaceId, ['success' => $result['message']]);
-            } else {
-                $this->redirect('workspace/share/' . $workspaceId, ['error' => $result['message']]);
-            }
         }
 
         $this->redirect('workspace/share/' . $workspaceId, ['error' => 'Невалидна заявка']);

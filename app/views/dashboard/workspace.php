@@ -20,14 +20,18 @@ $title = 'Работно пространство';
 
 <div class="header mb-3">
     <h2><i class="fas fa-file-powerpoint"></i> Презентации</h2>
-    <a href="<?= BASE_URL ?>/presentation/create/<?= $data['workspace']['id'] ?>" class="btn"><i class="fas fa-plus"></i> Нова презентация</a>
+    <?php if ($data['isOwner']): ?>
+        <a href="<?= BASE_URL ?>/presentation/create/<?= $data['workspace']['id'] ?>" class="btn"><i class="fas fa-plus"></i> Нова презентация</a>
+    <?php endif; ?>
 </div>
 
 <?php if (empty($data['presentations'])): ?>
     <div class="empty-state">
         <h2><i class="fas fa-folder-open"></i> Няма презентации</h2>
         <p>Създайте първата си презентация в това работно пространство.</p>
-        <a href="<?= BASE_URL ?>/presentation/create/<?= $data['workspace']['id'] ?>" class="btn"><i class="fas fa-plus"></i> Създай презентация</a>
+        <?php if ($data['isOwner']): ?>
+            <a href="<?= BASE_URL ?>/presentation/create/<?= $data['workspace']['id'] ?>" class="btn"><i class="fas fa-plus"></i> Създай презентация</a>
+        <?php endif; ?>
     </div>
 <?php else: ?>
     <div class="presentations">

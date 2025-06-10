@@ -22,6 +22,11 @@ class PresentationController extends Controller
             exit;
         }
 
+        if (!$workspaceModel->isOwner($userId, $workspaceId)) {
+            header('Location: ' . BASE_URL . '/dashboard/workspace/' . $workspaceId);
+            exit;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $presentationModel = $this->model('Presentation');
             $title = trim($_POST['title']);

@@ -113,10 +113,10 @@ class Workspace extends Model
                 return ['success' => false, 'message' => 'Потребителят вече има достъп до това работно пространство'];
             }
 
-            // Добавяме потребителя към работното пространство
+            // Добавяме потребителя към работното пространство с фиксирана роля 'member'
             $this->db->query(
-                "INSERT INTO user_workspaces (workspace_id, user_id, role) VALUES (?, ?, ?)",
-                [$workspaceId, $user['id'], $role]
+                "INSERT INTO user_workspaces (workspace_id, user_id, role) VALUES (?, ?, 'member')",
+                [$workspaceId, $user['id']]
             );
 
             return ['success' => true, 'message' => 'Работното пространство е споделено успешно'];
@@ -154,31 +154,6 @@ class Workspace extends Model
             [$workspaceId]
         );
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function updateMemberRole($workspaceId, $userId, $role)
-    {
-        try {
-            $stmt = $this->db->prepare("UPDATE user_workspaces SET role = ? WHERE workspace_id = ? AND user_id = ?");
-            $stmt->execute([$role, $workspaceId, $userId]);
-
-            if ($stmt->rowCount() > 0) {
-                return [
-                    'success' => true,
-                    'message' => 'Ролята е променена успешно'
-                ];
-            }
-
-            return [
-                'success' => false,
-                'message' => 'Грешка при промяна на ролята'
-            ];
-        } catch (PDOException $e) {
-            return [
-                'success' => false,
-                'message' => 'Грешка при промяна на ролята: ' . $e->getMessage()
-            ];
-        }
     }
 
     public function removeMember($workspaceId, $userId)
