@@ -711,6 +711,88 @@ class PresentationController extends Controller
         exit;
     }
 
+    private function exportXML($presentation, $slides)
+    {
+        // Създаване на XML документ
+        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><presentation></presentation>');
+        
+        // Добавяне на атрибути на презентацията
+        $xml->addAttribute('title', $presentation['title']);
+        $xml->addAttribute('language', $presentation['language']);
+        $xml->addAttribute('theme', $presentation['theme']);
+        
+        // Добавяне на слайдове
+        foreach ($slides as $index => $slide) {
+            $slideNode = $xml->addChild('slide');
+            $slideNode->addAttribute('title', $slide['title']);
+            $slideNode->addAttribute('slide_order', $index + 1); // Започваме от 1
+            $slideNode->addAttribute('layout', $slide['layout']);
+            
+            // Добавяне на елементи на слайда
+            if (!empty($slide['elements'])) {
+                foreach ($slide['elements'] as $elementIndex => $element) {
+                    $elementNode = $slideNode->addChild('slide_element');
+                    $elementNode->addAttribute('element_order', $elementIndex);
+                    $elementNode->addAttribute('type', $element['type']);
+                    
+                    // Добавяме всички атрибути, дори ако са празни
+                    $elementNode->addAttribute('title', $element['title'] ?? '');
+                    $elementNode->addAttribute('content', $element['content'] ?? '');
+                    $elementNode->addAttribute('text', $element['text'] ?? '');
+                    $elementNode->addAttribute('style', $element['style'] ?? '[]');
+                }
+            }
+        }
+        
+        // Форматиране на XML
+        $dom = new DOMDocument('1.0');
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        $dom->loadXML($xml->asXML());
+        
+        // Задаване на headers за XML файл
+        header('Content-Type: application/xml; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $presentation['title'] . '.xml"');
+        
+        // Извеждане на форматиран XML
+        echo $dom->saveXML();
+        exit;
+    }
+
+    private function exportSLIM($presentation, $slides)
+    {
+        $slim = "presentation\n";
+        $slim .= "\ttitle: " . $presentation['title'] . "\n";
+        $slim .= "\tlanguage: " . $presentation['language'] . "\n";
+        $slim .= "\ttheme: " . $presentation['theme'] . "\n\n";
+
+        foreach ($slides as $index => $slide) {
+            $slim .= "\tslide:\n";
+            $slim .= "\t\ttitle: " . $slide['title'] . "\n";
+            $slim .= "\t\tslide_order: " . ($index + 1) . "\n";
+            $slim .= "\t\tlayout: " . $slide['layout'] . "\n\n";
+
+            if (!empty($slide['elements'])) {
+                foreach ($slide['elements'] as $elementIndex => $element) {
+                    $slim .= "\t\tslide_element:\n";
+                    $slim .= "\t\t\telement_order: " . $elementIndex . "\n";
+                    $slim .= "\t\t\ttype: " . $element['type'] . "\n";
+                    $slim .= "\t\t\ttitle: " . ($element['title'] ?? '') . "\n";
+                    $slim .= "\t\t\tcontent: " . ($element['content'] ?? '') . "\n";
+                    $slim .= "\t\t\ttext: " . ($element['text'] ?? '') . "\n\n";
+                }
+            }
+        }
+
+        // Задаване на headers за SLIM файл
+        header('Content-Type: text/plain; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $presentation['title'] . '.slim"');
+        
+        // Извеждане на SLIM
+        echo $slim;
+        exit;
+    }
+
     public function import($workspaceId)
     {
         try {
@@ -759,9 +841,8 @@ class PresentationController extends Controller
                     $data = $this->parseXML($content);
                     break;
                 case 'slim':
-                    $_SESSION['error'] = 'SLIM форматът все още не е имплементиран.';
-                    header('Location: ' . BASE_URL . '/presentation/create/' . $workspaceId);
-                    exit;
+                    $data = $this->parseSLIM($content);
+                    break;
                 default:
                     $_SESSION['error'] = 'Неподдържан формат за импортиране.';
                     header('Location: ' . BASE_URL . '/presentation/create/' . $workspaceId);
@@ -1103,113 +1184,149 @@ class PresentationController extends Controller
 
     private function parseSLIM($content)
     {
-        error_log("Starting SLIM parsing with content: " . $content);
-        
         $lines = explode("\n", $content);
+        $currentSection = '';
         $currentSlide = null;
         $currentElement = null;
-        $slides = [];
-        $title = '';
-        $theme = 'light';
-
-        foreach ($lines as $lineNumber => $line) {
-            $line = trim($line);
-            if (empty($line)) continue;
-
-            error_log("Processing line " . ($lineNumber + 1) . ": " . $line);
-
-            if (strpos($line, 'presentation') === 0) {
-                error_log("Found presentation start");
-                continue;
-            } elseif (strpos($line, '  title:') === 0) {
-                $title = trim(substr($line, 8));
-                error_log("Found presentation title: " . $title);
-            } elseif (strpos($line, '  theme:') === 0) {
-                $theme = trim(substr($line, 8));
-                error_log("Found theme: " . $theme);
-            } elseif (strpos($line, 'slide') === 0) {
-                if ($currentSlide) {
-                    error_log("Adding slide to slides array: " . print_r($currentSlide, true));
-                    $slides[] = $currentSlide;
-                }
-                $currentSlide = [
-                    'title' => '',
-                    'elements' => []
-                ];
-                error_log("Created new slide");
-            } elseif (strpos($line, '  title:') === 0 && $currentSlide) {
-                $currentSlide['title'] = trim(substr($line, 8));
-                error_log("Set slide title: " . $currentSlide['title']);
-            } elseif (strpos($line, '  element') === 0) {
-                if ($currentSlide) {
-                    $currentElement = [
-                        'type' => '',
-                        'content' => '',
-                        'title' => null
-                    ];
-                    $currentSlide['elements'][] = &$currentElement;
-                    error_log("Created new element");
-                }
-            } elseif (strpos($line, '    type:') === 0 && $currentElement) {
-                $currentElement['type'] = trim(substr($line, 9));
-                error_log("Set element type: " . $currentElement['type']);
-            } elseif (strpos($line, '    content:') === 0 && $currentElement) {
-                $content = trim(substr($line, 11));
-                // Премахваме екранираните двоеточия и нови редове
-                $content = str_replace('\\:', ':', $content);
-                $content = str_replace('\\n', "\n", $content);
-                $currentElement['content'] = $content;
-                error_log("Set element content: " . $currentElement['content']);
-            } elseif (strpos($line, '    title:') === 0 && $currentElement) {
-                $currentElement['title'] = trim(substr($line, 9));
-                error_log("Set element title: " . $currentElement['title']);
-            }
-        }
-
-        if ($currentSlide) {
-            error_log("Adding final slide to slides array: " . print_r($currentSlide, true));
-            $slides[] = $currentSlide;
-        }
-
-        // Валидация на данните
-        if (empty($title)) {
-            error_log("Error: Empty presentation title");
-            return null;
-        }
-
-        if (empty($slides)) {
-            error_log("Error: No slides found");
-            return null;
-        }
-
-        foreach ($slides as $slide) {
-            if (empty($slide['title'])) {
-                error_log("Error: Empty slide title");
-                return null;
-            }
-            if (empty($slide['elements'])) {
-                error_log("Error: Empty slide elements");
-                return null;
-            }
-            foreach ($slide['elements'] as $element) {
-                if (empty($element['type'])) {
-                    error_log("Error: Empty element type");
-                    return null;
-                }
-                if (empty($element['content'])) {
-                    error_log("Error: Empty element content");
-                    return null;
-                }
-            }
-        }
-
-        $result = [
-            'title' => $title,
-            'theme' => $theme,
-            'slides' => $slides
+        $presentation = [
+            'title' => '',
+            'language' => '',
+            'theme' => '',
+            'slides' => []
         ];
 
-        error_log("Final parsed result: " . print_r($result, true));
-        return $result;
+        foreach ($lines as $line) {
+            $line = rtrim($line); // Премахваме само крайните празни пространства
+            if (empty($line)) continue;
+
+            // Определяне на нивото на влагане по броя на табулациите
+            $indentLevel = 0;
+            while (substr($line, 0, 1) === "\t") {
+                $indentLevel++;
+                $line = substr($line, 1);
+            }
+
+            // Определяне на текущата секция
+            if ($line === 'presentation') {
+                $currentSection = 'presentation';
+                continue;
+            } elseif ($line === 'slide:') {
+                $currentSection = 'slide';
+                $currentSlide = [
+                    'title' => '',
+                    'slide_order' => count($presentation['slides']) + 1,
+                    'layout' => 'default',
+                    'elements' => []
+                ];
+                continue;
+            } elseif ($line === 'slide_element:') {
+                $currentSection = 'element';
+                $currentElement = [
+                    'element_order' => count($currentSlide['elements']) + 1,
+                    'type' => 'text',
+                    'title' => '',
+                    'content' => '',
+                    'text' => ''
+                ];
+                continue;
+            }
+
+            // Обработка на данните според секцията и нивото на влагане
+            if (strpos($line, ':') !== false) {
+                list($key, $value) = explode(':', $line, 2);
+                $key = trim($key);
+                $value = trim($value);
+
+                switch ($currentSection) {
+                    case 'presentation':
+                        if ($indentLevel === 1) {
+                            switch ($key) {
+                                case 'title':
+                                    $presentation['title'] = $value;
+                                    break;
+                                case 'language':
+                                    $presentation['language'] = $value;
+                                    break;
+                                case 'theme':
+                                    $presentation['theme'] = $value;
+                                    break;
+                            }
+                        }
+                        break;
+
+                    case 'slide':
+                        if ($indentLevel === 2) {
+                            switch ($key) {
+                                case 'title':
+                                    $currentSlide['title'] = $value;
+                                    break;
+                                case 'slide_order':
+                                    $currentSlide['slide_order'] = (int)$value;
+                                    break;
+                                case 'layout':
+                                    $currentSlide['layout'] = $value;
+                                    break;
+                            }
+                        }
+                        break;
+
+                    case 'element':
+                        if ($indentLevel === 3) {
+                            switch ($key) {
+                                case 'element_order':
+                                    $currentElement['element_order'] = (int)$value;
+                                    break;
+                                case 'type':
+                                    $currentElement['type'] = $value;
+                                    break;
+                                case 'title':
+                                    $currentElement['title'] = $value;
+                                    break;
+                                case 'content':
+                                    $currentElement['content'] = $value;
+                                    break;
+                                case 'text':
+                                    $currentElement['text'] = $value;
+                                    break;
+                            }
+                        }
+                        break;
+                }
+            }
+
+            // Ако сме в края на елемент, добавяме го към текущия слайд
+            if ($currentSection === 'element' && $indentLevel < 3) {
+                if ($currentElement && $currentSlide) {
+                    // Ако няма заглавие, използваме първите 50 символа от текста
+                    if (empty($currentElement['title']) && !empty($currentElement['text'])) {
+                        $currentElement['title'] = substr($currentElement['text'], 0, 50) . '...';
+                    }
+                    $currentSlide['elements'][] = $currentElement;
+                    $currentElement = null;
+                }
+            }
+
+            // Ако сме в края на слайд, добавяме го към презентацията
+            if ($currentSection === 'slide' && $indentLevel < 2) {
+                if ($currentSlide) {
+                    // Ако няма заглавие, използваме "Слайд X"
+                    if (empty($currentSlide['title'])) {
+                        $currentSlide['title'] = 'Слайд ' . $currentSlide['slide_order'];
+                    }
+                    $presentation['slides'][] = $currentSlide;
+                    $currentSlide = null;
+                }
+            }
+        }
+
+        // Добавяме последния слайд, ако има такъв
+        if ($currentSlide) {
+            if (empty($currentSlide['title'])) {
+                $currentSlide['title'] = 'Слайд ' . $currentSlide['slide_order'];
+            }
+            $presentation['slides'][] = $currentSlide;
+        }
+
+        return $presentation;
     }
 } 
