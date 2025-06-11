@@ -7,6 +7,17 @@ class PresentationController extends Controller
         AuthMiddleware::requireLogin();
     }
 
+    private function checkOwnerAccess($workspaceId)
+    {
+        $workspaceModel = $this->model('Workspace');
+        $userId = AuthMiddleware::currentUserId();
+        
+        if (!$workspaceModel->isOwner($userId, $workspaceId)) {
+            header('Location: ' . BASE_URL . '/dashboard/workspace/' . $workspaceId);
+            exit;
+        }
+    }
+
     public function create($workspaceId = null)
     {
         if ($workspaceId === null) {
@@ -22,10 +33,7 @@ class PresentationController extends Controller
             exit;
         }
 
-        if (!$workspaceModel->isOwner($userId, $workspaceId)) {
-            header('Location: ' . BASE_URL . '/dashboard/workspace/' . $workspaceId);
-            exit;
-        }
+        $this->checkOwnerAccess($workspaceId);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $presentationModel = $this->model('Presentation');
@@ -96,10 +104,7 @@ class PresentationController extends Controller
             exit;
         }
 
-        if (!$workspaceModel->isOwner($userId, $presentation['workspace_id'])) {
-            header('Location: ' . BASE_URL . '/presentation/viewPresentation/' . $id);
-            exit;
-        }
+        $this->checkOwnerAccess($presentation['workspace_id']);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $title = trim($_POST['title']);
@@ -143,10 +148,7 @@ class PresentationController extends Controller
             exit;
         }
 
-        if (!$workspaceModel->isOwner($userId, $presentation['workspace_id'])) {
-            header('Location: ' . BASE_URL . '/presentation/viewPresentation/' . $id);
-            exit;
-        }
+        $this->checkOwnerAccess($presentation['workspace_id']);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($presentationModel->delete($id)) {

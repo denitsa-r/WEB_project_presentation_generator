@@ -12,29 +12,51 @@ class SlideController extends Controller
 
     public function __construct()
     {
-        // Проверяваме дали потребителят е влязъл
-        if (empty($_SESSION['user_id'])) {
-            Logger::log("User not logged in, redirecting to login page");
-            header('Location: ' . BASE_URL . '/auth/login');
-            exit;
-        }
+        AuthMiddleware::requireLogin();
         
         $this->slideModel = new Slide();
         $this->presentationModel = new Presentation();
     }
 
+    private function checkOwnerAccess($workspaceId)
+    {
+        $workspaceModel = $this->model('Workspace');
+        $userId = AuthMiddleware::currentUserId();
+        
+        if (!$workspaceModel->isOwner($userId, $workspaceId)) {
+            header('Location: ' . BASE_URL . '/dashboard/workspace/' . $workspaceId);
+            exit;
+        }
+    }
+
     public function create($presentationId = null)
     {
         Logger::log("SlideController::create called with presentationId: " . $presentationId);
-        Logger::log("Request method: " . $_SERVER['REQUEST_METHOD']);
-        Logger::log("Raw POST data: " . file_get_contents('php://input'));
-        Logger::log("POST contents: " . json_encode($_POST));
-        Logger::log("FILES contents: " . json_encode($_FILES));
-        Logger::log("REQUEST_URI: " . $_SERVER['REQUEST_URI']);
-        Logger::log("SCRIPT_NAME: " . $_SERVER['SCRIPT_NAME']);
-        Logger::log("PHP_SELF: " . $_SERVER['PHP_SELF']);
-        Logger::log("HTTP_X_REQUESTED_WITH: " . ($_SERVER['HTTP_X_REQUESTED_WITH'] ?? 'not set'));
         
+        if ($presentationId === null) {
+            header('Location: ' . BASE_URL . '/dashboard');
+            exit;
+        }
+
+        $presentation = $this->presentationModel->getById($presentationId);
+        if (!$presentation) {
+            header('Location: ' . BASE_URL . '/dashboard');
+            exit;
+        }
+
+        $workspaceModel = $this->model('Workspace');
+        $userId = AuthMiddleware::currentUserId();
+        
+        if (!$workspaceModel->hasAccess($userId, $presentation['workspace_id'])) {
+            header('Location: ' . BASE_URL . '/dashboard');
+            exit;
+        }
+
+        if (!$workspaceModel->isOwner($userId, $presentation['workspace_id'])) {
+            header('Location: ' . BASE_URL . '/presentation/viewPresentation/' . $presentationId);
+            exit;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Logger::log("Received POST request for slide creation");
             Logger::log("POST data: " . print_r($_POST, true));
@@ -207,33 +229,21 @@ class SlideController extends Controller
         $slideModel = $this->model('Slide');
         $presentationModel = $this->model('Presentation');
         $workspaceModel = $this->model('Workspace');
-        
-        if (!isset($_SESSION['user_id'])) {
-            $_SESSION['error'] = 'Трябва да сте влезли в системата';
-            header('Location: ' . BASE_URL . '/auth/login');
-            exit;
-        }
-        
-        $userId = $_SESSION['user_id'];
+        $userId = AuthMiddleware::currentUserId();
         
         $slide = $slideModel->getById($slideId);
-        
         if (!$slide) {
-            header('Location: ' . BASE_URL . '/presentation');
+            header('Location: ' . BASE_URL . '/dashboard');
             exit;
         }
 
         $presentation = $presentationModel->getById($slide['presentation_id']);
-        
         if (!$presentation || !$workspaceModel->hasAccess($userId, $presentation['workspace_id'])) {
             header('Location: ' . BASE_URL . '/dashboard');
             exit;
         }
 
-        if (!$workspaceModel->isOwner($userId, $presentation['workspace_id'])) {
-            header('Location: ' . BASE_URL . '/presentation/viewPresentation/' . $presentation['id']);
-            exit;
-        }
+        $this->checkOwnerAccess($presentation['workspace_id']);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'] ?? null;
@@ -321,6 +331,7 @@ class SlideController extends Controller
     {
         $slideModel = $this->model('Slide');
         $presentationModel = $this->model('Presentation');
+        $workspaceModel = $this->model('Workspace');
         $userId = AuthMiddleware::currentUserId();
         
         $slide = $slideModel->getById($id);
@@ -330,10 +341,12 @@ class SlideController extends Controller
         }
 
         $presentation = $presentationModel->getById($slide['presentation_id']);
-        if (!$presentation) {
+        if (!$presentation || !$workspaceModel->hasAccess($userId, $presentation['workspace_id'])) {
             header('Location: ' . BASE_URL . '/dashboard');
             exit;
         }
+
+        $this->checkOwnerAccess($presentation['workspace_id']);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($slideModel->delete($id)) {
@@ -380,8 +393,32 @@ class SlideController extends Controller
         }
 
         $slideModel = $this->model('Slide');
-        $success = true;
+        $presentationModel = $this->model('Presentation');
+        $workspaceModel = $this->model('Workspace');
+        $userId = AuthMiddleware::currentUserId();
 
+        // Проверяваме правата за първия слайд, тъй като всички слайдове са от една презентация
+        $firstSlide = $slideModel->getById($data['slides'][0]['id']);
+        if (!$firstSlide) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Слайдът не е намерен']);
+            return;
+        }
+
+        $presentation = $presentationModel->getById($firstSlide['presentation_id']);
+        if (!$presentation || !$workspaceModel->hasAccess($userId, $presentation['workspace_id'])) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Нямате достъп до тази презентация']);
+            return;
+        }
+
+        if (!$workspaceModel->isOwner($userId, $presentation['workspace_id'])) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Нямате права за промяна на реда на слайдовете']);
+            return;
+        }
+
+        $success = true;
         foreach ($data['slides'] as $slide) {
             if (!isset($slide['id']) || !isset($slide['order'])) {
                 continue;
@@ -394,6 +431,42 @@ class SlideController extends Controller
         }
 
         header('Content-Type: application/json');
-        echo json_encode(['success' => $success]);
+        echo json_encode([
+            'success' => $success,
+            'message' => $success ? 'Редът на слайдовете е обновен успешно' : 'Възникна грешка при обновяването на реда'
+        ]);
+    }
+
+    public function updateSlideOrder()
+    {
+        $slideModel = $this->model('Slide');
+        $presentationModel = $this->model('Presentation');
+        $workspaceModel = $this->model('Workspace');
+        
+        if (!isset($_SESSION['user_id'])) {
+            $_SESSION['error'] = 'Трябва да сте влезли в системата';
+            header('Location: ' . BASE_URL . '/auth/login');
+            exit;
+        }
+        
+        $userId = $_SESSION['user_id'];
+        
+        $slide = $slideModel->getById($slideId);
+        
+        if (!$slide) {
+            header('Location: ' . BASE_URL . '/presentation');
+            exit;
+        }
+
+        $presentation = $presentationModel->getById($slide['presentation_id']);
+        
+        if (!$presentation || !$workspaceModel->hasAccess($userId, $presentation['workspace_id'])) {
+            header('Location: ' . BASE_URL . '/dashboard');
+            exit;
+        }
+
+        $this->checkOwnerAccess($presentation['workspace_id']);
+
+        // ... existing code ...
     }
 } 

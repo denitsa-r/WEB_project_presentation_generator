@@ -41,18 +41,14 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
             <?php endif; ?>
 
             <div class="presentation-actions">
-                <a href="<?= BASE_URL ?>/presentation/review/<?= $data['presentation']['id'] ?>" class="btn btn-info">
-                    <i class="fas fa-eye"></i> Преглед
-                </a>
-                <a href="<?= BASE_URL ?>/presentation/edit/<?= $data['presentation']['id'] ?>" class="btn btn-primary">
-                    <i class="fas fa-edit"></i> Редактирай
-                </a>
-                <a href="<?= BASE_URL ?>/presentation/delete/<?= $data['presentation']['id'] ?>" class="btn btn-danger">
-                    <i class="fas fa-trash"></i> Изтрий
-                </a>
-                <a href="<?= BASE_URL ?>/slide/create/<?= $data['presentation']['id'] ?>" class="btn btn-success">
-                    <i class="fas fa-plus"></i> Добави слайд
-                </a>
+                <?php if ($data['isOwner']): ?>
+                    <a href="<?= BASE_URL ?>/presentation/edit/<?= $data['presentation']['id'] ?>" class="btn btn-secondary"><i class="fas fa-edit"></i> Редактирай</a>
+                    <a href="<?= BASE_URL ?>/presentation/delete/<?= $data['presentation']['id'] ?>" class="btn btn-danger"><i class="fas fa-trash"></i> Изтрий</a>
+                    <a href="<?= BASE_URL ?>/slide/create/<?= $data['presentation']['id'] ?>" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Добави слайд
+                    </a>
+                <?php endif; ?>
+                <a href="<?= BASE_URL ?>/presentation/review/<?= $data['presentation']['id'] ?>" class="btn btn-primary"><i class="fas fa-eye"></i> Преглед</a>
                 <a href="<?= BASE_URL ?>/dashboard" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i> Назад
                 </a>
@@ -78,12 +74,14 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                                                 <i class="fas fa-file-alt"></i> <?php echo htmlspecialchars($slide['title']); ?>
                                             </h2>
                                             <div class="slide-actions">
-                                                <a href="<?php echo BASE_URL; ?>/slide/edit/<?php echo $slide['id']; ?>" class="btn btn-primary">
-                                                    <i class="fas fa-edit"></i> Редактирай
-                                                </a>
-                                                <a href="<?php echo BASE_URL; ?>/slides/delete/<?php echo $slide['id']; ?>" class="btn btn-danger">
-                                                    <i class="fas fa-trash"></i> Изтрий
-                                                </a>
+                                                <?php if ($data['isOwner']): ?>
+                                                    <a href="<?php echo BASE_URL; ?>/slide/edit/<?php echo $slide['id']; ?>" class="btn btn-primary">
+                                                        <i class="fas fa-edit"></i> Редактирай
+                                                    </a>
+                                                    <a href="<?php echo BASE_URL; ?>/slide/delete/<?php echo $slide['id']; ?>" class="btn btn-danger">
+                                                        <i class="fas fa-trash"></i> Изтрий
+                                                    </a>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -147,15 +145,17 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                                     </div>
                                 </div>
                                 <div class="slide-controls">
-                                    <?php if ($index > 0): ?>
-                                        <button class="move-up" onclick="moveSlide(<?php echo $slide['id']; ?>, 'up')">
-                                            <i class="fas fa-arrow-up"></i>
-                                        </button>
-                                    <?php endif; ?>
-                                    <?php if ($index < count($data['slides']) - 1): ?>
-                                        <button class="move-down" onclick="moveSlide(<?php echo $slide['id']; ?>, 'down')">
-                                            <i class="fas fa-arrow-down"></i>
-                                        </button>
+                                    <?php if ($data['isOwner']): ?>
+                                        <?php if ($index > 0): ?>
+                                            <button class="move-up" onclick="moveSlide(<?php echo $slide['id']; ?>, 'up')">
+                                                <i class="fas fa-arrow-up"></i>
+                                            </button>
+                                        <?php endif; ?>
+                                        <?php if ($index < count($data['slides']) - 1): ?>
+                                            <button class="move-down" onclick="moveSlide(<?php echo $slide['id']; ?>, 'down')">
+                                                <i class="fas fa-arrow-down"></i>
+                                            </button>
+                                        <?php endif; ?>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -167,7 +167,54 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
     </div>
 
     <script>
-        // JavaScript кодът е преместен в main.js
+        function moveSlide(slideId, direction) {
+            const slides = document.querySelectorAll('.slide-card');
+            const currentSlide = document.querySelector(`[data-slide-id="${slideId}"]`);
+            const currentIndex = Array.from(slides).indexOf(currentSlide);
+            
+            if (direction === 'up' && currentIndex > 0) {
+                const newIndex = currentIndex - 1;
+                const newOrder = Array.from(slides).map((slide, index) => {
+                    if (index === currentIndex) return { id: slide.dataset.slideId, order: newIndex + 1 };
+                    if (index === newIndex) return { id: slide.dataset.slideId, order: currentIndex + 1 };
+                    return { id: slide.dataset.slideId, order: index + 1 };
+                });
+                
+                updateSlideOrder(newOrder);
+            } else if (direction === 'down' && currentIndex < slides.length - 1) {
+                const newIndex = currentIndex + 1;
+                const newOrder = Array.from(slides).map((slide, index) => {
+                    if (index === currentIndex) return { id: slide.dataset.slideId, order: newIndex + 1 };
+                    if (index === newIndex) return { id: slide.dataset.slideId, order: currentIndex + 1 };
+                    return { id: slide.dataset.slideId, order: index + 1 };
+                });
+                
+                updateSlideOrder(newOrder);
+            }
+        }
+
+        function updateSlideOrder(newOrder) {
+            fetch('<?= BASE_URL ?>/slide/updateOrder', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({ slides: newOrder })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    alert(data.message || 'Възникна грешка при разместването на слайдовете');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Възникна грешка при разместването на слайдовете');
+            });
+        }
 
         // Функция за експорт на презентацията
         function exportPresentation() {
