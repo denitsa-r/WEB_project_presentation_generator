@@ -46,10 +46,12 @@
                                     <td><?= htmlspecialchars($member['email']) ?></td>
                                     <td><?= htmlspecialchars($member['role']) ?></td>
                                     <td>
-                                        <form action="<?= BASE_URL ?>/dashboard/removeMember/<?= $workspace['id'] ?>" method="POST" class="d-inline">
-                                            <input type="hidden" name="user_id" value="<?= $member['user_id'] ?>">
-                                            <button type="submit" class="btn btn-danger btn-sm">Премахни</button>
-                                        </form>
+                                        <?php if ($member['role'] !== 'owner'): ?>
+                                            <form action="<?= BASE_URL ?>/dashboard/removeMember/<?= $workspace['id'] ?>" method="POST" class="d-inline">
+                                                <input type="hidden" name="user_id" value="<?= $member['user_id'] ?>">
+                                                <button type="submit" class="btn btn-danger btn-sm">Премахни</button>
+                                            </form>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

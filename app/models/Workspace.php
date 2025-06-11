@@ -159,6 +159,14 @@ class Workspace extends Model
     public function removeMember($workspaceId, $userId)
     {
         try {
+            // Проверяваме дали потребителят е собственик
+            if ($this->isOwner($userId, $workspaceId)) {
+                return [
+                    'success' => false,
+                    'message' => 'Не можете да премахнете собственика на работното пространство'
+                ];
+            }
+
             $stmt = $this->db->prepare("DELETE FROM user_workspaces WHERE workspace_id = ? AND user_id = ?");
             $stmt->execute([$workspaceId, $userId]);
 
