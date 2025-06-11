@@ -1,0 +1,349 @@
+/* Common slide styles */
+.slide {
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.slide-title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.slide-content {
+    flex: 1;
+}
+
+/* Layout styles */
+.layout-full {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Column layouts */
+.layout-columns-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    height: 100%;
+}
+
+.layout-columns-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    height: 100%;
+}
+
+.layout-columns-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    height: 100%;
+}
+
+/* Row layouts */
+.layout-rows-2 {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    gap: 2rem;
+    height: 100%;
+}
+
+.layout-rows-3 {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    gap: 2rem;
+    height: 100%;
+}
+
+/* Grid layouts */
+.layout-grid-2x2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 2rem;
+    height: 100%;
+}
+
+.layout-grid-2x3 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 2rem;
+    height: 100%;
+}
+
+.layout-grid-2x4 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 2rem;
+    height: 100%;
+}
+
+.layout-grid-3x2 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 2rem;
+    height: 100%;
+}
+
+.layout-grid-3x3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 2rem;
+    height: 100%;
+}
+
+.layout-grid-4x2 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 2rem;
+    height: 100%;
+}
+
+.layout-grid-4x3 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 2rem;
+    height: 100%;
+}
+
+/* Content element styles */
+.content-element {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-element img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.content-element p {
+    margin: 0;
+    font-size: 1.5rem;
+    line-height: 1.6;
+    color: #444;
+}
+
+.content-element ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.content-element li {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    color: #444;
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+    position: relative;
+}
+
+.content-element li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #007bff;
+    font-size: 2rem;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .layout-columns-2,
+    .layout-columns-3,
+    .layout-columns-4,
+    .layout-grid-2x2,
+    .layout-grid-2x3,
+    .layout-grid-2x4,
+    .layout-grid-3x2,
+    .layout-grid-3x3,
+    .layout-grid-4x2,
+    .layout-grid-4x3 {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+}
+
+/* List slide styles */
+.list-slide {
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.list-slide .slide-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.list-slide .slide-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.list-slide .slide-list li {
+    font-size: 1.8rem;
+    line-height: 1.6;
+    color: #444;
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+    position: relative;
+}
+
+.list-slide .slide-list li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #007bff;
+    font-size: 2rem;
+}
+
+/* Quote slide styles */
+.quote-slide {
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+}
+
+.quote-slide .slide-content {
+    text-align: center;
+    max-width: 800px;
+}
+
+.quote-slide .quote {
+    font-size: 2.5rem;
+    line-height: 1.4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    font-style: italic;
+    position: relative;
+}
+
+.quote-slide .quote:before,
+.quote-slide .quote:after {
+    content: '"';
+    font-size: 4rem;
+    color: #007bff;
+    position: absolute;
+    opacity: 0.2;
+}
+
+.quote-slide .quote:before {
+    top: -2rem;
+    left: -2rem;
+}
+
+.quote-slide .quote:after {
+    bottom: -2rem;
+    right: -2rem;
+}
+
+.quote-slide .quote-author {
+    display: block;
+    font-size: 1.5rem;
+    color: #666;
+    margin-top: 2rem;
+    font-style: normal;
+}
+
+/* Text slide styles */
+.text-slide {
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.text-slide .slide-content {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    color: #444;
+}
+
+/* Two-column slide styles */
+.two-column-slide {
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.two-column-slide .columns {
+    display: flex;
+    gap: 2rem;
+    height: 100%;
+}
+
+.two-column-slide .column {
+    flex: 1;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    line-height: 1.6;
+    color: #444;
+}
+
+.two-column-slide .left-column {
+    border-right: 1px solid #dee2e6;
+}
+
+/* Image slide styles */
+.image-slide {
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.image-slide .slide-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.image-slide .slide-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-slide .image-container {
+    max-width: 100%;
+    max-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-slide img {
+    max-width: 100%;
+    max-height: 70vh;
+    object-fit: contain;
+} 
