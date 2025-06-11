@@ -96,7 +96,7 @@ class Workspace extends Model
         return $stmt->fetch() !== false;
     }
 
-    public function shareWorkspace($workspaceId, $email, $role = 'member')
+    public function shareWorkspace($workspaceId, $email, $role = 'viewer')
     {
         try {
             $userModel = new User();
@@ -111,8 +111,8 @@ class Workspace extends Model
             }
 
             $this->db->query(
-                "INSERT INTO user_workspaces (workspace_id, user_id, role) VALUES (?, ?, 'member')",
-                [$workspaceId, $user['id']]
+                "INSERT INTO user_workspaces (workspace_id, user_id, role) VALUES (?, ?, ?)",
+                [$workspaceId, $user['id'], $role]
             );
 
             return ['success' => true, 'message' => 'Работното пространство е споделено успешно'];

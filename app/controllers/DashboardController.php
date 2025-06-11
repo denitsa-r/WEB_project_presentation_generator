@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../core/AuthMiddleware.php';
+
 class DashboardController extends Controller
 {
     public function __construct()
@@ -151,7 +153,7 @@ class DashboardController extends Controller
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'] ?? '';
-            $role = 'member';
+            $role = 'viewer';
 
             $result = $workspaceModel->shareWorkspace($id, $email, $role);
             
