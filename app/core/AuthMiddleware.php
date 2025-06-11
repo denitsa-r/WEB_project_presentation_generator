@@ -5,7 +5,8 @@ class AuthMiddleware
     public static function requireLogin()
     {
         if (empty($_SESSION['user_id'])) {
-            header('Location: /auth/login');
+            $baseUrl = dirname(dirname($_SERVER['SCRIPT_NAME']));
+            header('Location: ' . $baseUrl . '/public/auth/login');
             exit;
         }
     }

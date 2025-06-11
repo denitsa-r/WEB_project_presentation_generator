@@ -66,6 +66,10 @@
     flex-direction: column;
 }
 
+.slide-content .content-element h3 {
+    font-weight: 600;
+} 
+
 .slide-content .content-element h3, 
 .slide-content .content-element ul li, 
 .slide-content .content-element p, 
@@ -80,6 +84,24 @@
     margin-bottom: 1rem;
     color: #333;
 }
+
+.slide-content.grid-4x2 .content-element h3 {
+    font-size: 1rem;
+}
+
+.slide-content.grid-3x2 .content-element h3, 
+.slide-content.grid-3x3 .content-element h3,
+.slide-content.three-columns .content-element h3 {
+    font-size: 1.2rem;
+}
+
+.slide-content.grid-2x2 .content-element h3, 
+.slide-content.grid-2x3 .content-element h3, 
+.slide-content.grid-2x4 .content-element h3,
+.slide-content.two-columns .content-element h3 {
+    font-size: 1.4rem;
+}
+
 
 .content-element p {
     margin: 0;
@@ -313,42 +335,42 @@
 .slide-content.grid-2x2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-rows: repeat(2, auto);
     gap: 2rem;
 }
 
 .slide-content.grid-2x3 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: repeat(3, auto);
     gap: 2rem;
 }
 
 .slide-content.grid-2x4 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-rows: repeat(4, auto);
     gap: 2rem;
 }
 
 .slide-content.grid-3x2 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-rows: repeat(2, auto);
     gap: 2rem;
 }
 
 .slide-content.grid-3x3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: repeat(3, auto);
     gap: 2rem;
 }
 
 .slide-content.grid-4x2 {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-rows: repeat(2, auto);
     gap: 2rem;
 }
 
