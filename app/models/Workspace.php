@@ -97,7 +97,7 @@ class Workspace extends Model
         return $stmt->fetch() !== false;
     }
 
-    public function shareWorkspace($workspaceId, $email, $role = 'member')
+    public function shareWorkspace($workspaceId, $email, $role = 'viewer')
     {
         try {
             // Проверяваме дали потребителят съществува
@@ -113,10 +113,10 @@ class Workspace extends Model
                 return ['success' => false, 'message' => 'Потребителят вече има достъп до това работно пространство'];
             }
 
-            // Добавяме потребителя към работното пространство с фиксирана роля 'member'
+            // Добавяме потребителя към работното пространство с роля 'viewer'
             $this->db->query(
-                "INSERT INTO user_workspaces (workspace_id, user_id, role) VALUES (?, ?, 'member')",
-                [$workspaceId, $user['id']]
+                "INSERT INTO user_workspaces (workspace_id, user_id, role) VALUES (?, ?, ?)",
+                [$workspaceId, $user['id'], $role]
             );
 
             return ['success' => true, 'message' => 'Работното пространство е споделено успешно'];

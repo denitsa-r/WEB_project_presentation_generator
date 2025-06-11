@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../core/AuthMiddleware.php';
+
 class PresentationController extends Controller
 {
     public function __construct()
