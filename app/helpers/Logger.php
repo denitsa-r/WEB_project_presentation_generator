@@ -7,12 +7,10 @@ class Logger {
         $timestamp = date('Y-m-d H:i:s');
         $logMessage = "[$timestamp] $message\n";
         
-        // Създаваме директорията ако не съществува
-        if (!file_exists(dirname(self::$logFile))) {
+        if (!file_exists(dirname(self::$logFile))) { 
             mkdir(dirname(self::$logFile), 0777, true);
         }
         
-        // Записваме съобщението
         file_put_contents(self::$logFile, $logMessage, FILE_APPEND);
     }
 

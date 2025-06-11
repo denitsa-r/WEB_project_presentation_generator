@@ -10,7 +10,6 @@ require_once '../app/controllers/SlideController.php';
 
 require_once '../config/config.php';
 
-// Проверка за коренния URL и пренасочване към страницата за вход
 $request_uri = $_SERVER['REQUEST_URI'];
 $script_name = $_SERVER['SCRIPT_NAME'];
 $base_path = dirname($script_name);

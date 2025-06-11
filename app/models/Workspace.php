@@ -19,7 +19,6 @@ class Workspace extends Model
             
             $workspaceId = $this->db->lastInsertId();
             
-            // Add creator as owner
             $this->db->query(
                 "INSERT INTO user_workspaces (workspace_id, user_id, role) VALUES (?, ?, 'owner')",
                 [$workspaceId, $userId]
@@ -100,7 +99,6 @@ class Workspace extends Model
     public function shareWorkspace($workspaceId, $email, $role = 'member')
     {
         try {
-            // Проверяваме дали потребителят съществува
             $userModel = new User();
             $user = $userModel->findByEmail($email);
             
@@ -108,12 +106,10 @@ class Workspace extends Model
                 return ['success' => false, 'message' => 'Потребителят не съществува'];
             }
 
-            // Проверяваме дали потребителят вече има достъп
             if ($this->hasAccess($user['id'], $workspaceId)) {
                 return ['success' => false, 'message' => 'Потребителят вече има достъп до това работно пространство'];
             }
 
-            // Добавяме потребителя към работното пространство с фиксирана роля 'member'
             $this->db->query(
                 "INSERT INTO user_workspaces (workspace_id, user_id, role) VALUES (?, ?, 'member')",
                 [$workspaceId, $user['id']]
@@ -128,7 +124,6 @@ class Workspace extends Model
     public function removeAccess($workspaceId, $userId)
     {
         try {
-            // Проверяваме дали потребителят е собственик
             if ($this->isOwner($userId, $workspaceId)) {
                 return ['success' => false, 'message' => 'Не можете да премахнете собственика на работното пространство'];
             }
@@ -159,7 +154,6 @@ class Workspace extends Model
     public function removeMember($workspaceId, $userId)
     {
         try {
-            // Проверяваме дали потребителят е собственик
             if ($this->isOwner($userId, $workspaceId)) {
                 return [
                     'success' => false,

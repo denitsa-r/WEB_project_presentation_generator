@@ -22,7 +22,6 @@ class Database {
             $this->pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
             error_log("PDO object created");
             
-            // Проверяваме връзката
             $this->pdo->query("SELECT 1");
             error_log("Database connection test successful");
             

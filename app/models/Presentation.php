@@ -66,12 +66,10 @@ class Presentation extends Model
     public function delete($id)
     {
         try {
-            // Първо изтриваме всички слайдове, свързани с презентацията
             $sql = "DELETE FROM slides WHERE presentation_id = :presentation_id";
             $stmt = $this->db->prepare($sql);
             $stmt->execute(['presentation_id' => $id]);
             
-            // След това изтриваме самата презентация
             $sql = "DELETE FROM presentations WHERE id = :id";
             $stmt = $this->db->prepare($sql);
             $stmt->execute(['id' => $id]);
@@ -86,7 +84,6 @@ class Presentation extends Model
 
     public function hasAccess($userId, $presentationId)
     {
-        // Проверяваме дали потребителят е собственик на презентацията
         $stmt = $this->db->query(
             "SELECT 1 FROM presentations WHERE id = ? AND user_id = ?",
             [$presentationId, $userId]
@@ -95,7 +92,6 @@ class Presentation extends Model
             return true;
         }
 
-        // Проверяваме дали потребителят има достъп чрез работното пространство
         $stmt = $this->db->query(
             "SELECT 1 FROM presentations p
             JOIN workspaces w ON p.workspace_id = w.id
@@ -107,16 +103,13 @@ class Presentation extends Model
     }
 
     public function generateExportHtml($presentationId) {
-        // Вземаме данните за презентацията
         $presentation = $this->getPresentationById($presentationId);
         if (!$presentation) {
             return false;
         }
 
-        // Вземаме всички слайдове
         $slides = $this->getSlidesByPresentationId($presentationId);
         
-        // Генерираме HTML
         $html = '<!DOCTYPE html>
 <html lang="bg">
 <head>

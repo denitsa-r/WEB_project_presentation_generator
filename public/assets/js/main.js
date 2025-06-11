@@ -1,10 +1,8 @@
-// Функция за инициализиране на drag and drop функционалността
 function initializeDragAndDrop() {
     const slides = document.querySelectorAll('.slide');
     let draggedSlide = null;
     let originalOrder = [];
 
-    // Запазваме оригиналния ред на слайдовете
     slides.forEach(slide => {
         originalOrder.push(slide.dataset.slideId);
     });
@@ -58,12 +56,10 @@ function initializeDragAndDrop() {
                 slidesContainer.insertBefore(draggedSlide, this.nextSibling);
             }
 
-            // Обновяваме реда на слайдовете
             const newOrder = Array.from(slidesContainer.querySelectorAll('.slide')).map(slide => slide.dataset.slideId);
             
             console.log('Sending new order:', newOrder);
             
-            // Изпращаме AJAX заявка за обновяване на реда
             fetch(window.location.origin + '/WEB_project_presentation_generator/public/slides/updateOrder', {
                 method: 'POST',
                 headers: {
@@ -81,7 +77,6 @@ function initializeDragAndDrop() {
                 console.log('Response data:', data);
                 if (!data.success) {
                     console.error('Failed to update slide order:', data.message);
-                    // Връщаме слайдовете в оригиналния ред при грешка
                     const slidesArray = Array.from(slidesContainer.querySelectorAll('.slide'));
                     originalOrder.forEach((slideId, index) => {
                         const slide = slidesArray.find(s => s.dataset.slideId === slideId);
@@ -95,7 +90,6 @@ function initializeDragAndDrop() {
             })
             .catch(error => {
                 console.error('Error updating slide order:', error);
-                // Връщаме слайдовете в оригиналния ред при грешка
                 const slidesArray = Array.from(slidesContainer.querySelectorAll('.slide'));
                 originalOrder.forEach((slideId, index) => {
                     const slide = slidesArray.find(s => s.dataset.slideId === slideId);

@@ -11,7 +11,6 @@ class Slide extends Model
     private function ensureSlideOrderColumn()
     {
         try {
-            // Проверяваме дали колоната съществува
             $sql = "SHOW COLUMNS FROM slides LIKE 'slide_order'";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
@@ -19,12 +18,10 @@ class Slide extends Model
             if ($stmt->rowCount() === 0) {
                 error_log("slide_order column does not exist, creating it...");
                 
-                // Добавяме колоната
                 $alterSql = "ALTER TABLE slides ADD COLUMN slide_order INT DEFAULT 0";
                 $alterStmt = $this->db->prepare($alterSql);
                 $alterStmt->execute();
                 
-                // Обновяваме съществуващите записи
                 $updateSql = "UPDATE slides SET slide_order = id WHERE slide_order = 0";
                 $updateStmt = $this->db->prepare($updateSql);
                 $updateStmt->execute();
@@ -103,7 +100,6 @@ class Slide extends Model
                 $slides[] = $currentSlide;
             }
             
-            // Сортираме слайдовете по slide_order
             usort($slides, function($a, $b) {
                 return $a['slide_order'] - $b['slide_order'];
             });
@@ -126,7 +122,6 @@ class Slide extends Model
             
             $this->db->beginTransaction();
             
-            // Създаване на слайда
             $sql = "INSERT INTO slides (presentation_id, title, slide_order, layout) 
                     VALUES (:presentation_id, :title, :slide_order, :layout)";
             error_log("SQL for slide creation: " . $sql);
@@ -155,7 +150,6 @@ class Slide extends Model
             $slideId = $this->db->lastInsertId();
             error_log("Created slide with ID: " . $slideId);
             
-            // Създаване на елементите
             if (!empty($data['elements'])) {
                 $sql = "INSERT INTO slide_elements (slide_id, element_order, type, title, content, text, style) 
                         VALUES (:slide_id, :element_order, :type, :title, :content, :text, :style)";
@@ -254,7 +248,6 @@ class Slide extends Model
             
             $this->db->beginTransaction();
             
-            // Обновяване на слайда
             $sql = "UPDATE slides SET title = :title, layout = :layout WHERE id = :id";
             error_log("SQL for slide update: " . $sql);
             
@@ -270,7 +263,6 @@ class Slide extends Model
                 throw new Exception("Failed to update slide: " . implode(", ", $stmt->errorInfo()));
             }
             
-            // Изтриване на старите елементи
             $sql = "DELETE FROM slide_elements WHERE slide_id = :slide_id";
             error_log("SQL for deleting old elements: " . $sql);
             
@@ -282,7 +274,6 @@ class Slide extends Model
                 throw new Exception("Failed to delete old elements: " . implode(", ", $stmt->errorInfo()));
             }
             
-            // Създаване на новите елементи
             if (!empty($data['elements'])) {
                 $sql = "INSERT INTO slide_elements (slide_id, element_order, type, title, content, text, style) 
                         VALUES (:slide_id, :element_order, :type, :title, :content, :text, :style)";
@@ -332,7 +323,6 @@ class Slide extends Model
             
             $this->db->beginTransaction();
             
-            // Изтриване на елементите
             $sql = "DELETE FROM slide_elements WHERE slide_id = :slide_id";
             error_log("SQL for deleting elements: " . $sql);
             
@@ -344,7 +334,6 @@ class Slide extends Model
                 throw new Exception("Failed to delete elements: " . implode(", ", $stmt->errorInfo()));
             }
             
-            // Изтриване на слайда
             $sql = "DELETE FROM slides WHERE id = :id";
             error_log("SQL for deleting slide: " . $sql);
             
@@ -373,11 +362,9 @@ class Slide extends Model
         try {
             error_log("Updating slide order in database. Slide ID: $slideId, New order: $newOrder");
             
-            // Започваме транзакция
             $this->db->beginTransaction();
             
             try {
-                // Първо намираме presentation_id за слайда
                 $presentationSql = "SELECT presentation_id FROM slides WHERE id = :id";
                 $presentationStmt = $this->db->prepare($presentationSql);
                 $presentationStmt->execute(['id' => $slideId]);
@@ -389,7 +376,6 @@ class Slide extends Model
                     return false;
                 }
                 
-                // Намираме текущия ред на слайда
                 $currentOrderSql = "SELECT slide_order FROM slides WHERE id = :id";
                 $currentOrderStmt = $this->db->prepare($currentOrderSql);
                 $currentOrderStmt->execute(['id' => $slideId]);
@@ -404,7 +390,6 @@ class Slide extends Model
                 }
                 
                 if ($currentOrder < $newOrder) {
-                    // Преместваме надолу - намаляме реда на всички слайдове между текущата и новата позиция
                     $sql = "UPDATE slides 
                            SET slide_order = slide_order - 1 
                            WHERE presentation_id = :presentation_id
@@ -417,7 +402,6 @@ class Slide extends Model
                         'new_order' => $newOrder
                     ]);
                 } else {
-                    // Преместваме нагоре - увеличаваме реда на всички слайдове между новата и текущата позиция
                     $sql = "UPDATE slides 
                            SET slide_order = slide_order + 1 
                            WHERE presentation_id = :presentation_id
@@ -431,7 +415,6 @@ class Slide extends Model
                     ]);
                 }
                 
-                // Обновяваме реда на преместения слайд
                 $updateSql = "UPDATE slides SET slide_order = :new_order WHERE id = :id";
                 $updateStmt = $this->db->prepare($updateSql);
                 $result = $updateStmt->execute([
@@ -445,7 +428,6 @@ class Slide extends Model
                     return false;
                 }
                 
-                // Проверяваме дали обновяването е било успешно
                 $checkSql = "SELECT slide_order FROM slides WHERE id = :id";
                 $checkStmt = $this->db->prepare($checkSql);
                 $checkStmt->execute(['id' => $slideId]);
@@ -507,7 +489,6 @@ class Slide extends Model
     public function addElement($slideId, $type, $content, $title = null)
     {
         try {
-            // Първо намираме максималния ред
             $sql = "SELECT COALESCE(MAX(element_order), -1) + 1 as next_order 
                     FROM slide_elements 
                     WHERE slide_id = :slide_id";
@@ -516,7 +497,6 @@ class Slide extends Model
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             $nextOrder = $result['next_order'];
 
-            // След това добавяме елемента
             $sql = "INSERT INTO slide_elements (slide_id, type, content, title, element_order) 
                     VALUES (:slide_id, :type, :content, :title, :element_order)";
             

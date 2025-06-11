@@ -11,7 +11,6 @@ class Controller {
     }
 
     public function view($view, $data = []) {
-        // Логваме опита за зареждане на изглед
         error_log("[Controller] Опит за зареждане на изглед: " . print_r($view, true));
         if (is_numeric($view)) {
             throw new Exception("Опит за зареждане на изглед с числово име: $view. Провери пренасочванията и подадените параметри.");
@@ -27,12 +26,10 @@ class Controller {
         if (file_exists($viewFile)) {
             extract($data);
             
-            // Захващаме изхода от изгледа
             ob_start();
             require_once $viewFile;
             $content = ob_get_clean();
             
-            // Зареждаме layout
             require_once __DIR__ . '/../views/layouts/main.php';
         } else {
             error_log("View file not found: " . $viewFile);

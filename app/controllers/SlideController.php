@@ -61,7 +61,6 @@ class SlideController extends Controller
             Logger::log("Received POST request for slide creation");
             Logger::log("POST data: " . print_r($_POST, true));
             
-            // Check if this is a cancel action
             if (isset($_POST['cancel'])) {
                 $presentation_id = $_POST['presentation_id'] ?? null;
                 Logger::log("Отказ от създаване на слайд. Пренасочване към: " . ($presentation_id ? (BASE_URL . '/presentation/viewPresentation/' . $presentation_id) : (BASE_URL . '/dashboard')));
@@ -121,7 +120,6 @@ class SlideController extends Controller
                 
                 Logger::log("Final slide data: " . print_r($slideData, true));
                 
-                // Проверяваме дали заявката е AJAX
                 $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
                           strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
                 
@@ -134,7 +132,6 @@ class SlideController extends Controller
                 $_SESSION['success'] = 'Слайдът е създаден успешно';
                     
                     if ($isAjax) {
-                        // За AJAX заявки връщаме JSON отговор
                         Logger::log("Sending JSON response for AJAX request");
                         header('Content-Type: application/json');
                         echo json_encode([
@@ -144,14 +141,12 @@ class SlideController extends Controller
                         ]);
                         return;
                     } else if ($noRedirect) {
-                        // За нормални заявки без пренасочване показваме съобщение
                         Logger::log("Showing success message without redirect");
                         $this->view('slides/create', [
                             'presentation' => $this->presentationModel->getById($presentationId),
                             'success' => 'Слайдът е създаден успешно'
                         ]);
                     } else {
-                        // За нормални заявки с пренасочване
                         Logger::log("Redirecting to presentation: " . BASE_URL . '/presentation/viewPresentation/' . $presentationId);
                         header('Location: ' . BASE_URL . '/presentation/viewPresentation/' . $presentationId);
                     }
@@ -169,7 +164,7 @@ class SlideController extends Controller
                         return;
                     }
                     
-                    throw $e; // Прехвърляме грешката към външния try-catch блок
+                    throw $e;
                 }
                 
             } catch (Exception $e) {
@@ -177,7 +172,6 @@ class SlideController extends Controller
                 Logger::log("Stack trace: " . $e->getTraceAsString());
                 $_SESSION['error'] = 'Възникна грешка при създаването на слайда: ' . $e->getMessage();
                 
-                // Проверяваме дали заявката е AJAX
                 $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
                           strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
                 
@@ -190,7 +184,6 @@ class SlideController extends Controller
                     return;
                 }
                 
-                // Показваме грешката
                 $this->view('slides/create', [
                     'presentation' => $this->presentationModel->getById($presentationId),
                     'error' => 'Възникна грешка при създаването на слайда: ' . $e->getMessage()
@@ -198,7 +191,6 @@ class SlideController extends Controller
                 return;
             }
         } else {
-            // GET request - show create form
             if (!$presentationId) {
                 Logger::log("Error: No presentation ID provided");
                 $_SESSION['error'] = 'Не е посочена презентация';
@@ -251,11 +243,9 @@ class SlideController extends Controller
             $title = $_POST['title'] ?? '';
             $layout = $_POST['layout'] ?? 'full';
             
-            // Проверяваме дали заявката е AJAX
             $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
                       strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
             
-            // Collect elements from form
             $elements = [];
             if (isset($_POST['elements']) && is_array($_POST['elements'])) {
                 foreach ($_POST['elements'] as $element) {
@@ -397,7 +387,6 @@ class SlideController extends Controller
         $workspaceModel = $this->model('Workspace');
         $userId = AuthMiddleware::currentUserId();
 
-        // Проверяваме правата за първия слайд, тъй като всички слайдове са от една презентация
         $firstSlide = $slideModel->getById($data['slides'][0]['id']);
         if (!$firstSlide) {
             header('Content-Type: application/json');
@@ -467,6 +456,5 @@ class SlideController extends Controller
 
         $this->checkOwnerAccess($presentation['workspace_id']);
 
-        // ... existing code ...
     }
 } 
