@@ -194,20 +194,17 @@ class Slide extends Model
 
     public function getById($id)
 {
-    // Вземи основната информация за слайда
     $sql = "SELECT * FROM slides WHERE id = :id";
     $stmt = $this->db->prepare($sql);
     $stmt->execute(['id' => $id]);
     $slide = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($slide) {
-        // Вземи всички елементи за този слайд
         $sql = "SELECT * FROM slide_elements WHERE slide_id = :slide_id ORDER BY element_order ASC";
         $stmt = $this->db->prepare($sql);
         $stmt->execute(['slide_id' => $id]);
         $elements = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Декодирай style, ако е нужно
         foreach ($elements as &$element) {
             $element['style'] = json_decode($element['style'] ?? '{}', true);
         }
