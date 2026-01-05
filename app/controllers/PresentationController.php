@@ -385,6 +385,11 @@ class PresentationController extends Controller
             $pdfOptions = PdfServiceClient::getPresentationOptions();
             $pdfContent = $pdfClient->generatePdf($html, $presentation['title'], $pdfOptions);
             
+            // Clear any output buffers to prevent corruption
+            if (ob_get_level()) {
+                ob_end_clean();
+            }
+            
             // Send PDF to browser
             header('Content-Type: application/pdf');
             header('Content-Disposition: attachment; filename="' . htmlspecialchars($presentation['title']) . '.pdf"');
@@ -415,10 +420,37 @@ class PresentationController extends Controller
         $theme = $presentation['theme'] ?? 'light';
         $title = htmlspecialchars($presentation['title']);
         
-        // Theme colors
-        $bgColor = $theme === 'dark' ? '#1e1e1e' : '#ffffff';
-        $textColor = $theme === 'dark' ? '#ffffff' : '#333333';
-        $accentColor = $theme === 'dark' ? '#4CAF50' : '#2196F3';
+        // Theme colors based on theme type
+        switch ($theme) {
+            case 'dark':
+                $bgColor = '#1e1e1e';
+                $textColor = '#ffffff';
+                $accentColor = '#4CAF50';
+                $slideColor = '#2d2d2d';
+                break;
+            
+            case 'barbie':
+                $bgColor = '#ffc3f0';
+                $textColor = '#333333';
+                $accentColor = '#FD269B';
+                $slideColor = '#ffc3f0';
+                break;
+            
+            case 'ken':
+                $bgColor = '#B4E6FF';
+                $textColor = '#333333';
+                $accentColor = '#3A8EE4';
+                $slideColor = '#B4E6FF';
+                break;
+            
+            case 'light':
+            default:
+                $bgColor = '#f5f5f5';
+                $textColor = '#333333';
+                $accentColor = '#2196F3';
+                $slideColor = '#ffffff';
+                break;
+        }
         
         $html = '<!DOCTYPE html>
 <html lang="bg">
@@ -441,12 +473,16 @@ class PresentationController extends Controller
         .slide {
             width: 100%;
             min-height: 100vh;
-            padding: 60px 80px;
+            height: 100vh;
+            padding: 40px 60px;
             page-break-after: always;
             display: flex;
             flex-direction: column;
             justify-content: center;
             position: relative;
+            overflow: hidden;
+            background: ' . $slideColor . ';
+            color: ' . $textColor . ';
         }
         
         .slide:last-child {
@@ -499,9 +535,13 @@ class PresentationController extends Controller
         }
         
         img {
-            max-width: 100%;
+            max-width: 80%;
+            max-height: 50vh;
             height: auto;
-            margin: 20px 0;
+            margin: 20px auto;
+            display: block;
+            object-fit: contain;
+            page-break-inside: avoid;
         }
         
         .title-slide {
@@ -527,6 +567,7 @@ class PresentationController extends Controller
             border-radius: 5px;
             overflow-x: auto;
             margin: 20px 0;
+            page-break-inside: avoid;
         }
         
         blockquote {
@@ -540,6 +581,11 @@ class PresentationController extends Controller
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 40px;
+            align-items: start;
+        }
+        
+        .two-column > div {
+            min-height: 200px;
         }
     </style>
 </head>
@@ -558,8 +604,39 @@ class PresentationController extends Controller
             
             // Add slide content from elements
             if (!empty($slide['elements'])) {
-                foreach ($slide['elements'] as $element) {
-                    $html .= $this->renderElement($element);
+                $elementCount = count($slide['elements']);
+                
+                // If multiple elements, check if they should be in columns
+                if ($elementCount >= 2) {
+                    // Split elements into two columns
+                    $midPoint = ceil($elementCount / 2);
+                    $leftElements = array_slice($slide['elements'], 0, $midPoint);
+                    $rightElements = array_slice($slide['elements'], $midPoint);
+                    
+                    $html .= '<div class="two-column">';
+                    
+                    // Left column
+                    $html .= '<div>';
+                    foreach ($leftElements as $element) {
+                        $html .= $this->renderElement($element);
+                    }
+                    $html .= '</div>';
+                    
+                    // Right column (if exists)
+                    if (!empty($rightElements)) {
+                        $html .= '<div>';
+                        foreach ($rightElements as $element) {
+                            $html .= $this->renderElement($element);
+                        }
+                        $html .= '</div>';
+                    }
+                    
+                    $html .= '</div>';
+                } else {
+                    // Single element, render normally
+                    foreach ($slide['elements'] as $element) {
+                        $html .= $this->renderElement($element);
+                    }
                 }
             }
             
@@ -584,41 +661,101 @@ class PresentationController extends Controller
     private function renderElement($element)
     {
         $type = $element['type'] ?? 'text';
+        $title = $element['title'] ?? '';
         $content = $element['content'] ?? '';
+        $text = $element['text'] ?? '';
+        
+        $html = '';
+        
+        // Add element title if present
+        if (!empty($title)) {
+            $html .= '<h2>' . htmlspecialchars($title) . '</h2>';
+        }
         
         switch ($type) {
             case 'text':
-                return '<p>' . nl2br(htmlspecialchars($content)) . '</p>';
+                if (!empty($text)) {
+                    $html .= '<p>' . nl2br(htmlspecialchars($text)) . '</p>';
+                } else if (!empty($content)) {
+                    $html .= '<p>' . nl2br(htmlspecialchars($content)) . '</p>';
+                }
+                break;
+            
+            case 'title':
+                $html .= '<h3>' . htmlspecialchars($content ?: $text) . '</h3>';
+                break;
             
             case 'heading':
                 $level = $element['level'] ?? 2;
-                return '<h' . $level . '>' . htmlspecialchars($content) . '</h' . $level . '>';
+                $html .= '<h' . $level . '>' . htmlspecialchars($content ?: $text) . '</h' . $level . '>';
+                break;
             
             case 'list':
-                $listType = $element['list_type'] ?? 'ul';
-                $items = explode("\n", $content);
-                $html = '<' . $listType . '>';
-                foreach ($items as $item) {
-                    if (trim($item)) {
-                        $html .= '<li>' . htmlspecialchars(trim($item)) . '</li>';
+                $listContent = $content ?: $text;
+                $items = is_string($listContent) ? explode("\n", $listContent) : [];
+                if (!empty($items)) {
+                    $html .= '<ul>';
+                    foreach ($items as $item) {
+                        $item = trim($item);
+                        if (!empty($item)) {
+                            $html .= '<li>' . htmlspecialchars($item) . '</li>';
+                        }
                     }
+                    $html .= '</ul>';
                 }
-                $html .= '</' . $listType . '>';
-                return $html;
+                break;
             
             case 'code':
-                return '<pre><code>' . htmlspecialchars($content) . '</code></pre>';
+                $html .= '<pre><code>' . htmlspecialchars($content ?: $text) . '</code></pre>';
+                break;
             
             case 'quote':
-                return '<blockquote>' . htmlspecialchars($content) . '</blockquote>';
+                $quoteContent = $content ?: $text;
+                $html .= '<blockquote>' . nl2br(htmlspecialchars($quoteContent)) . '</blockquote>';
+                break;
             
             case 'image':
-                $alt = $element['alt'] ?? 'Image';
-                return '<img src="' . htmlspecialchars($content) . '" alt="' . htmlspecialchars($alt) . '">';
+                // Handle image - check if it's a URL or base64
+                $imageSrc = $content;
+                if (!empty($imageSrc)) {
+                    // If it's a relative path, convert to absolute
+                    if (!preg_match('#^(https?://|data:)#i', $imageSrc)) {
+                        $imageSrc = BASE_URL . '/' . ltrim($imageSrc, '/');
+                    }
+                    $alt = $element['alt'] ?? $title ?? 'Image';
+                    $html .= '<div style="display: flex; align-items: center; justify-content: center; margin: 30px 0;">';
+                    $html .= '<img src="' . htmlspecialchars($imageSrc) . '" alt="' . htmlspecialchars($alt) . '" style="max-width: 70%; max-height: 45vh; width: auto; height: auto; object-fit: contain;">';
+                    $html .= '</div>';
+                }
+                break;
+            
+            case 'image_text':
+                // Image with text
+                $imageSrc = $content;
+                if (!empty($imageSrc)) {
+                    if (!preg_match('#^(https?://|data:)#i', $imageSrc)) {
+                        $imageSrc = BASE_URL . '/' . ltrim($imageSrc, '/');
+                    }
+                    $html .= '<div class="image-text-content">';
+                    $html .= '<img src="' . htmlspecialchars($imageSrc) . '" alt="Image" style="max-width: 60%; height: auto; float: left; margin-right: 20px;">';
+                    if (!empty($text)) {
+                        $html .= '<p>' . nl2br(htmlspecialchars($text)) . '</p>';
+                    }
+                    $html .= '<div style="clear: both;"></div>';
+                    $html .= '</div>';
+                }
+                break;
             
             default:
-                return '<div>' . nl2br(htmlspecialchars($content)) . '</div>';
+                if (!empty($content)) {
+                    $html .= '<div>' . nl2br(htmlspecialchars($content)) . '</div>';
+                } else if (!empty($text)) {
+                    $html .= '<div>' . nl2br(htmlspecialchars($text)) . '</div>';
+                }
+                break;
         }
+        
+        return $html;
     }
 
     private function exportHTML($presentation, $slides)

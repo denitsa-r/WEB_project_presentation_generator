@@ -22,6 +22,9 @@ require_once __DIR__ . '/../../helpers/SlideRenderer.php';
                     <span><i class="fas fa-palette"></i> Тема: <?= htmlspecialchars($data['presentation']['theme']) ?></span>
                 </div>
                 <div class="presentation-actions">
+                    <a href="<?= BASE_URL ?>/presentation/exportPdfViaService/<?= $data['presentation']['id'] ?>" class="btn btn-success" title="Експорт като PDF чрез Node.js микросервиз">
+                        <i class="fas fa-file-pdf"></i> Експорт PDF
+                    </a>
                     <div class="dropdown">
                         <button class="btn btn-primary dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             Експорт
