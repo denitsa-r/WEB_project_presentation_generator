@@ -247,6 +247,17 @@ class PresentationController extends Controller
                     break;
                 }
             }
+            
+            // Broadcast slide order update via WebSocket
+            if ($success) {
+                require_once __DIR__ . '/../helpers/WebSocketNotifier.php';
+                $wsNotifier = new WebSocketNotifier();
+                $wsNotifier->notifyPresentationUpdate(
+                    $presentationId,
+                    $_SESSION['user_id'] ?? 0,
+                    $_SESSION['username'] ?? 'Anonymous'
+                );
+            }
 
             header('Content-Type: application/json');
             echo json_encode([
@@ -375,10 +386,10 @@ class PresentationController extends Controller
             
             // Check if service is available
             if (!$pdfClient->isAvailable()) {
-                error_log('PDF Service unavailable, falling back to TCPDF');
-                $_SESSION['warning'] = 'PDF Service недостъпен. Използва се резервен метод.';
-                // Fallback to standard export if available
-                return $this->export($id, 'html');
+                error_log('PDF Service unavailable');
+                $_SESSION['error'] = 'PDF сървизът не е достъпен! Моля, уверете се че Node.js PDF микросървизът е стартиран на порт 3001.';
+                header('Location: ' . BASE_URL . '/presentation/viewPresentation/' . $id);
+                exit;
             }
             
             // Call Node.js microservice

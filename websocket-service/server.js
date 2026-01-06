@@ -5,9 +5,82 @@
  */
 
 const WebSocket = require('ws');
+const http = require('http');
 
 const PORT = process.env.PORT || 3002;
-const wss = new WebSocket.Server({ port: PORT });
+
+// Create HTTP server for broadcast endpoint
+const httpServer = http.createServer((req, res) => {
+    // Enable CORS
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    
+    if (req.method === 'OPTIONS') {
+        res.writeHead(200);
+        res.end();
+        return;
+    }
+    
+    if (req.method === 'POST' && req.url === '/broadcast') {
+        let body = '';
+        
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+        
+        req.on('end', () => {
+            try {
+                const data = JSON.parse(body);
+                console.log(`[HTTP BROADCAST] Received: ${data.type} for presentation ${data.presentationId}`);
+                console.log(`[HTTP BROADCAST] Available rooms: ${Array.from(rooms.keys()).join(', ')}`);
+                
+                // Broadcast to all clients in the presentation room
+                const presentationId = String(data.presentationId);
+                console.log(`[HTTP BROADCAST] Looking for room: "${presentationId}"`);
+                
+                if (rooms.has(presentationId)) {
+                    const clients = rooms.get(presentationId);
+                    const message = JSON.stringify(data);
+                    
+                    let broadcastCount = 0;
+                    clients.forEach(client => {
+                        if (client.readyState === WebSocket.OPEN) {
+                            client.send(message);
+                            broadcastCount++;
+                        }
+                    });
+                    
+                    console.log(`[HTTP BROADCAST] Sent to ${broadcastCount} clients in room ${presentationId}`);
+                    
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ 
+                        success: true, 
+                        broadcastCount: broadcastCount 
+                    }));
+                } else {
+                    console.log(`[HTTP BROADCAST] No clients in room ${presentationId}`);
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ 
+                        success: true, 
+                        broadcastCount: 0,
+                        message: 'No clients in room'
+                    }));
+                }
+            } catch (error) {
+                console.error('[HTTP BROADCAST] Error:', error);
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, error: error.message }));
+            }
+        });
+    } else {
+        res.writeHead(404);
+        res.end('Not found');
+    }
+});
+
+httpServer.listen(PORT);
+const wss = new WebSocket.Server({ server: httpServer });
 
 // Data structures
 const rooms = new Map(); // presentationId -> Set of clients
@@ -136,46 +209,50 @@ function handleJoin(ws, data) {
         return;
     }
     
+    // Always convert to string for consistency
+    const roomId = String(presentationId);
+    
     // Create room if doesn't exist
-    if (!rooms.has(presentationId)) {
-        rooms.set(presentationId, new Set());
-        console.log(`[ROOM] Created new room: ${presentationId}`);
+    if (!rooms.has(roomId)) {
+        rooms.set(roomId, new Set());
+        console.log(`[ROOM] Created new room: ${roomId}`);
     }
     
     // Add client to room
-    rooms.get(presentationId).add(ws);
+    rooms.get(roomId).add(ws);
     
     // Store client info
     clientInfo.set(ws, {
         userId: userId || 'anonymous',
         username: username || 'Anonymous User',
-        presentationId: presentationId,
+        presentationId: roomId,
         joinedAt: Date.now()
     });
     
-    ws.presentationId = presentationId;
+    ws.presentationId = roomId;
     
-    const roomSize = rooms.get(presentationId).size;
+    const roomSize = rooms.get(roomId).size;
     
-    console.log(`[JOIN] User "${username || 'Anonymous'}" joined presentation ${presentationId}`);
-    console.log(`[ROOM] Presentation ${presentationId} now has ${roomSize} viewer(s)`);
+    console.log(`[JOIN] User "${username || 'Anonymous'}" joined presentation ${roomId}`);
+    console.log(`[ROOM] Current rooms: ${Array.from(rooms.keys()).join(', ')}`);
+    console.log(`[ROOM] Presentation ${roomId} now has ${roomSize} viewer(s)`);
     
     // Notify client
     ws.send(JSON.stringify({
         type: 'joined',
-        presentationId: presentationId,
+        presentationId: roomId,
         roomSize: roomSize,
-        message: `Successfully joined presentation ${presentationId}`
+        message: `Successfully joined presentation ${roomId}`
     }));
     
-    // Notify others in room
-    broadcastToRoom(presentationId, {
+    // Notify ALL clients in room (including the one who just joined) about the new count
+    broadcastToRoom(roomId, {
         type: 'user-joined',
         userId: userId || 'anonymous',
         username: username || 'Anonymous User',
         roomSize: roomSize,
         timestamp: Date.now()
-    }, ws);
+    }); // Don't exclude anyone - everyone needs the updated count
 }
 
 /**
@@ -391,7 +468,6 @@ function sendStats(ws) {
 }
 
 // Health check endpoint (for monitoring)
-const http = require('http');
 const healthServer = http.createServer((req, res) => {
     if (req.url === '/health') {
         res.writeHead(200, { 'Content-Type': 'application/json' });

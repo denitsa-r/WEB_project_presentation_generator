@@ -102,8 +102,8 @@ app.post("/generate-pdf", async (req, res) => {
     console.log("[PDF Generation] Browser closed");
 
     // Convert Buffer to base64 (PDF is already a Buffer from Puppeteer)
-    const pdfBase64 = Buffer.from(pdf).toString('base64');
-    const pdfSize = (pdf.length) / 1024; // Size in KB
+    const pdfBase64 = Buffer.from(pdf).toString("base64");
+    const pdfSize = pdf.length / 1024; // Size in KB
     const duration = Date.now() - startTime;
 
     console.log(
