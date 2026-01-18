@@ -58,10 +58,10 @@
     
     <div class="custom-footer">
         <p><strong>Quick Links:</strong></p>
-        <a href="/">Home</a> | 
-        <a href="/dashboard">Dashboard</a> | 
-        <a href="/swagger.json" target="_blank">OpenAPI Spec (JSON)</a> | 
-        <a href="/api/health" target="_blank">API Health Check</a>
+        <a href="../">Home</a> | 
+        <a href="../dashboard">Dashboard</a> | 
+        <a href="swagger.json" target="_blank">OpenAPI Spec (JSON)</a> | 
+        <a href="../api/health" target="_blank">API Health Check</a>
         <p style="margin-top: 10px; color: #6c757d;">
             <small>Presentation Generator v1.0.0 | Developed for Distributed Systems Course</small>
         </p>
@@ -72,7 +72,7 @@
     <script>
         window.onload = function() {
             const ui = SwaggerUIBundle({
-                url: '/swagger.json',
+                url: 'swagger.json',
                 dom_id: '#swagger-ui',
                 deepLinking: true,
                 presets: [
