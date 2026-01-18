@@ -5,6 +5,7 @@
 ### 1. **RabbitMQ Server**
 
 #### Windows (Chocolatey):
+
 ```powershell
 # Инсталирай Chocolatey първо (ако нямаш)
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
@@ -20,6 +21,7 @@ rabbitmq-service start
 ```
 
 #### Windows (Ръчна инсталация):
+
 1. Изтегли Erlang: https://www.erlang.org/downloads
 2. Инсталирай Erlang
 3. Изтегли RabbitMQ: https://www.rabbitmq.com/install-windows.html
@@ -30,10 +32,13 @@ rabbitmq-service start
    ```
 
 #### Активирай Management Plugin (препоръчително):
+
 ```powershell
 rabbitmq-plugins enable rabbitmq_management
 ```
+
 След това отвори: http://localhost:15672
+
 - Username: `guest`
 - Password: `guest`
 
@@ -64,22 +69,26 @@ npm install
 ## Как да стартираш
 
 ### 1. Стартирай RabbitMQ (ако не работи)
+
 ```powershell
 rabbitmq-service start
 ```
 
 Провери дали работи:
+
 ```powershell
 rabbitmq-diagnostics status
 ```
 
 ### 2. Стартирай PDF Service с RabbitMQ
+
 ```bash
 cd c:\xampp\htdocs\WEB_project_presentation_generator\pdf-service
 node server-rabbitmq.js
 ```
 
 Трябва да видиш:
+
 ```
 ========================================
   PDF Generation Service (RabbitMQ)
@@ -100,12 +109,14 @@ Queue: pdf_generation_requests
 ### 3. Промени PHP кода да използва RabbitMQ
 
 В контролерите си, вместо:
+
 ```php
 require_once '../app/helpers/PdfServiceClient.php';
 $pdfClient = new PdfServiceClient();
 ```
 
 Използвай:
+
 ```php
 require_once '../app/helpers/PdfServiceClientRabbitMQ.php';
 $pdfClient = new PdfServiceClientRabbitMQ(
@@ -123,6 +134,7 @@ $pdfClient = new PdfServiceClientRabbitMQ(
 ### Тест скрипт за PHP
 
 Създай `test-rabbitmq.php`:
+
 ```php
 <?php
 require_once 'config/config.php';
@@ -131,7 +143,7 @@ require_once 'app/helpers/PdfServiceClientRabbitMQ.php';
 
 try {
     echo "Connecting to RabbitMQ...\n";
-    
+
     $client = new PdfServiceClientRabbitMQ(
         RABBITMQ_HOST,
         RABBITMQ_PORT,
@@ -139,22 +151,22 @@ try {
         RABBITMQ_PASS,
         30
     );
-    
+
     echo "Connection successful!\n";
     echo "Connection info: " . print_r($client->getConnectionInfo(), true) . "\n";
-    
+
     echo "Generating test PDF...\n";
-    
+
     $html = '<html><body><h1>RabbitMQ Test PDF</h1><p>This is a test PDF generated via RabbitMQ!</p></body></html>';
-    
+
     $pdf = $client->generatePdf($html, 'rabbitmq-test');
-    
+
     echo "PDF generated! Size: " . strlen($pdf) . " bytes\n";
-    
+
     // Запази PDF
     file_put_contents('test-rabbitmq.pdf', $pdf);
     echo "PDF saved as test-rabbitmq.pdf\n";
-    
+
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage() . "\n";
     echo "Stack trace:\n" . $e->getTraceAsString() . "\n";
@@ -162,6 +174,7 @@ try {
 ```
 
 Стартирай:
+
 ```bash
 php test-rabbitmq.php
 ```
@@ -171,12 +184,14 @@ php test-rabbitmq.php
 ## Проверка на опашките
 
 ### С Management UI:
+
 1. Отвори http://localhost:15672
 2. Login: `guest` / `guest`
 3. Отиди на "Queues"
 4. Трябва да видиш `pdf_generation_requests`
 
 ### С команден ред:
+
 ```bash
 rabbitmqctl list_queues name messages consumers
 ```
@@ -203,18 +218,22 @@ define('RABBITMQ_PASS', 'guest');
 ## Честа проблеми
 
 ### 1. "Connection refused"
+
 - Провери дали RabbitMQ работи: `rabbitmq-diagnostics status`
 - Стартирай го: `rabbitmq-service start`
 
 ### 2. "Authentication failed"
+
 - Провери username/password в config.php
 - По подразбиране: guest/guest (само за localhost)
 
 ### 3. "Maximum execution time exceeded"
+
 - Увеличи timeout в PHP или PdfServiceClientRabbitMQ
 - Провери дали PDF service работи
 
 ### 4. RabbitMQ не се стартира
+
 - Провери дали Erlang е инсталиран: `erl -version`
 - Провери логовете: `C:\Users\<user>\AppData\Roaming\RabbitMQ\log\`
 
@@ -245,16 +264,19 @@ RabbitMQ автоматично ще разпредели заявките ме�
 ## Мониторинг
 
 ### Провери статус на опашката:
+
 ```bash
 rabbitmqctl list_queues name messages_ready messages_unacknowledged
 ```
 
 ### Провери consumers:
+
 ```bash
 rabbitmqctl list_consumers
 ```
 
 ### Management UI статистики:
+
 - http://localhost:15672/#/queues
 - Виж графики за message rate, consumers, etc.
 
@@ -265,11 +287,13 @@ rabbitmqctl list_consumers
 Ако искаш да се върнеш към HTTP:
 
 1. Промени в config.php:
+
    ```php
    define('PDF_SERVICE_TYPE', 'http');
    ```
 
 2. Стартирай HTTP сървъра:
+
    ```bash
    cd pdf-service
    node server.js
