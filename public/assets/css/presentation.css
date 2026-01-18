@@ -1522,3 +1522,35 @@ body.ken-theme .slide-element.content {
   text-align: center;
   color: #3a8ee4;
 }
+
+/* Fix Bootstrap Dropdown */
+.dropdown {
+  position: relative !important;
+}
+
+.dropdown-menu {
+  display: none !important;
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  z-index: 9999 !important;
+  background-color: white !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  border-radius: 0.25rem !important;
+  padding: 0.5rem 0 !important;
+  margin: 0.125rem 0 0 !important;
+  min-width: 10rem !important;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175) !important;
+}
+
+.dropdown-menu.show {
+  display: block !important;
+  clear: both !important;
+  font-weight: 400 !important;
+  color: #212529 !important;
+  text-align: inherit !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  transform: none !important;
+  text-align: left !important;
+}
