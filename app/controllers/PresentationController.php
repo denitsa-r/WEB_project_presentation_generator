@@ -387,7 +387,11 @@ class PresentationController extends Controller
             // Check if service is available
             if (!$pdfClient->isAvailable()) {
                 error_log('PDF Service unavailable');
-                $_SESSION['error'] = 'PDF сървизът не е достъпен! Моля, уверете се че Node.js PDF микросървизът е стартиран на порт 3001.';
+                if (defined('PDF_SERVICE_TYPE') && PDF_SERVICE_TYPE === 'rabbitmq') {
+                    $_SESSION['error'] = 'PDF сървизът не е достъпен (RabbitMQ). Моля, уверете се че RabbitMQ работи на порт 5672 и че pdf-service worker-ът е стартиран и слуша queue "' . (defined('PDF_RPC_QUEUE') ? PDF_RPC_QUEUE : 'pdf.generate') . '".';
+                } else {
+                    $_SESSION['error'] = 'PDF сървизът не е достъпен! Моля, уверете се че Node.js PDF микросървизът е стартиран на порт 3001.';
+                }
                 header('Location: ' . BASE_URL . '/presentation/viewPresentation/' . $id);
                 exit;
             }

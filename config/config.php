@@ -17,6 +17,10 @@ define('PDF_SERVICE_TYPE', 'rabbitmq'); // 'http' or 'rabbitmq'
 define('PDF_SERVICE_HTTP_URL', 'http://localhost:3001');
 define('PDF_SERVICE_TIMEOUT', 30);
 
+// RabbitMQ PDF RPC
+define('PDF_RPC_QUEUE', 'pdf.generate');
+define('PDF_RPC_TIMEOUT_SECONDS', 90);
+
 $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
 $host = $_SERVER['HTTP_HOST'];
 $script_name = dirname($_SERVER['SCRIPT_NAME']);
