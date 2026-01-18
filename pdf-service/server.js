@@ -77,8 +77,9 @@ app.post("/generate-pdf", async (req, res) => {
     // Set HTML content
     console.log("[PDF Generation] Setting HTML content...");
     await page.setContent(html, {
-      waitUntil: "networkidle0",
-      timeout: 30000,
+      // With embedded assets, we don't need networkidle0 (avoids hangs on external resources).
+      waitUntil: "domcontentloaded",
+      timeout: 60000,
     });
 
     // Generate PDF
